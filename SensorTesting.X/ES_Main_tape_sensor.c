@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "ES_Configure_tape_sensor.h"
 #include "ES_Framework.h"
+#include "BeaconTrackWireEventChecker.h"
 #include "BOARD.h"
 #include "AD.h"
 #include "IO_Ports.h"
@@ -20,6 +21,9 @@ void main(void)
     // Your hardware initialization function calls go here
     BOARD_Init();
     AD_Init();
+    TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
+    TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
+    BEACON_DETECTOR_TRIS = 1;
 
     // now initialize the Events and Services Framework and start it running
     ErrorType = ES_Initialize();

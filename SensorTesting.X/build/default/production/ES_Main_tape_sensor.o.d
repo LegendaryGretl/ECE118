@@ -14,7 +14,8 @@ build/default/production/ES_Main_tape_sensor.o: ES_Main_tape_sensor.c \
  ../ECE118_library/include/ES_ServiceHeaders.h ES_Configure_tape_sensor.h \
  TapeSensorService.h ES_Configure_tape_sensor.h \
  ../ECE118_library/include/AD.h ../ECE118_library/include/IO_Ports.h \
- ReadSensorService.h ../ECE118_library/include/ES_TattleTale.h
+ ReadSensorService.h ../ECE118_library/include/ES_TattleTale.h \
+ BeaconTrackWireEventChecker.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -57,3 +58,5 @@ ES_Configure_tape_sensor.h:
 ReadSensorService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
+
+BeaconTrackWireEventChecker.h:

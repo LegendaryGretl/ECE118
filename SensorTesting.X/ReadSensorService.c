@@ -21,6 +21,7 @@
 #include "BOARD.h"
 #include "AD.h"
 #include "ES_Configure_tape_sensor.h"
+#include "BeaconTrackWireEventChecker.h"
 #include "ES_Framework.h"
 #include "ReadSensorService.h"
 #include <stdio.h>
@@ -69,6 +70,12 @@ uint8_t InitReadSensorService(uint8_t Priority) {
     // this includes all hardware and software initialization
     // that needs to occur.
     ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
+
+    // set up sensor reading pins to be inputs
+    TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
+    TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
+    BEACON_DETECTOR_TRIS = 1;
+
     // post the initial transition event
     ThisEvent.EventType = ES_INIT;
     if (ES_PostToService(MyPriority, ThisEvent) == TRUE) {
@@ -102,7 +109,6 @@ uint8_t PostReadSensorService(ES_Event ThisEvent) {
  * @author J. Edward Carryer, 2011.10.23 19:25 */
 ES_Event RunReadSensorService(ES_Event ThisEvent) {
     ES_Event ReturnEvent;
-    //ES_Event post_this_event;
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
     /********************************************
@@ -126,8 +132,6 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
         case ES_TIMEOUT:
             if (ThisEvent.EventParam == READ_SENSOR_TIMER) {
                 // time to take a new reading!
-//                post_this_event.EventType = ES_READ_TAPE_SENSOR;
-//                post_this_event.EventParam = 1;
                 ReturnEvent.EventType = ES_READ_TAPE_SENSOR;
                 ReturnEvent.EventParam = 1;
                 PostTapeSensorService(ReturnEvent);
@@ -137,13 +141,29 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             break;
 
         case ES_TAPE_DETECTED:
-            printf("Tape detected: %d\r\n", ThisEvent.EventParam);
+            //printf("\r\nTape detected: %d", ThisEvent.EventParam);
             ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 
         case ES_NO_TAPE_DETECTED:
-            printf("No tape detected: %d\r\n", ThisEvent.EventParam);
+            //printf("\r\nNo tape detected: %d", ThisEvent.EventParam);
             ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
+            break;
+
+        case ES_NO_BEACON_DETECTED:
+            printf("\r\nNo beacon detected");
+            break;
+
+        case ES_BEACON_DETECTED:
+            printf("\r\nBeacon detected");
+            break;
+
+        case ES_NO_TRACK_WIRE_DETECTED:
+            printf("\r\nNo track wire detected");
+            break;
+
+        case ES_TRACK_WIRE_DETECTED:
+            printf("\r\nTrack wire detected: %x", ThisEvent.EventParam);
             break;
 
         default:

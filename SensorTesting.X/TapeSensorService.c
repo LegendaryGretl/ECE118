@@ -33,7 +33,9 @@
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define HYSTERESIS_LOWER_THRESHOLD 1000
+// these thresholds will change based on distance from tape sensor to ground, as
+// well as the lighting conditions
+#define HYSTERESIS_LOWER_THRESHOLD 990
 #define HYSTERESIS_UPPER_THRESHOLD 1010
 
 /*******************************************************************************
@@ -125,7 +127,7 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
             // go in the init function above.
             //
             // This section is used to reset service for some reason
-            TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn oFF the tape sensor
+            TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor
             break;
 
         case ES_TIMERACTIVE:
@@ -135,13 +137,13 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
         case ES_READ_TAPE_SENSOR:
             // some function elsewhere wants to read from the tape sensor
             // when more tape sensors are added, the argument of this event will 
-            // set the tape sensor that will be read
+            // set the tape sensor(s) that will be read
             TAPE_SENSOR_ENABLE_PIN1_LAT = 1; // turn on the tape sensor
             ES_Timer_InitTimer(TAPE_SENSOR_TIMER, 2);
             break;
-            
+
         case ES_TIMEOUT:
-            if (ThisEvent.EventParam != TAPE_SENSOR_TIMER){
+            if (ThisEvent.EventParam != TAPE_SENSOR_TIMER) {
                 break;
             }
             // ADC signal has stabilized and is ready to be read from 
@@ -153,17 +155,15 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
             } else {
                 curEvent = lastEvent;
             }
-            TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor
-            //if (curEvent != lastEvent) { // check for change from last time
-                ReturnEvent.EventType = curEvent;
-                ReturnEvent.EventParam = light_level;
-                lastEvent = curEvent; // update history
+            TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor           
+            ReturnEvent.EventType = curEvent;
+            ReturnEvent.EventParam = light_level;
+            lastEvent = curEvent; // update history
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
-                PostReadSensorService(ReturnEvent);
+            PostReadSensorService(ReturnEvent);
 #else
-                PostTapeSensorService(ReturnEvent);
-#endif   
-            //}
+            PostTapeSensorService(ReturnEvent);
+#endif               
             break;
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
         default:

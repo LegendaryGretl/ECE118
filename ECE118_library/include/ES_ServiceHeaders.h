@@ -10,7 +10,7 @@
  01/15/12 10:35 jec      started coding
 *****************************************************************************/
 
-#include "ES_Configure.h"
+#include "ES_Configure_tape_sensor.h"
 
 #include SERV_0_HEADER
 

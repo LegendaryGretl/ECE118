@@ -15,7 +15,7 @@
  10/17/11 12:24 jec      started coding
  *****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
-#include "ES_Configure.h"
+#include "ES_Configure_tape_sensor.h"
 #include "ES_Queue.h"
 #include "ES_PostList.h"
 #include "ES_CheckEvents.h"

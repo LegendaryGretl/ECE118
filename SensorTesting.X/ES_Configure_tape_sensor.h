@@ -15,8 +15,8 @@
 #ifndef CONFIGURE_H
 #define CONFIGURE_H
 
-#include "TapeSensorService.h"
-
+//#include "TapeSensorService.h"
+//#include "ReadSensorService.h"
 
 
 
@@ -70,7 +70,7 @@ static const char *EventNames[] = {
     "BATTERY_DISCONNECTED",
     "ES_TAPE_DETECTED",
     "ES_NO_TAPE_DETECTED",
-    "ES_READ_TAPE_SENSOR"
+    "ES_READ_TAPE_SENSOR",
     "NUMBEROFEVENTS",
 };
 
@@ -83,7 +83,7 @@ static const char *EventNames[] = {
 
 /****************************************************************************/
 // This is the list of event checking functions
-#define EVENT_CHECK_LIST  TemplateCheckBattery
+#define EVENT_CHECK_LIST  //TemplateCheckBattery
 
 /****************************************************************************/
 // These are the definitions for the post functions to be executed when the
@@ -91,7 +91,7 @@ static const char *EventNames[] = {
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostTapeSensorService
-#define TIMER1_RESP_FUNC TIMER_UNUSED
+#define TIMER1_RESP_FUNC PostReadSensorService
 #define TIMER2_RESP_FUNC TIMER_UNUSED
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
@@ -115,6 +115,7 @@ static const char *EventNames[] = {
 // the timer number matches where the timer event will be routed
 
 #define TAPE_SENSOR_TIMER 0  
+#define READ_SENSOR_TIMER 1  
 
 
 /****************************************************************************/
@@ -126,7 +127,7 @@ static const char *EventNames[] = {
 /****************************************************************************/
 // This macro determines that nuber of services that are *actually* used in
 // a particular application. It will vary in value from 1 to MAX_NUM_SERVICES
-#define NUM_SERVICES 2
+#define NUM_SERVICES 3
 
 /****************************************************************************/
 // These are the definitions for Service 0, the lowest priority service
@@ -158,11 +159,11 @@ static const char *EventNames[] = {
 // These are the definitions for Service 2
 #if NUM_SERVICES > 2
 // the header file with the public fuction prototypes
-#define SERV_2_HEADER "TestService.h"
+#define SERV_2_HEADER "ReadSensorService.h"
 // the name of the Init function
-#define SERV_2_INIT TestServiceInit
+#define SERV_2_INIT InitReadSensorService
 // the name of the run function
-#define SERV_2_RUN TestServiceRun
+#define SERV_2_RUN RunReadSensorService
 // How big should this services Queue be?
 #define SERV_2_QUEUE_SIZE 3
 #endif

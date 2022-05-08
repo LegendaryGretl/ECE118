@@ -24,6 +24,9 @@
 #include "ES_Framework.h"
 #include "TapeSensorService.h"
 #include <stdio.h>
+#include "BOARD.h"
+#include "AD.h"
+#include "IO_Ports.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -114,7 +117,7 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
      *******************************************/
     static ES_EventTyp_t lastEvent = ES_NO_TAPE_DETECTED;
     ES_EventTyp_t curEvent;
-    u_int16_t light_level;
+    uint16_t light_level;
 
     switch (ThisEvent.EventType) {
         case ES_INIT:
@@ -134,10 +137,13 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
             // when more tape sensors are added, the argument of this event will 
             // set the tape sensor that will be read
             TAPE_SENSOR_ENABLE_PIN1_LAT = 1; // turn on the tape sensor
-            ES_Timer_Init(TAPE_SENSOR_TIMER, 2);
+            ES_Timer_InitTimer(TAPE_SENSOR_TIMER, 2);
             break;
             
         case ES_TIMEOUT:
+            if (ThisEvent.EventParam != TAPE_SENSOR_TIMER){
+                break;
+            }
             // ADC signal has stabilized and is ready to be read from 
             light_level = AD_ReadADPin(TAPE_SENSOR_INPUT_PIN1);
             if (light_level > HYSTERESIS_UPPER_THRESHOLD) { // tape detected
@@ -154,7 +160,7 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
                 lastEvent = curEvent; // update history
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
                 //PostGenericService(ReturnEvent);
-                PostTapeSensorService(ReturnEvent);
+                PostReadSensorService(ReturnEvent);
 #else
                 PostTapeSensorService(ReturnEvent);
 #endif   

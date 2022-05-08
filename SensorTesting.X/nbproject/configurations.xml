@@ -57,6 +57,7 @@
       <itemPath>../ECE118_library/src/ES_Timers.c</itemPath>
       <itemPath>TapeSensorService.c</itemPath>
       <itemPath>ReadSensorService.c</itemPath>
+      <itemPath>ES_Main_tape_sensor.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -120,7 +121,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value=".;..\ECE118_library\include;..\ECE118_library\src"/>
+                  value=".;..\ECE118_library\include;..\ECE118_library\src;..\ECE118_library\templates"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="false"/>
@@ -715,6 +716,8 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
+      <item path="TapeSensor_main.c" ex="true" overriding="false">
+      </item>
       <Tool>
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>

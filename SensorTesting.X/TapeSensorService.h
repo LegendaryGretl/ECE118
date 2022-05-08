@@ -23,6 +23,10 @@
  ******************************************************************************/
 
 #include "ES_Configure_tape_sensor.h"   // defines ES_Event, INIT_EVENT, ENTRY_EVENT, and EXIT_EVENT
+#include "BOARD.h"
+#include "AD.h"
+#include "IO_Ports.h"
+#include <xc.h>
 
 /*******************************************************************************
  * PUBLIC #DEFINES                                                             *

@@ -154,17 +154,16 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent) {
                 curEvent = lastEvent;
             }
             TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor
-            if (curEvent != lastEvent) { // check for change from last time
+            //if (curEvent != lastEvent) { // check for change from last time
                 ReturnEvent.EventType = curEvent;
                 ReturnEvent.EventParam = light_level;
                 lastEvent = curEvent; // update history
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
-                //PostGenericService(ReturnEvent);
                 PostReadSensorService(ReturnEvent);
 #else
                 PostTapeSensorService(ReturnEvent);
 #endif   
-            }
+            //}
             break;
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
         default:

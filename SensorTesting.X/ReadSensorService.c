@@ -30,7 +30,7 @@
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define DELAY_BETWEEN_READINGS 1000
+#define DELAY_BETWEEN_READINGS 100
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -102,7 +102,7 @@ uint8_t PostReadSensorService(ES_Event ThisEvent) {
  * @author J. Edward Carryer, 2011.10.23 19:25 */
 ES_Event RunReadSensorService(ES_Event ThisEvent) {
     ES_Event ReturnEvent;
-    ES_Event post_this_event;
+    //ES_Event post_this_event;
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
     /********************************************
@@ -126,20 +126,23 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
         case ES_TIMEOUT:
             if (ThisEvent.EventParam == READ_SENSOR_TIMER) {
                 // time to take a new reading!
-                post_this_event.EventType = ES_READ_TAPE_SENSOR; // assume no errors
-                PostTapeSensorService(post_this_event);
+//                post_this_event.EventType = ES_READ_TAPE_SENSOR;
+//                post_this_event.EventParam = 1;
+                ReturnEvent.EventType = ES_READ_TAPE_SENSOR;
+                ReturnEvent.EventParam = 1;
+                PostTapeSensorService(ReturnEvent);
             } else {
                 break;
             }
             break;
 
         case ES_TAPE_DETECTED:
-            printf("\r\nTape detected: %d", ThisEvent.EventParam);
+            printf("Tape detected: %d\r\n", ThisEvent.EventParam);
             ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 
         case ES_NO_TAPE_DETECTED:
-            printf("\r\nNo tape detected: %d", ThisEvent.EventParam);
+            printf("No tape detected: %d\r\n", ThisEvent.EventParam);
             ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 

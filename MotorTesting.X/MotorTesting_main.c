@@ -5,9 +5,6 @@
  * Created on May 12, 2022, 3:29 PM
  */
 
-
-#include "xc.h"
-
 #include "xc.h"
 #include <stdio.h>
 #include "BOARD.h"
@@ -40,6 +37,8 @@ int main(void) {
     BOARD_Init();
     PWM_Init();
     
+    printf("Initial Motor Testing, complied on %s %s\r\n", __DATE__, __TIME__);
+    
     if (PWM_AddPins(H_BRIDGE_EN_A) == ERROR) {
         printf("\r\nError adding PWM pins");
         while (1);
@@ -48,13 +47,18 @@ int main(void) {
     H_BRIDGE_IN1_TRIS = 0; // output to h bridge pin 2
     H_BRIDGE_IN2_TRIS = 0; // output to h bridge pin 3 
 
-    int leds_to_light = 0;
     int duty_cycle = MIN_PWM;
     int cur_speed = 50;
-
-    printf("\r\nInitial Motor Testing, complied on %s %s", __DATE__, __TIME__);
     
     duty_cycle = (((MAX_PWM - MIN_PWM) * cur_speed) / MAX_SPEED) + MIN_PWM;
+    if (duty_cycle > MAX_PWM){
+        printf("duty cycle too large\r\n");
+        duty_cycle = MAX_PWM;
+    }
+    if (duty_cycle < MIN_PWM){
+        printf("duty cycle too smol\r\n");
+        duty_cycle = MIN_PWM;
+    }
     
     H_BRIDGE_IN1 = 1;
     H_BRIDGE_IN2 = 0;

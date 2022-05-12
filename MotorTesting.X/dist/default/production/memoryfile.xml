@@ -3,15 +3,15 @@
   <executable name="dist/default/production/MotorTesting.X.production.elf">                 
     <memory name="program">                 
       <units>bytes</units>                 
-      <length>138752</length>                 
-      <used>30464</used>                     
-      <free>108288</free>                     
+      <length>126464</length>                 
+      <used>35964</used>                     
+      <free>90500</free>                     
     </memory>                              
     <memory name="data">              
       <units>bytes</units>                 
       <length>16384</length>                 
-      <used>1836</used>                     
-      <free>14548</free>                     
+      <used>1928</used>                     
+      <free>14456</free>                     
     </memory>                              
   </executable>                            
 </project>                                 

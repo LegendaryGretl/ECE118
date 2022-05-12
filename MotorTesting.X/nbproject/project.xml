@@ -13,8 +13,7 @@
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>../ECE118_library/include</sourceRootElem>
-                <sourceRootElem>../ECE118_library/src</sourceRootElem>
+                <sourceRootElem>../ECE118_library</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

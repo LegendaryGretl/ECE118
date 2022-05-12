@@ -21,7 +21,7 @@
 #include "BOARD.h"
 #include "AD.h"
 #include "ES_Configure_tape_sensor.h"
-#include "BeaconTrackWireEventChecker.h"
+#include "SensorEventChecker.h"
 #include "ES_Framework.h"
 #include "ReadSensorService.h"
 #include <stdio.h>

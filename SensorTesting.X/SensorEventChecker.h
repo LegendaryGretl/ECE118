@@ -42,6 +42,32 @@
 #define BEACON_DETECTOR_TRIS PORTX11_TRIS
 #define BEACON_DETECTOR PORTX11_BIT
 
+#define TAPE_SENSOR_1 PORTY03_BIT
+#define TAPE_SENSOR_1_TRIS PORTY03_TRIS
+
+#define TAPE_SENSOR_2 PORTY04_BIT
+#define TAPE_SENSOR_2_TRIS PORTY04_TRIS
+
+#define TAPE_SENSOR_3 PORTY05_BIT
+#define TAPE_SENSOR_3_TRIS PORTY05_TRIS
+
+#define TAPE_SENSOR_4 PORTY06_BIT
+#define TAPE_SENSOR_4_TRIS PORTY06_TRIS
+
+#define TAPE_SENSOR_5 PORTY07_BIT
+#define TAPE_SENSOR_5_TRIS PORTY07_TRIS
+
+#define TAPE_SENSOR_6 PORTY08_BIT
+#define TAPE_SENSOR_6_TRIS PORTY08_TRIS
+
+#define TAPE_SENSOR_7 PORTY09_BIT
+#define TAPE_SENSOR_7_TRIS PORTY09_TRIS
+
+#define TAPE_SENSOR_8 PORTY10_BIT
+#define TAPE_SENSOR_8_TRIS PORTY10_TRIS
+
+#define NUMBER_OF_TAPE_SENSORS 8
+
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *
  ******************************************************************************/
@@ -69,6 +95,15 @@ uint8_t CheckTrackWire(void);
  * @note the param for this function is always 0
  */
 uint8_t CheckBeacon(void);
+
+/**
+ * @Function CheckTapeSensors(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function indicates whether or not there's been a change in the tape detected
+ * @note the param for this function indicates the state of all tape sensors
+ */
+uint8_t CheckTapeSensors(void);
 
 
 

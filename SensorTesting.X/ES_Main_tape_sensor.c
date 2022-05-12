@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "ES_Configure_tape_sensor.h"
 #include "ES_Framework.h"
-#include "BeaconTrackWireEventChecker.h"
+#include "SensorEventChecker.h"
 #include "BOARD.h"
 #include "AD.h"
 #include "IO_Ports.h"

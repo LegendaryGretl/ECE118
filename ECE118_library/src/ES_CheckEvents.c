@@ -20,7 +20,7 @@
 // Include the header files for the module(s) with your event checkers. 
 // This gets you the prototypes for the event checking functions.
 
-#include "BeaconTrackWireEventChecker.h"
+#include "SensorEventChecker.h"
 
 // Fill in this array with the names of your event checking functions
 

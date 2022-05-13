@@ -156,6 +156,7 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
         case ES_ENCODER_PULSE_DETECTED_RIGHT:
             right_motor_ticks--;
             if (right_motor_ticks == 0) {
+                printf("\r\nright rotation complete");
                 curEvent = ES_MOTOR_ROTATION_COMPLETE;
                 right_motor_ticks = -1;
                 ReturnEvent.EventType = curEvent;

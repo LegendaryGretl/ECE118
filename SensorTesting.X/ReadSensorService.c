@@ -132,17 +132,6 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
         case ES_TIMERSTOPPED:
             break;
 
-            //        case ES_TIMEOUT:
-            //            if (ThisEvent.EventParam == READ_SENSOR_TIMER) {
-            //                // time to take a new reading!
-            //                ReturnEvent.EventType = ES_READ_TAPE_SENSOR;
-            //                ReturnEvent.EventParam = 1;
-            //                PostTapeSensorService(ReturnEvent);
-            //            } else {
-            //                break;
-            //            }
-            //            break;
-
         case ES_TIMEOUT:
             if (ThisEvent.EventParam != READ_SENSOR_TIMER) {
                 break;
@@ -161,10 +150,11 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
         case ES_MOTOR_ROTATION_COMPLETE:
             if (ThisEvent.EventParam == 0) {
                 SetLeftMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
-            } else {
+                //ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+            } 
+            if (ThisEvent.EventParam == 1) {
                 SetRightMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+                //ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
             }
             break;
 
@@ -198,28 +188,6 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             printf("\r\nPulse detected");
             break;
 
-        default:
-            //            if (ThisEvent.EventType == ES_TAPE_DETECTED) {
-            //                printf("\r\nTape detected: %d", ThisEvent.EventParam);
-            //            } else if (ThisEvent.EventType == ES_NO_TAPE_DETECTED) {
-            //                printf("\r\nNo tape detected: %d", ThisEvent.EventParam);
-            //            } else {
-            //                printf("\r\nsome other event occurred");
-            //            }
-            //            // some sensor returned a result
-            //            if (ThisEvent.EventType != lastEvent) { // check for change from last time
-            //
-            //                ReturnEvent.EventType = ThisEvent.EventType;
-            //                ReturnEvent.EventParam = ThisEvent.EventParam;
-            //                lastEvent = ThisEvent.EventType; // update history
-            //#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
-            //                //PostGenericService(ReturnEvent);
-            //#else
-            //                PostReadSensorService(ReturnEvent);
-            //#endif   
-            //            }
-            //ES_Timer_InitTimer(READ_SENSOR_TIMER, 100);
-            break;
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
         default:
             printf("\r\nEvent: %s\tParam: 0x%X",

@@ -92,6 +92,8 @@ uint8_t CheckLeftMotorEncoder(void);
  */
 uint8_t CheckRightMotorEncoder(void);
 
+uint8_t CheckMotorEncoder(void);
+
 
 #endif	/* TEMPLATEEVENTCHECKER_H */
 

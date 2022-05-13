@@ -231,7 +231,6 @@ uint8_t CheckLeftMotorEncoder(void) {
     return (returnVal);
 }
 
-
 /**
  * @Function CheckRightMotorEncoder(void)
  * @param none
@@ -261,6 +260,36 @@ uint8_t CheckRightMotorEncoder(void) {
 #endif   
         }
     }
+    return (returnVal);
+}
+
+uint8_t CheckMotorEncoder(void) {
+    ES_Event thisEvent;
+    uint8_t returnVal;
+    static uint8_t lastParam = 0;
+    uint8_t curParam = 0;
+
+    if (LEFT_MOTOR_ENCODER) {
+        curParam |= 0b10;
+        //curEventLeft = ES_ENCODER_PULSE_DETECTED_LEFT;
+    }
+
+    if (RIGHT_MOTOR_ENCODER) {
+        curParam |= 0b01;
+        //curEventRight = ES_ENCODER_PULSE_DETECTED_RIGHT;
+    }
+
+    if ((curParam ^ lastParam) & curParam) {
+        thisEvent.EventType = ES_ENCODER_PULSE_DETECTED;
+        thisEvent.EventParam = (curParam ^ lastParam) & curParam; // indicates which encoder has received a pulse
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+        PostMotorEncoderService(thisEvent);
+#else
+        SaveEvent(thisEvent);
+#endif  
+    }
+    
+    lastParam = curParam;
     return (returnVal);
 }
 

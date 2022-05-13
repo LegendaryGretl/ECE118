@@ -138,36 +138,66 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
             right_motor_ticks = TICKS_PER_ROTATION * (int) ThisEvent.EventParam;
             break;
 
-        case ES_ENCODER_PULSE_DETECTED_LEFT:
-            left_motor_ticks--;
+        case ES_ENCODER_PULSE_DETECTED:
+            if (ThisEvent.EventParam & 0b10) {
+                left_motor_ticks--;
+            }
+            if (ThisEvent.EventParam & 0b01) {
+                right_motor_ticks--;
+            }
+            uint8_t curParam = 0;
             if (left_motor_ticks == 0) {
-                curEvent = ES_MOTOR_ROTATION_COMPLETE;
+                curParam |= 0b10;
                 left_motor_ticks = -1;
-                ReturnEvent.EventType = curEvent;
-                ReturnEvent.EventParam = 0;
-#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
-                PostReadSensorService(ReturnEvent);
-#else
-                PostMotorEncoderService(ReturnEvent);
-#endif   
             }
-            break;
-
-        case ES_ENCODER_PULSE_DETECTED_RIGHT:
-            right_motor_ticks--;
             if (right_motor_ticks == 0) {
-                printf("\r\nright rotation complete");
-                curEvent = ES_MOTOR_ROTATION_COMPLETE;
+                curParam |= 0b01;
                 right_motor_ticks = -1;
-                ReturnEvent.EventType = curEvent;
-                ReturnEvent.EventParam = 1;
+            }
+
+            if (curParam) {
+                ReturnEvent.EventType = ES_MOTOR_ROTATION_COMPLETE;
+                ReturnEvent.EventParam = curParam;
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
                 PostReadSensorService(ReturnEvent);
 #else
                 PostMotorEncoderService(ReturnEvent);
-#endif   
+#endif  
             }
-            break;
+
+
+            //        case ES_ENCODER_PULSE_DETECTED_LEFT:
+            //            printf("\r\nleft pulse detected by motor encoder service: %d", left_motor_ticks);
+            //            left_motor_ticks--;
+            //            if (left_motor_ticks == 0) {
+            //                curEvent = ES_MOTOR_ROTATION_COMPLETE;
+            //                left_motor_ticks = -1;
+            //                ReturnEvent.EventType = curEvent;
+            //                ReturnEvent.EventParam = 0;
+            //#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
+            //                PostReadSensorService(ReturnEvent);
+            //#else
+            //                PostMotorEncoderService(ReturnEvent);
+            //#endif   
+            //            }
+            //            break;
+            //
+            //        case ES_ENCODER_PULSE_DETECTED_RIGHT:
+            //            printf("\r\nright pulse detected by motor encoder service: %d", right_motor_ticks);
+            //            right_motor_ticks--;
+            //            if (right_motor_ticks == 0) {
+            //                printf("\r\nright rotation complete");
+            //                curEvent = ES_MOTOR_ROTATION_COMPLETE;
+            //                right_motor_ticks = -1;
+            //                ReturnEvent.EventType = curEvent;
+            //                ReturnEvent.EventParam = 1;
+            //#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
+            //                PostReadSensorService(ReturnEvent);
+            //#else
+            //                PostMotorEncoderService(ReturnEvent);
+            //#endif   
+            //            }
+            //            break;
 
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
         default:

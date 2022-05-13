@@ -148,13 +148,13 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             break;
 
         case ES_MOTOR_ROTATION_COMPLETE:
-            if (ThisEvent.EventParam == 0) {
+            if (ThisEvent.EventParam & 0b10) {
                 SetLeftMotorSpeed(0);
-                //ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
             } 
-            if (ThisEvent.EventParam == 1) {
+            if (ThisEvent.EventParam & 0b01) {
                 SetRightMotorSpeed(0);
-                //ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
             }
             break;
 

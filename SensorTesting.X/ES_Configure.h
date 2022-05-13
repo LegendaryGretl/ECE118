@@ -58,12 +58,13 @@ typedef enum {
     ES_NO_TRACK_WIRE_DETECTED,
     ES_ENCODER_PULSE_DETECTED_RIGHT,
     ES_ENCODER_PULSE_DETECTED_LEFT,
+            ES_ENCODER_PULSE_DETECTED,
     ES_ENCODER_PULSE_LOW,
     ES_TURN_LEFT_MOTOR_N_DEGREES,
     ES_TURN_LEFT_MOTOR_N_ROTATIONS,
     ES_TURN_RIGHT_MOTOR_N_DEGREES,
     ES_TURN_RIGHT_MOTOR_N_ROTATIONS,
-    ES_MOTOR_ROTATION_COMPLETE, // param: 0 = left, 1 = right
+    ES_MOTOR_ROTATION_COMPLETE, // param: 0b10 = left, 0b01 = right
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -107,7 +108,7 @@ static const char *EventNames[] = {
 
 /****************************************************************************/
 // This is the list of event checking functions
-#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckLeftMotorEncoder, CheckRightMotorEncoder
+#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckMotorEncoder
 
 /****************************************************************************/
 // These are the definitions for the post functions to be executed when the

@@ -253,3 +253,22 @@ int main(void) {
     while (1);
 }
 #endif
+
+#ifdef TEST_MOTOR_ENCODER
+static unsigned int wait = 0;
+#define DELAY(x)    for (wait = 0; wait <= x; wait++) {asm("nop");}
+#define A_LOT       10*183000
+
+int main(void){
+    BOARD_Init();
+    PWM_Init();
+    Motors_Init();
+
+    printf("Motor Encoder Test Harness, complied on %s %s\r\n", __DATE__, __TIME__);
+    
+    SetLeftMotorSpeed(100);
+    
+    while(1);
+}
+        
+#endif

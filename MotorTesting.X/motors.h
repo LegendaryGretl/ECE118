@@ -33,6 +33,8 @@ char Motors_Init(void);
  * @brief  Sets the left motor to turn at the provided speed
  * @note  if the speed is out of range, will return an error and set speed within
  *          safe range
+ * @note  it is suggested to stop the motors completely before trying to change
+ *          direction
  * @author Margaret Silva 5.12.2022 */
 char SetLeftMotorSpeed(int speed);
 
@@ -44,6 +46,8 @@ char SetLeftMotorSpeed(int speed);
  * @brief  Sets the right motor to turn at the provided speed
  * @note  if the speed is out of range, will return an error and set speed within
  *          safe range
+ * @note  it is suggested to stop the motors completely before trying to change
+ *          direction
  * @author Margaret Silva 5.12.2022 */
 char SetRightMotorSpeed(int speed);
 

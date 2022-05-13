@@ -3,7 +3,7 @@
 #define ES_TattleTale_H
 
 #include <inttypes.h>
-#include <ES_Configure_tape_sensor.h>
+#include <ES_Configure.h>
 
 
 // Public Function Prototypes

@@ -27,10 +27,11 @@
       <itemPath>../ECE118_library/include/ES_TattleTale.h</itemPath>
       <itemPath>../ECE118_library/include/ES_Timers.h</itemPath>
       <itemPath>TapeSensorService.h</itemPath>
-      <itemPath>ES_Configure_tape_sensor.h</itemPath>
       <itemPath>ReadSensorService.h</itemPath>
       <itemPath>SensorEventChecker.h</itemPath>
       <itemPath>../ECE118_library/component libraries/motors.h</itemPath>
+      <itemPath>../ECE118_library/component libraries/pins.h</itemPath>
+      <itemPath>ES_Configure.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -125,7 +126,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value=".;..\ECE118_library\include;..\ECE118_library\src;..\ECE118_library\templates"/>
+                  value=".;..\ECE118_library\include;..\ECE118_library\src;..\ECE118_library\templates;..\ECE118_library\component libraries"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="false"/>

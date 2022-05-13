@@ -26,13 +26,14 @@
  * MODULE #INCLUDE                                                             *
  ******************************************************************************/
 
-#include "ES_Configure_tape_sensor.h"
+#include "ES_Configure.h"
 #include "SensorEventChecker.h"
 #include "ES_Events.h"
 #include "serial.h"
 #include "AD.h"
 #include "ReadSensorService.h"
 #include <stdio.h>
+#include "pins.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -204,9 +205,23 @@ uint8_t CheckTapeSensors(void) {
  * @brief This function sends an event when it picks up a pulse from the motor's rotary encoder
  * @note the param for this function is always 0
  */
-uint8_t CheckMotorEncoder(void) {
+uint8_t CheckLeftMotorEncoder(void) {
     static ES_EventTyp_t lastEvent = ES_ENCODER_PULSE_LOW;
+    ES_EventTyp_t curEvent;
+    ES_Event thisEvent;
+    uint8_t returnVal;
     
+    if (curEvent != lastEvent) { // check for change from last time
+        thisEvent.EventType = curEvent;
+        returnVal = TRUE;
+        lastEvent = curEvent; // update history
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+        PostReadSensorService(thisEvent);
+#else
+        SaveEvent(thisEvent);
+#endif   
+    }
+    return (returnVal);
 }
 
 /* 

@@ -12,7 +12,7 @@
  08/09/11 18:16 jec      started coding
 *****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
-#include "ES_Configure_tape_sensor.h"
+#include "ES_Configure.h"
 #include "ES_Queue.h"
 #include "ES_Port.h"
 #include <BOARD.h>

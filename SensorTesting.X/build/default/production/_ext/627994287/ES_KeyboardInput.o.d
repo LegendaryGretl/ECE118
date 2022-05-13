@@ -1,6 +1,6 @@
 build/default/production/_ext/627994287/ES_KeyboardInput.o: \
  ../ECE118_library/src/ES_KeyboardInput.c \
- ../ECE118_library/include/BOARD.h ES_Configure_tape_sensor.h \
+ ../ECE118_library/include/BOARD.h ES_Configure.h \
  ../ECE118_library/include/ES_Framework.h \
  ../ECE118_library/include/ES_Events.h \
  ../ECE118_library/include/ES_Timers.h \
@@ -13,7 +13,7 @@ build/default/production/_ext/627994287/ES_KeyboardInput.o: \
  ../ECE118_library/include/ES_PriorTables.h \
  ../ECE118_library/include/ES_Queue.h \
  ../ECE118_library/include/ES_ServiceHeaders.h TapeSensorService.h \
- ES_Configure_tape_sensor.h ../ECE118_library/include/AD.h \
+ ES_Configure.h ../ECE118_library/include/AD.h \
  ../ECE118_library/include/IO_Ports.h ReadSensorService.h \
  ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/ES_TattleTale.h \
@@ -22,7 +22,7 @@ build/default/production/_ext/627994287/ES_KeyboardInput.o: \
 
 ../ECE118_library/include/BOARD.h:
 
-ES_Configure_tape_sensor.h:
+ES_Configure.h:
 
 ../ECE118_library/include/ES_Framework.h:
 
@@ -50,7 +50,7 @@ ES_Configure_tape_sensor.h:
 
 TapeSensorService.h:
 
-ES_Configure_tape_sensor.h:
+ES_Configure.h:
 
 ../ECE118_library/include/AD.h:
 

@@ -42,7 +42,7 @@
 #include <BOARD.h>
 //#include <peripheral/timer.h>
 #include <sys/attribs.h>
-#include "ES_Configure_tape_sensor.h"
+#include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "ES_ServiceHeaders.h"
 #include "ES_Events.h"

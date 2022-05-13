@@ -1,7 +1,6 @@
 build/default/production/ReadSensorService.o: ReadSensorService.c \
  ../ECE118_library/include/BOARD.h ../ECE118_library/include/AD.h \
- ES_Configure_tape_sensor.h SensorEventChecker.h \
- ../ECE118_library/include/IO_Ports.h \
+ ES_Configure.h SensorEventChecker.h ../ECE118_library/include/IO_Ports.h \
  ../ECE118_library/include/ES_Framework.h \
  ../ECE118_library/include/ES_Events.h \
  ../ECE118_library/include/ES_Timers.h \
@@ -13,15 +12,17 @@ build/default/production/ReadSensorService.o: ReadSensorService.c \
  ../ECE118_library/include/ES_PostList.h \
  ../ECE118_library/include/ES_PriorTables.h \
  ../ECE118_library/include/ES_Queue.h \
- ../ECE118_library/include/ES_ServiceHeaders.h ES_Configure_tape_sensor.h \
- TapeSensorService.h ES_Configure_tape_sensor.h ReadSensorService.h \
- ../ECE118_library/include/ES_TattleTale.h ReadSensorService.h
+ ../ECE118_library/include/ES_ServiceHeaders.h ES_Configure.h \
+ TapeSensorService.h ES_Configure.h ReadSensorService.h \
+ ../ECE118_library/include/ES_TattleTale.h ReadSensorService.h \
+ ../ECE118_library/component\ libraries/pins.h \
+ ../ECE118_library/include/pwm.h
 
 ../ECE118_library/include/BOARD.h:
 
 ../ECE118_library/include/AD.h:
 
-ES_Configure_tape_sensor.h:
+ES_Configure.h:
 
 SensorEventChecker.h:
 
@@ -51,14 +52,18 @@ SensorEventChecker.h:
 
 ../ECE118_library/include/ES_ServiceHeaders.h:
 
-ES_Configure_tape_sensor.h:
+ES_Configure.h:
 
 TapeSensorService.h:
 
-ES_Configure_tape_sensor.h:
+ES_Configure.h:
 
 ReadSensorService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
 
 ReadSensorService.h:
+
+../ECE118_library/component\ libraries/pins.h:
+
+../ECE118_library/include/pwm.h:

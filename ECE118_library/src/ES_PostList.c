@@ -14,7 +14,7 @@
 *****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
 
-#include "ES_Configure_tape_sensor.h"
+#include "ES_Configure.h"
 #include "ES_General.h"
 #include "ES_PostList.h"
 #include "ES_ServiceHeaders.h"

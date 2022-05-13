@@ -11,7 +11,7 @@
  10/16/11 12:32 jec      started coding
 *****************************************************************************/
 
-#include "ES_Configure_tape_sensor.h"
+#include "ES_Configure.h"
 #include "ES_Events.h"
 #include "ES_General.h"
 #include "ES_CheckEvents.h"

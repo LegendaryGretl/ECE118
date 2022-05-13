@@ -8,22 +8,7 @@
 #include "AD.h"
 #include "pwm.h"
 #include "IO_Ports.h"
-
-// PRIVATE PIN DEFINES
-#define H_BRIDGE_EN_A PWM_PORTZ06
-#define H_BRIDGE_EN_B PWM_PORTY12
-
-#define H_BRIDGE_IN1 PORTZ03_LAT
-#define H_BRIDGE_IN1_TRIS PORTZ03_TRIS
-
-#define H_BRIDGE_IN2 PORTZ04_LAT
-#define H_BRIDGE_IN2_TRIS PORTZ04_TRIS
-
-#define H_BRIDGE_IN3 PORTZ05_LAT
-#define H_BRIDGE_IN3_TRIS PORTZ05_TRIS
-
-#define H_BRIDGE_IN4 PORTZ07_LAT
-#define H_BRIDGE_IN4_TRIS PORTZ07_TRIS
+#include "pins.h"
 
 /**
  * @Function Motors_Init(void)

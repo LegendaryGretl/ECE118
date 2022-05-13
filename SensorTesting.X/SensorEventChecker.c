@@ -28,6 +28,7 @@
 
 #include "ES_Configure.h"
 #include "SensorEventChecker.h"
+#include "MotorEncoderService.h"
 #include "ES_Events.h"
 #include "serial.h"
 #include "AD.h"
@@ -207,19 +208,25 @@ uint8_t CheckTapeSensors(void) {
  */
 uint8_t CheckLeftMotorEncoder(void) {
     static ES_EventTyp_t lastEvent = ES_ENCODER_PULSE_LOW;
-    ES_EventTyp_t curEvent;
+    ES_EventTyp_t curEvent = ES_ENCODER_PULSE_LOW;
     ES_Event thisEvent;
     uint8_t returnVal;
-    
+
+    if (LEFT_MOTOR_ENCODER) {
+        curEvent = ES_ENCODER_PULSE_DETECTED_LEFT;
+    }
+
     if (curEvent != lastEvent) { // check for change from last time
-        thisEvent.EventType = curEvent;
-        returnVal = TRUE;
         lastEvent = curEvent; // update history
+        if (curEvent == ES_ENCODER_PULSE_DETECTED_LEFT) {
+            thisEvent.EventType = curEvent;
+            returnVal = TRUE;
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
-        PostReadSensorService(thisEvent);
+            PostMotorEncoderService(thisEvent);
 #else
-        SaveEvent(thisEvent);
+            SaveEvent(thisEvent);
 #endif   
+        }
     }
     return (returnVal);
 }

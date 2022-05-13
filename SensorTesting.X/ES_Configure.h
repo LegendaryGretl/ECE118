@@ -49,16 +49,21 @@ typedef enum {
     /* User-defined events start here */
     BATTERY_CONNECTED,
     BATTERY_DISCONNECTED,
-    ES_TAPE_DETECTED,
+    ES_TAPE_DETECTED, // param shows pattern of tape sensor signals
     ES_NO_TAPE_DETECTED,
     ES_READ_TAPE_SENSOR,
     ES_BEACON_DETECTED,
     ES_NO_BEACON_DETECTED,
-    ES_TRACK_WIRE_DETECTED,
+    ES_TRACK_WIRE_DETECTED, // param shows which track wire is tripped
     ES_NO_TRACK_WIRE_DETECTED,
     ES_ENCODER_PULSE_DETECTED_RIGHT,
     ES_ENCODER_PULSE_DETECTED_LEFT,
     ES_ENCODER_PULSE_LOW,
+    ES_TURN_LEFT_MOTOR_N_DEGREES,
+    ES_TURN_LEFT_MOTOR_N_ROTATIONS,
+    ES_TURN_RIGHT_MOTOR_N_DEGREES,
+    ES_TURN_RIGHT_MOTOR_N_ROTATIONS,
+    ES_MOTOR_ROTATION_COMPLETE, // param: 0 = left, 1 = right
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -85,6 +90,11 @@ static const char *EventNames[] = {
     "ES_ENCODER_PULSE_DETECTED_RIGHT",
     "ES_ENCODER_PULSE_DETECTED_LEFT",
     "ES_ENCODER_PULSE_LOW",
+    "ES_TURN_LEFT_MOTOR_N_DEGREES",
+    "ES_TURN_LEFT_MOTOR_N_ROTATIONS",
+    "ES_TURN_RIGHT_MOTOR_N_DEGREES",
+    "ES_TURN_RIGHT_MOTOR_N_ROTATIONS",
+    "ES_MOTOR_ROTATION_COMPLETE",
     "NUMBEROFEVENTS",
 };
 
@@ -97,15 +107,15 @@ static const char *EventNames[] = {
 
 /****************************************************************************/
 // This is the list of event checking functions
-#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon
+#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckLeftMotorEncoder
 
 /****************************************************************************/
 // These are the definitions for the post functions to be executed when the
 // corresponding timer expires. All 16 must be defined. If you are not using
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
-#define TIMER0_RESP_FUNC PostTapeSensorService
-#define TIMER1_RESP_FUNC PostReadSensorService
+#define TIMER0_RESP_FUNC PostReadSensorService
+#define TIMER1_RESP_FUNC TIMER_UNUSED
 #define TIMER2_RESP_FUNC TIMER_UNUSED
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
@@ -128,8 +138,7 @@ static const char *EventNames[] = {
 // definitions for the response functions to make it easire to check that
 // the timer number matches where the timer event will be routed
 
-#define TAPE_SENSOR_TIMER 0  
-#define READ_SENSOR_TIMER 1  
+#define READ_SENSOR_TIMER 0  
 
 
 /****************************************************************************/
@@ -161,13 +170,13 @@ static const char *EventNames[] = {
 // These are the definitions for Service 1
 #if NUM_SERVICES > 1
 // the header file with the public fuction prototypes
-#define SERV_1_HEADER "TapeSensorService.h"
+#define SERV_1_HEADER "MotorEncoderService.h"
 // the name of the Init function
-#define SERV_1_INIT InitTapeSensorService
+#define SERV_1_INIT InitMotorEncoderService
 // the name of the run function
-#define SERV_1_RUN RunTapeSensorService
+#define SERV_1_RUN RunMotorEncoderService
 // How big should this services Queue be?
-#define SERV_1_QUEUE_SIZE 3
+#define SERV_1_QUEUE_SIZE 20
 #endif
 
 // These are the definitions for Service 2

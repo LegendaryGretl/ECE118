@@ -36,6 +36,14 @@
 #define H_BRIDGE_IN4_TRIS PORTZ07_TRIS
 
 
+// pins for motor encoder ******************************************************
+#define LEFT_MOTOR_ENCODER PORTZ09_BIT
+#define LEFT_MOTOR_ENCODER_TRIS PORTZ09_TRIS
+
+#define RIGHT_MOTOR_ENCODER PORTZ10_BIT
+#define RIGHT_MOTOR_ENCODER_TRIS PORTZ10_TRIS
+
+
 // track wire pins *************************************************************
 #define TRACK_WIRE_SENSOR_LEFT_TRIS PORTX12_TRIS
 #define TRACK_WIRE_SENSOR_LEFT PORTX12_BIT

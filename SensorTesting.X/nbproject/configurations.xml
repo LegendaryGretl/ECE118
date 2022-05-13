@@ -32,6 +32,7 @@
       <itemPath>../ECE118_library/component libraries/motors.h</itemPath>
       <itemPath>../ECE118_library/component libraries/pins.h</itemPath>
       <itemPath>ES_Configure.h</itemPath>
+      <itemPath>MotorEncoderService.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -63,6 +64,7 @@
       <itemPath>ES_Main_tape_sensor.c</itemPath>
       <itemPath>SensorEventChecker.c</itemPath>
       <itemPath>../ECE118_library/component libraries/motors.c</itemPath>
+      <itemPath>MotorEncoderService.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -721,6 +723,10 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
+      <item path="TapeSensorService.c" ex="true" overriding="false">
+      </item>
+      <item path="TapeSensorService.h" ex="true" overriding="false">
+      </item>
       <item path="TapeSensor_main.c" ex="true" overriding="false">
         <C32>
         </C32>

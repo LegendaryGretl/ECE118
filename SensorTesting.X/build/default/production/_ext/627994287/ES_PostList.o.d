@@ -4,10 +4,8 @@ build/default/production/_ext/627994287/ES_PostList.o: \
  ../ECE118_library/include/ES_PostList.h \
  ../ECE118_library/include/ES_Events.h \
  ../ECE118_library/include/ES_ServiceHeaders.h \
- ../ECE118_library/include/ES_KeyboardInput.h TapeSensorService.h \
- ES_Configure.h ../ECE118_library/include/BOARD.h \
- ../ECE118_library/include/AD.h ../ECE118_library/include/IO_Ports.h \
- ReadSensorService.h
+ ../ECE118_library/include/ES_KeyboardInput.h MotorEncoderService.h \
+ ES_Configure.h ../ECE118_library/include/ES_Events.h ReadSensorService.h
 
 ES_Configure.h:
 
@@ -21,14 +19,10 @@ ES_Configure.h:
 
 ../ECE118_library/include/ES_KeyboardInput.h:
 
-TapeSensorService.h:
+MotorEncoderService.h:
 
 ES_Configure.h:
 
-../ECE118_library/include/BOARD.h:
-
-../ECE118_library/include/AD.h:
-
-../ECE118_library/include/IO_Ports.h:
+../ECE118_library/include/ES_Events.h:
 
 ReadSensorService.h:

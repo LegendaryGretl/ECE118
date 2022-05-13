@@ -31,6 +31,10 @@ char Motors_Init(void) {
     H_BRIDGE_IN2_TRIS = 0;
     H_BRIDGE_IN3_TRIS = 0;
     H_BRIDGE_IN4_TRIS = 0;
+    
+    // set pins connected to encoder outputs to input mode
+    LEFT_MOTOR_ENCODER_TRIS = 1;
+    RIGHT_MOTOR_ENCODER_TRIS = 1;
 
     return SUCCESS;
 }

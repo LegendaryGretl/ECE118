@@ -21,19 +21,17 @@
 #include "BOARD.h"
 #include "AD.h"
 #include "ES_Configure.h"
-#include "SensorEventChecker.h"
 #include "ES_Framework.h"
-#include "ReadSensorService.h"
+#include "MotorEncoderService.h"
 #include <stdio.h>
 #include "pins.h"
-#include "motors.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define DELAY_BETWEEN_READINGS 100
+#define TICKS_PER_ROTATION 408
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -63,7 +61,7 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitReadSensorService(uint8_t Priority) {
+uint8_t InitMotorEncoderService(uint8_t Priority) {
     ES_Event ThisEvent;
 
     MyPriority = Priority;
@@ -71,13 +69,6 @@ uint8_t InitReadSensorService(uint8_t Priority) {
     // in here you write your initialization code
     // this includes all hardware and software initialization
     // that needs to occur.
-    ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
-
-    // set up sensor reading pins to be inputs
-    TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
-    TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
-    BEACON_DETECTOR_TRIS = 1;
-    ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
 
     // post the initial transition event
     ThisEvent.EventType = ES_INIT;
@@ -97,7 +88,7 @@ uint8_t InitReadSensorService(uint8_t Priority) {
  *        be posted to. Remember to rename to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t PostReadSensorService(ES_Event ThisEvent) {
+uint8_t PostMotorEncoderService(ES_Event ThisEvent) {
     return ES_PostToService(MyPriority, ThisEvent);
 }
 
@@ -110,112 +101,73 @@ uint8_t PostReadSensorService(ES_Event ThisEvent) {
  * @note Remember to rename to something appropriate.
  *       Returns ES_NO_EVENT if the event have been "consumed." 
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-ES_Event RunReadSensorService(ES_Event ThisEvent) {
+ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
     ES_Event ReturnEvent;
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
     /********************************************
      in here you write your service code
      *******************************************/
-    static ES_EventTyp_t lastEvent = ES_NO_EVENT;
+    ES_EventTyp_t curEvent;
+    static int left_motor_ticks = -1;
+    static int right_motor_ticks = -1;
 
     switch (ThisEvent.EventType) {
         case ES_INIT:
             // No hardware initialization or single time setups, those
             // go in the init function above.
             //
+            left_motor_ticks = -1;
+            right_motor_ticks = -1;
             // This section is used to reset service for some reason
-            lastEvent = ES_NO_EVENT;
             break;
 
-        case ES_TIMERACTIVE:
-        case ES_TIMERSTOPPED:
+        case ES_TURN_LEFT_MOTOR_N_DEGREES:
+            left_motor_ticks = (TICKS_PER_ROTATION * (int) ThisEvent.EventParam) / 360;
             break;
 
-            //        case ES_TIMEOUT:
-            //            if (ThisEvent.EventParam == READ_SENSOR_TIMER) {
-            //                // time to take a new reading!
-            //                ReturnEvent.EventType = ES_READ_TAPE_SENSOR;
-            //                ReturnEvent.EventParam = 1;
-            //                PostTapeSensorService(ReturnEvent);
-            //            } else {
-            //                break;
-            //            }
-            //            break;
-
-        case ES_TIMEOUT:
-            if (ThisEvent.EventParam != READ_SENSOR_TIMER) {
-                break;
-            }
-
-            SetLeftMotorSpeed(50);
-            ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
-            ReturnEvent.EventParam = 10;
-            PostMotorEncoderService(ReturnEvent);
+        case ES_TURN_LEFT_MOTOR_N_ROTATIONS:
+            left_motor_ticks = TICKS_PER_ROTATION * (int) ThisEvent.EventParam;
             break;
 
-        case ES_MOTOR_ROTATION_COMPLETE:
-            if (ThisEvent.EventParam == 0) {
-                SetLeftMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
-            } else {
-                SetRightMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
-            }
+        case ES_TURN_RIGHT_MOTOR_N_DEGREES:
+            right_motor_ticks = (TICKS_PER_ROTATION * (int) ThisEvent.EventParam) / 360;
             break;
 
-        case ES_TAPE_DETECTED:
-            printf("\r\nTape detected: %x", ThisEvent.EventParam);
-            //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
-            break;
-
-        case ES_NO_TAPE_DETECTED:
-            printf("\r\nNo tape detected: %x", ThisEvent.EventParam);
-            //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
-            break;
-
-        case ES_NO_BEACON_DETECTED:
-            printf("\r\nNo beacon detected");
-            break;
-
-        case ES_BEACON_DETECTED:
-            printf("\r\nBeacon detected");
-            break;
-
-        case ES_NO_TRACK_WIRE_DETECTED:
-            printf("\r\nNo track wire detected");
-            break;
-
-        case ES_TRACK_WIRE_DETECTED:
-            printf("\r\nTrack wire detected: %x", ThisEvent.EventParam);
+        case ES_TURN_RIGHT_MOTOR_N_ROTATIONS:
+            right_motor_ticks = TICKS_PER_ROTATION * (int) ThisEvent.EventParam;
             break;
 
         case ES_ENCODER_PULSE_DETECTED_LEFT:
-            printf("\r\nPulse detected");
+            left_motor_ticks--;
+            if (left_motor_ticks == 0) {
+                curEvent = ES_MOTOR_ROTATION_COMPLETE;
+                left_motor_ticks = -1;
+                ReturnEvent.EventType = curEvent;
+                ReturnEvent.EventParam = 0;
+#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
+                PostReadSensorService(ReturnEvent);
+#else
+                PostMotorEncoderService(ReturnEvent);
+#endif   
+            }
             break;
 
-        default:
-            //            if (ThisEvent.EventType == ES_TAPE_DETECTED) {
-            //                printf("\r\nTape detected: %d", ThisEvent.EventParam);
-            //            } else if (ThisEvent.EventType == ES_NO_TAPE_DETECTED) {
-            //                printf("\r\nNo tape detected: %d", ThisEvent.EventParam);
-            //            } else {
-            //                printf("\r\nsome other event occurred");
-            //            }
-            //            // some sensor returned a result
-            //            if (ThisEvent.EventType != lastEvent) { // check for change from last time
-            //
-            //                ReturnEvent.EventType = ThisEvent.EventType;
-            //                ReturnEvent.EventParam = ThisEvent.EventParam;
-            //                lastEvent = ThisEvent.EventType; // update history
-            //#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
-            //                //PostGenericService(ReturnEvent);
-            //#else
-            //                PostReadSensorService(ReturnEvent);
-            //#endif   
-            //            }
-            //ES_Timer_InitTimer(READ_SENSOR_TIMER, 100);
+        case ES_ENCODER_PULSE_DETECTED_RIGHT:
+            right_motor_ticks--;
+            if (right_motor_ticks == 0) {
+                curEvent = ES_MOTOR_ROTATION_COMPLETE;
+                right_motor_ticks = -1;
+                ReturnEvent.EventType = curEvent;
+                ReturnEvent.EventParam = 1;
+#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
+                PostReadSensorService(ReturnEvent);
+#else
+                PostMotorEncoderService(ReturnEvent);
+#endif   
+            }
             break;
+
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
         default:
             printf("\r\nEvent: %s\tParam: 0x%X",

@@ -1,4 +1,4 @@
-build/default/production/TapeSensorService.o: TapeSensorService.c \
+build/default/production/MotorEncoderService.o: MotorEncoderService.c \
  ../ECE118_library/include/BOARD.h ../ECE118_library/include/AD.h \
  ES_Configure.h ../ECE118_library/include/ES_Framework.h \
  ../ECE118_library/include/ES_Events.h \
@@ -12,9 +12,11 @@ build/default/production/TapeSensorService.o: TapeSensorService.c \
  ../ECE118_library/include/ES_PriorTables.h \
  ../ECE118_library/include/ES_Queue.h \
  ../ECE118_library/include/ES_ServiceHeaders.h ES_Configure.h \
- TapeSensorService.h ES_Configure.h ../ECE118_library/include/IO_Ports.h \
- ReadSensorService.h ../ECE118_library/include/ES_TattleTale.h \
- TapeSensorService.h SensorEventChecker.h
+ MotorEncoderService.h ES_Configure.h \
+ ../ECE118_library/include/ES_Events.h ReadSensorService.h \
+ ../ECE118_library/include/ES_TattleTale.h MotorEncoderService.h \
+ ../ECE118_library/component\ libraries/pins.h \
+ ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/pwm.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -48,16 +50,20 @@ ES_Configure.h:
 
 ES_Configure.h:
 
-TapeSensorService.h:
+MotorEncoderService.h:
 
 ES_Configure.h:
 
-../ECE118_library/include/IO_Ports.h:
+../ECE118_library/include/ES_Events.h:
 
 ReadSensorService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
 
-TapeSensorService.h:
+MotorEncoderService.h:
 
-SensorEventChecker.h:
+../ECE118_library/component\ libraries/pins.h:
+
+../ECE118_library/include/IO_Ports.h:
+
+../ECE118_library/include/pwm.h:

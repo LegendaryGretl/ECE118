@@ -9,6 +9,7 @@
 #include "IO_Ports.h"
 #include <stdio.h>
 #include "pins.h"
+#include "motors.h"
 
 void main(void)
 {
@@ -20,11 +21,16 @@ void main(void)
     printf("using the 2nd Generation Events & Services Framework\r\n");
 
     // Your hardware initialization function calls go here
-    BOARD_Init();
     AD_Init();
+    PWM_Init();
+    Motors_Init();
+    
+    // init input pins
     TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
     TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
     BEACON_DETECTOR_TRIS = 1;
+    
+    SetLeftMotorSpeed(0                                                                                                                                 );
 
     // now initialize the Events and Services Framework and start it running
     ErrorType = ES_Initialize();

@@ -149,7 +149,11 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             }
 
             SetLeftMotorSpeed(50);
+            SetRightMotorSpeed(50);
             ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+            ReturnEvent.EventParam = 10;
+            PostMotorEncoderService(ReturnEvent);
+            ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
             ReturnEvent.EventParam = 10;
             PostMotorEncoderService(ReturnEvent);
             break;

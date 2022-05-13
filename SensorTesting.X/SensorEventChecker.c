@@ -200,7 +200,7 @@ uint8_t CheckTapeSensors(void) {
 }
 
 /**
- * @Function CheckMotorEncoder(void)
+ * @Function CheckLeftMotorEncoder(void)
  * @param none
  * @return TRUE or FALSE
  * @brief This function sends an event when it picks up a pulse from the motor's rotary encoder
@@ -219,6 +219,39 @@ uint8_t CheckLeftMotorEncoder(void) {
     if (curEvent != lastEvent) { // check for change from last time
         lastEvent = curEvent; // update history
         if (curEvent == ES_ENCODER_PULSE_DETECTED_LEFT) {
+            thisEvent.EventType = curEvent;
+            returnVal = TRUE;
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+            PostMotorEncoderService(thisEvent);
+#else
+            SaveEvent(thisEvent);
+#endif   
+        }
+    }
+    return (returnVal);
+}
+
+
+/**
+ * @Function CheckRightMotorEncoder(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function sends an event when it picks up a pulse from the motor's rotary encoder
+ * @note the param for this function is always 0
+ */
+uint8_t CheckRightMotorEncoder(void) {
+    static ES_EventTyp_t lastEvent = ES_ENCODER_PULSE_LOW;
+    ES_EventTyp_t curEvent = ES_ENCODER_PULSE_LOW;
+    ES_Event thisEvent;
+    uint8_t returnVal;
+
+    if (RIGHT_MOTOR_ENCODER) {
+        curEvent = ES_ENCODER_PULSE_DETECTED_RIGHT;
+    }
+
+    if (curEvent != lastEvent) { // check for change from last time
+        lastEvent = curEvent; // update history
+        if (curEvent == ES_ENCODER_PULSE_DETECTED_RIGHT) {
             thisEvent.EventType = curEvent;
             returnVal = TRUE;
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness

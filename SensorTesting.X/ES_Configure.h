@@ -56,9 +56,7 @@ typedef enum {
     ES_NO_BEACON_DETECTED,
     ES_TRACK_WIRE_DETECTED, // param shows which track wire is tripped
     ES_NO_TRACK_WIRE_DETECTED,
-    ES_ENCODER_PULSE_DETECTED_RIGHT,
-    ES_ENCODER_PULSE_DETECTED_LEFT,
-            ES_ENCODER_PULSE_DETECTED,
+    ES_ENCODER_PULSE_DETECTED, // param: 0b10 = left, 0b01 = right
     ES_ENCODER_PULSE_LOW,
     ES_TURN_LEFT_MOTOR_N_DEGREES,
     ES_TURN_LEFT_MOTOR_N_ROTATIONS,
@@ -88,8 +86,7 @@ static const char *EventNames[] = {
     "ES_NO_BEACON_DETECTED",
     "ES_TRACK_WIRE_DETECTED",
     "ES_NO_TRACK_WIRE_DETECTED",
-    "ES_ENCODER_PULSE_DETECTED_RIGHT",
-    "ES_ENCODER_PULSE_DETECTED_LEFT",
+    "ES_ENCODER_PULSE_DETECTED",
     "ES_ENCODER_PULSE_LOW",
     "ES_TURN_LEFT_MOTOR_N_DEGREES",
     "ES_TURN_LEFT_MOTOR_N_ROTATIONS",
@@ -104,7 +101,7 @@ static const char *EventNames[] = {
 
 /****************************************************************************/
 // This are the name of the Event checking function header file.
-#define EVENT_CHECK_HEADER "BeaconTrackWireEventChecker.h"
+#define EVENT_CHECK_HEADER "SensorEventChecker.h"
 
 /****************************************************************************/
 // This is the list of event checking functions

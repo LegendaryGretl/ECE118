@@ -35,6 +35,9 @@
 #define BATTERY_DISCONNECT_THRESHOLD 175
 #define DELAY_BETWEEN_READINGS 100
 
+#define BOTTOM_TAPE_SENSORS_MASK 0b00011111
+#define SIDE_TAPE_SENSORS_MASK 0b11100000
+
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
  ******************************************************************************/
@@ -136,7 +139,6 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             if (ThisEvent.EventParam != READ_SENSOR_TIMER) {
                 break;
             }
-
             SetLeftMotorSpeed(50);
             SetRightMotorSpeed(50);
             ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
@@ -182,10 +184,6 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
 
         case ES_TRACK_WIRE_DETECTED:
             printf("\r\nTrack wire detected: %x", ThisEvent.EventParam);
-            break;
-
-        case ES_ENCODER_PULSE_DETECTED_LEFT:
-            printf("\r\nPulse detected");
             break;
 
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      

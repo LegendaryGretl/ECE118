@@ -75,25 +75,14 @@ uint8_t CheckBeacon(void);
 uint8_t CheckTapeSensors(void);
 
 /**
- * @Function CheckLeftMotorEncoder(void)
+ * @Function CheckMotorEncoder(void)
  * @param none
  * @return TRUE or FALSE
  * @brief This function sends an event when it picks up a pulse from the motor's rotary encoder
- * @note the param for this function is always 0
+ * @note the param for this function has 0b10 for left and 0b01 for right
  */
-uint8_t CheckLeftMotorEncoder(void);
-
-/**
- * @Function CheckRightMotorEncoder(void)
- * @param none
- * @return TRUE or FALSE
- * @brief This function sends an event when it picks up a pulse from the motor's rotary encoder
- * @note the param for this function is always 0
- */
-uint8_t CheckRightMotorEncoder(void);
-
 uint8_t CheckMotorEncoder(void);
 
 
-#endif	/* TEMPLATEEVENTCHECKER_H */
+#endif	/* SENSOREVENTCHECKER_H */
 

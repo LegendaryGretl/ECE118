@@ -78,8 +78,7 @@ static ES_Event storedEvent;
  * along with the side that the track wire was detected on
  * @note 00 = no detection, 01 = left only, 10 = right only, 11 = both sides
  */
-uint8_t CheckTrackWire(void)
-{
+uint8_t CheckTrackWire(void) {
     static ES_EventTyp_t lastEvent = ES_NO_TRACK_WIRE_DETECTED;
     static uint8_t lastParam = 0;
     ES_EventTyp_t curEvent = ES_NO_TRACK_WIRE_DETECTED;
@@ -123,8 +122,7 @@ uint8_t CheckTrackWire(void)
  * @brief This function indicates whether or not the beacon has been detected
  * @note the param for this function is always 0
  */
-uint8_t CheckBeacon(void)
-{
+uint8_t CheckBeacon(void) {
     static ES_EventTyp_t lastEvent = ES_NO_BEACON_DETECTED;
     ES_EventTyp_t curEvent;
     ES_Event thisEvent;
@@ -160,8 +158,7 @@ uint8_t CheckBeacon(void)
  * @brief This function indicates whether or not there's been a change in the tape detected
  * @note the param for this function indicates the state of all tape sensors
  */
-uint8_t CheckTapeSensors(void)
-{
+uint8_t CheckTapeSensors(void) {
     static ES_EventTyp_t lastEvent = ES_NO_TAPE_DETECTED;
     static uint16_t lastParam = 0x00;
     ES_EventTyp_t curEvent = ES_NO_TAPE_DETECTED;
@@ -171,7 +168,11 @@ uint8_t CheckTapeSensors(void)
     uint16_t marker;
     uint8_t returnVal = FALSE;
 
+    int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_1, TAPE_SENSOR_2,
+        TAPE_SENSOR_3, TAPE_SENSOR_4, TAPE_SENSOR_5, TAPE_SENSOR_6, TAPE_SENSOR_7,
+        TAPE_SENSOR_8};
     marker = 0b01;
+
     // read each tape sensor, indicate if they have been tripped or not
     for (i = 0; i < NUMBER_OF_TAPE_SENSORS; i++) {
         if (tape_sensors[i]) {
@@ -181,7 +182,7 @@ uint8_t CheckTapeSensors(void)
         marker <<= 1;
     }
 
-    if (curEvent != lastEvent) { // check for change from last time
+    if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = curParam;
         returnVal = TRUE;
@@ -194,6 +195,18 @@ uint8_t CheckTapeSensors(void)
 #endif   
     }
     return (returnVal);
+}
+
+/**
+ * @Function CheckMotorEncoder(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function sends an event when it picks up a pulse from the motor's rotary encoder
+ * @note the param for this function is always 0
+ */
+uint8_t CheckMotorEncoder(void) {
+    static ES_EventTyp_t lastEvent = ES_ENCODER_PULSE_LOW;
+    
 }
 
 /* 
@@ -223,8 +236,7 @@ static uint8_t(*EventList[])(void) = {EVENT_CHECK_LIST};
 
 void PrintEvent(void);
 
-void main(void)
-{
+void main(void) {
     BOARD_Init();
     /* user initialization code goes here */
 
@@ -246,8 +258,7 @@ void main(void)
     }
 }
 
-void PrintEvent(void)
-{
+void PrintEvent(void) {
     printf("\r\nFunc: %s\tEvent: %s\tParam: 0x%X", eventName,
             EventNames[storedEvent.EventType], storedEvent.EventParam);
 }

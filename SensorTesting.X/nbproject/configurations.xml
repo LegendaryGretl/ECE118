@@ -30,6 +30,7 @@
       <itemPath>ES_Configure_tape_sensor.h</itemPath>
       <itemPath>ReadSensorService.h</itemPath>
       <itemPath>SensorEventChecker.h</itemPath>
+      <itemPath>../ECE118_library/component libraries/motors.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -60,6 +61,7 @@
       <itemPath>ReadSensorService.c</itemPath>
       <itemPath>ES_Main_tape_sensor.c</itemPath>
       <itemPath>SensorEventChecker.c</itemPath>
+      <itemPath>../ECE118_library/component libraries/motors.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

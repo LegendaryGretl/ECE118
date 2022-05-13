@@ -1,6 +1,6 @@
 build/default/production/ReadSensorService.o: ReadSensorService.c \
  ../ECE118_library/include/BOARD.h ../ECE118_library/include/AD.h \
- ES_Configure_tape_sensor.h BeaconTrackWireEventChecker.h \
+ ES_Configure_tape_sensor.h SensorEventChecker.h \
  ../ECE118_library/include/IO_Ports.h \
  ../ECE118_library/include/ES_Framework.h \
  ../ECE118_library/include/ES_Events.h \
@@ -23,7 +23,7 @@ build/default/production/ReadSensorService.o: ReadSensorService.c \
 
 ES_Configure_tape_sensor.h:
 
-BeaconTrackWireEventChecker.h:
+SensorEventChecker.h:
 
 ../ECE118_library/include/IO_Ports.h:
 

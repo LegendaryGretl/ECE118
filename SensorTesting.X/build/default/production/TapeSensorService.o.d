@@ -14,7 +14,8 @@ build/default/production/TapeSensorService.o: TapeSensorService.c \
  ../ECE118_library/include/ES_ServiceHeaders.h ES_Configure_tape_sensor.h \
  TapeSensorService.h ES_Configure_tape_sensor.h \
  ../ECE118_library/include/IO_Ports.h ReadSensorService.h \
- ../ECE118_library/include/ES_TattleTale.h TapeSensorService.h
+ ../ECE118_library/include/ES_TattleTale.h TapeSensorService.h \
+ SensorEventChecker.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -59,3 +60,5 @@ ReadSensorService.h:
 ../ECE118_library/include/ES_TattleTale.h:
 
 TapeSensorService.h:
+
+SensorEventChecker.h:

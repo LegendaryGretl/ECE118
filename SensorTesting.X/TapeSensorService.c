@@ -27,6 +27,7 @@
 #include "BOARD.h"
 #include "AD.h"
 #include "IO_Ports.h"
+#include "SensorEventChecker.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -52,8 +53,6 @@
 
 static uint8_t MyPriority;
 
-int tape_sensors[] = {TAPE_SENSOR_1, TAPE_SENSOR_2, TAPE_SENSOR_3, TAPE_SENSOR_4, TAPE_SENSOR_5
-    TAPE_SENSOR_6, TAPE_SENSOR_7, TAPE_SENSOR_8};
 /*******************************************************************************
  * PUBLIC FUNCTIONS                                                            *
  ******************************************************************************/
@@ -68,8 +67,7 @@ int tape_sensors[] = {TAPE_SENSOR_1, TAPE_SENSOR_2, TAPE_SENSOR_3, TAPE_SENSOR_4
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitTapeSensorService(uint8_t Priority)
-{
+uint8_t InitTapeSensorService(uint8_t Priority) {
     ES_Event ThisEvent;
 
     MyPriority = Priority;
@@ -110,8 +108,7 @@ uint8_t InitTapeSensorService(uint8_t Priority)
  *        be posted to. Remember to rename to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t PostTapeSensorService(ES_Event ThisEvent)
-{
+uint8_t PostTapeSensorService(ES_Event ThisEvent) {
     return ES_PostToService(MyPriority, ThisEvent);
 }
 
@@ -124,8 +121,7 @@ uint8_t PostTapeSensorService(ES_Event ThisEvent)
  * @note Remember to rename to something appropriate.
  *       Returns ES_NO_EVENT if the event have been "consumed." 
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-ES_Event RunTapeSensorService(ES_Event ThisEvent)
-{
+ES_Event RunTapeSensorService(ES_Event ThisEvent) {
     ES_Event ReturnEvent;
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
@@ -141,64 +137,67 @@ ES_Event RunTapeSensorService(ES_Event ThisEvent)
     uint16_t marker;
 
     switch (ThisEvent.EventType) {
-    case ES_INIT:
-        // No hardware initialization or single time setups, those
-        // go in the init function above.
-        //
-        // This section is used to reset service for some reason
-        TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor
-        break;
-
-    case ES_TIMERACTIVE:
-    case ES_TIMERSTOPPED:
-        break;
-
-    case ES_READ_TAPE_SENSOR:
-        // some function elsewhere wants to read from the tape sensor
-        // when more tape sensors are added, the argument of this event will 
-        // set the tape sensor(s) that will be read
-        TAPE_SENSOR_ENABLE_PIN1_LAT = 1; // turn on the tape sensor
-        ES_Timer_InitTimer(TAPE_SENSOR_TIMER, 2);
-        break;
-
-    case ES_TIMEOUT:
-        if (ThisEvent.EventParam != TAPE_SENSOR_TIMER) {
+        case ES_INIT:
+            // No hardware initialization or single time setups, those
+            // go in the init function above.
+            //
+            // This section is used to reset service for some reason
+            TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor
             break;
-        }
-        //            // ADC signal has stabilized and is ready to be read from 
-        //            light_level = AD_ReadADPin(TAPE_SENSOR_INPUT_PIN1);
-        //            if (light_level > HYSTERESIS_UPPER_THRESHOLD) { // tape detected
-        //                curEvent = ES_TAPE_DETECTED;
-        //            } else if (light_level < HYSTERESIS_LOWER_THRESHOLD) {
-        //                curEvent = ES_NO_TAPE_DETECTED;
-        //            } else {
-        //                curEvent = lastEvent;
-        //            }
-        TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor   
-        marker = 0b01;
-        // read each tape sensor, indicate if they have been tripped or not
-        for (i = 0; i < NUMBER_OF_TAPE_SENSORS; i++) {
-            if (tape_sensors[i]) {
-                curEvent = ES_TAPE_DETECTED;
-                curParam |= marker;
+
+        case ES_TIMERACTIVE:
+        case ES_TIMERSTOPPED:
+            break;
+
+        case ES_READ_TAPE_SENSOR:
+            // some function elsewhere wants to read from the tape sensor
+            // when more tape sensors are added, the argument of this event will 
+            // set the tape sensor(s) that will be read
+            TAPE_SENSOR_ENABLE_PIN1_LAT = 1; // turn on the tape sensor
+            ES_Timer_InitTimer(TAPE_SENSOR_TIMER, 2);
+            break;
+
+        case ES_TIMEOUT:
+            if (ThisEvent.EventParam != TAPE_SENSOR_TIMER) {
+                break;
             }
-            marker <<=1;
-        }
-        ReturnEvent.EventType = curEvent;
-        ReturnEvent.EventParam = curParam;
-        lastEvent = curEvent; // update history
-        lastParam = curParam;
+            //            // ADC signal has stabilized and is ready to be read from 
+            //            light_level = AD_ReadADPin(TAPE_SENSOR_INPUT_PIN1);
+            //            if (light_level > HYSTERESIS_UPPER_THRESHOLD) { // tape detected
+            //                curEvent = ES_TAPE_DETECTED;
+            //            } else if (light_level < HYSTERESIS_LOWER_THRESHOLD) {
+            //                curEvent = ES_NO_TAPE_DETECTED;
+            //            } else {
+            //                curEvent = lastEvent;
+            //            }
+            TAPE_SENSOR_ENABLE_PIN1_LAT = 0; // turn off the tape sensor   
+            marker = 0b01;
+            int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_1, TAPE_SENSOR_2, 
+                TAPE_SENSOR_3, TAPE_SENSOR_4, TAPE_SENSOR_5, TAPE_SENSOR_6, 
+                TAPE_SENSOR_7, TAPE_SENSOR_8};
+            // read each tape sensor, indicate if they have been tripped or not
+            for (i = 0; i < NUMBER_OF_TAPE_SENSORS; i++) {
+                if (tape_sensors[i]) {
+                    curEvent = ES_TAPE_DETECTED;
+                    curParam |= marker;
+                }
+                marker <<= 1;
+            }
+            ReturnEvent.EventType = curEvent;
+            ReturnEvent.EventParam = curParam;
+            lastEvent = curEvent; // update history
+            lastParam = curParam;
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
-        PostReadSensorService(ReturnEvent);
+            PostReadSensorService(ReturnEvent);
 #else
-        PostTapeSensorService(ReturnEvent);
+            PostTapeSensorService(ReturnEvent);
 #endif               
-        break;
+            break;
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
-    default:
-        printf("\r\nEvent: %s\tParam: 0x%X",
-                EventNames[ThisEvent.EventType], ThisEvent.EventParam);
-        break;
+        default:
+            printf("\r\nEvent: %s\tParam: 0x%X",
+                    EventNames[ThisEvent.EventType], ThisEvent.EventParam);
+            break;
 #endif
     }
 

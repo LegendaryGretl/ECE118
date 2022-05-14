@@ -84,6 +84,16 @@ uint8_t CheckTapeSensors(void);
 uint8_t CheckMotorEncoder(void);
 
 /**
+ * @Function CheckBumpers(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function sends an event when a bumper is hit or released
+ * @note the param for this function is the pattern of currently pressed bumpers
+ * the pattern goes clockwise from the fore side left bumper
+ */
+uint8_t CheckBumpers(void);
+
+/**
  * @Function CheckPingSensor(void)
  * @param none
  * @return TRUE or FALSE

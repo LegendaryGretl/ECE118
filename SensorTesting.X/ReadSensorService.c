@@ -78,8 +78,8 @@ uint8_t InitReadSensorService(uint8_t Priority) {
     ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
 
     // set up sensor reading pins to be inputs
-    TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
-    TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
+    AD_AddPins(TRACK_WIRE_SENSOR_LEFT);
+    AD_AddPins(TRACK_WIRE_SENSOR_RIGHT);
     BEACON_DETECTOR_TRIS = 1;
     ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
 
@@ -164,14 +164,14 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
         case ES_TAPE_DETECTED:
             //LED_SetBank(LED_BANK3, ThisEvent.EventParam & 0b111);
             //printf("\r\nTape detected: %x", ThisEvent.EventParam);
-            printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
+            //printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
             //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 
         case ES_NO_TAPE_DETECTED:
             //LED_SetBank(LED_BANK3, ThisEvent.EventParam & 0b111);
             //printf("\r\nNo tape detected: %x", ThisEvent.EventParam);
-            printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
+            //printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
             //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 
@@ -184,11 +184,19 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             break;
 
         case ES_NO_TRACK_WIRE_DETECTED:
-            printf("\r\nNo track wire detected");
+            printf("\r\nNo track wire detected: %x", ThisEvent.EventParam);
             break;
 
         case ES_TRACK_WIRE_DETECTED:
             printf("\r\nTrack wire detected: %x", ThisEvent.EventParam);
+            break;
+            
+        case ES_BUMPER_HIT:
+            printf("\r\nBumper hit: %x", ThisEvent.EventParam);
+            break;
+            
+        case ES_BUMPER_RELEASED:
+            printf("\r\nBumper released: %x", ThisEvent.EventParam);
             break;
 
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      

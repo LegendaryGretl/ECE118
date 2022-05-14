@@ -52,17 +52,19 @@ typedef enum {
     ES_TAPE_DETECTED, // param shows pattern of tape sensor signals
     ES_NO_TAPE_DETECTED,
     ES_READ_TAPE_SENSOR,
-    ES_BEACON_DETECTED,
+    ES_BEACON_DETECTED, // param is always 0
     ES_NO_BEACON_DETECTED,
     ES_TRACK_WIRE_DETECTED, // param shows which track wire is tripped
     ES_NO_TRACK_WIRE_DETECTED,
     ES_ENCODER_PULSE_DETECTED, // param: 0b10 = left, 0b01 = right
     ES_ENCODER_PULSE_LOW,
-    ES_TURN_LEFT_MOTOR_N_DEGREES,
-    ES_TURN_LEFT_MOTOR_N_ROTATIONS,
+    ES_TURN_LEFT_MOTOR_N_DEGREES, // param: number of degrees to rotate
+    ES_TURN_LEFT_MOTOR_N_ROTATIONS, // param: number of rotations to complete
     ES_TURN_RIGHT_MOTOR_N_DEGREES,
     ES_TURN_RIGHT_MOTOR_N_ROTATIONS,
     ES_MOTOR_ROTATION_COMPLETE, // param: 0b10 = left, 0b01 = right
+    ES_BUMPER_HIT, // param shows pattern of bumpers currently pressed
+    ES_BUMPER_RELEASED, 
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -93,6 +95,8 @@ static const char *EventNames[] = {
     "ES_TURN_RIGHT_MOTOR_N_DEGREES",
     "ES_TURN_RIGHT_MOTOR_N_ROTATIONS",
     "ES_MOTOR_ROTATION_COMPLETE",
+    "ES_BUMPER_HIT", 
+    "ES_BUMPER_RELEASED", 
     "NUMBEROFEVENTS",
 };
 

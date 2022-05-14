@@ -26,8 +26,8 @@ void main(void) {
     Motors_Init();
 
     // init input pins
-    TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
-    TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
+//    TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
+//    TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
     BEACON_DETECTOR_TRIS = 1;
 
     SetLeftMotorSpeed(0);

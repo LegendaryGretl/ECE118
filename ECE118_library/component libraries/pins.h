@@ -45,11 +45,11 @@
 
 
 // track wire pins *************************************************************
-#define TRACK_WIRE_SENSOR_LEFT_TRIS PORTX12_TRIS
-#define TRACK_WIRE_SENSOR_LEFT PORTX12_BIT
+//#define TRACK_WIRE_SENSOR_LEFT_TRIS PORTX12_TRIS
+#define TRACK_WIRE_SENSOR_LEFT AD_PORTV3
 
-#define TRACK_WIRE_SENSOR_RIGHT_TRIS PORTX10_TRIS
-#define TRACK_WIRE_SENSOR_RIGHT PORTX10_BIT
+//#define TRACK_WIRE_SENSOR_RIGHT_TRIS PORTX10_TRIS
+#define TRACK_WIRE_SENSOR_RIGHT AD_PORTV4
 
 
 // beacon detector pins ********************************************************
@@ -110,6 +110,7 @@
 #define BUMPER_ASR PORTZ08_BIT
 #define BUMPER_ASR_TRIS PORTZ08_TRIS
 
+#define NUMBER_OF_BUMPERS 8
 
 // bumper pins *****************************************************************
 #define PING_SENSOR_ENABLE 

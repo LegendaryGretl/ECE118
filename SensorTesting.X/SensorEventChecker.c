@@ -40,6 +40,9 @@
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
 #define BATTERY_DISCONNECT_THRESHOLD 175
+#define BEACON_DETECTED_LOGIC_LEVEL 0
+#define TRACK_WIRE_DETECTED_LOGIC_HIGH 2000 // units: mV
+#define TRACK_WIRE_DETECTED_LOGIC_LOW 1300 
 
 /*******************************************************************************
  * EVENTCHECKER_TEST SPECIFIC CODE                                                             *
@@ -93,14 +96,17 @@ uint8_t CheckTrackWire(void) {
     // the returned event will indicate whether or not the track wire has been
     // detected, with the parameter indicating which side the track wire was 
     // detected on
-    if (TRACK_WIRE_SENSOR_LEFT) {
+    int left_voltage_level = (3300 * AD_ReadADPin(TRACK_WIRE_SENSOR_LEFT)) / 1023;
+    int right_voltage_level = (3300 * AD_ReadADPin(TRACK_WIRE_SENSOR_RIGHT)) / 1023;
+    if (left_voltage_level < TRACK_WIRE_DETECTED_LOGIC_HIGH) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b10;
     }
-    if (TRACK_WIRE_SENSOR_RIGHT) {
+    
+    if (right_voltage_level < TRACK_WIRE_DETECTED_LOGIC_HIGH) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b01;
-    }
+    } 
 
     if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
         thisEvent.EventType = curEvent;
@@ -131,7 +137,7 @@ uint8_t CheckBeacon(void) {
     uint8_t returnVal = FALSE;
 
     // returned event will indicate if beacon is detected or not
-    if (BEACON_DETECTOR) {
+    if (BEACON_DETECTOR == BEACON_DETECTED_LOGIC_LEVEL) {
         curEvent = ES_BEACON_DETECTED;
     }
 
@@ -227,9 +233,66 @@ uint8_t CheckMotorEncoder(void) {
         SaveEvent(thisEvent);
 #endif  
     }
-    
+
     lastParam = curParam;
     return (returnVal);
+}
+
+/**
+ * @Function CheckBumpers(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function sends an event when a bumper is hit or released
+ * @note the param for this function is the pattern of currently pressed bumpers
+ * the pattern goes clockwise from the fore side left bumper
+ */
+uint8_t CheckBumpers(void) {
+    static ES_EventTyp_t lastEvent = ES_BUMPER_RELEASED;
+    static uint16_t lastParam = 0x00;
+    ES_EventTyp_t curEvent = ES_BUMPER_RELEASED;
+    uint16_t curParam = 0;
+    ES_Event thisEvent;
+    int i;
+    uint16_t marker;
+    uint8_t returnVal = FALSE;
+
+    int bumpers[NUMBER_OF_BUMPERS] = {BUMPER_FSL, BUMPER_FFL, BUMPER_FFR,
+        BUMPER_FSR, BUMPER_ASR, BUMPER_AFR, BUMPER_AFL, BUMPER_ASL};
+    marker = 0b01;
+
+    // read each tape sensor, indicate if they have been tripped or not
+    for (i = 0; i < NUMBER_OF_BUMPERS; i++) {
+        if (bumpers[i]) {
+            curEvent = ES_BUMPER_HIT;
+            curParam |= marker;
+        }
+        marker <<= 1;
+    }
+
+    if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
+        thisEvent.EventType = curEvent;
+        thisEvent.EventParam = curParam;
+        returnVal = TRUE;
+        lastEvent = curEvent; // update history
+        lastParam = curParam;
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+        PostReadSensorService(thisEvent);
+#else
+        SaveEvent(thisEvent);
+#endif   
+    }
+    return (returnVal);
+}
+
+/**
+ * @Function CheckPingSensor(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function sends an event when it picks up a pulse from the ping sensor
+ * @note the param for this function has 0b10 for left and 0b01 for right
+ */
+uint8_t CheckPingSensor(void) {
+
 }
 
 /* 

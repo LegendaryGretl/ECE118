@@ -18,7 +18,8 @@ build/default/production/ES_Main_tape_sensor.o: ES_Main_tape_sensor.c \
  ../ECE118_library/include/AD.h ../ECE118_library/include/IO_Ports.h \
  ../ECE118_library/component\ libraries/pins.h \
  ../ECE118_library/include/pwm.h \
- ../ECE118_library/component\ libraries/motors.h
+ ../ECE118_library/component\ libraries/motors.h \
+ ../ECE118_library/include/LED.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -71,3 +72,5 @@ SensorEventChecker.h:
 ../ECE118_library/include/pwm.h:
 
 ../ECE118_library/component\ libraries/motors.h:
+
+../ECE118_library/include/LED.h:

@@ -40,8 +40,8 @@
 #define LEFT_MOTOR_ENCODER PORTZ09_BIT
 #define LEFT_MOTOR_ENCODER_TRIS PORTZ09_TRIS
 
-#define RIGHT_MOTOR_ENCODER PORTZ12_BIT
-#define RIGHT_MOTOR_ENCODER_TRIS PORTZ12_TRIS
+#define RIGHT_MOTOR_ENCODER PORTZ10_BIT
+#define RIGHT_MOTOR_ENCODER_TRIS PORTZ10_TRIS
 
 
 // track wire pins *************************************************************
@@ -109,6 +109,11 @@
 
 #define BUMPER_ASR PORTZ08_BIT
 #define BUMPER_ASR_TRIS PORTZ08_TRIS
+
+
+// bumper pins *****************************************************************
+#define PING_SENSOR_ENABLE 
+#define PING_SENSOR_ECHO
 
 #endif	/* PINS_H */
 

@@ -83,6 +83,14 @@ uint8_t CheckTapeSensors(void);
  */
 uint8_t CheckMotorEncoder(void);
 
+/**
+ * @Function CheckPingSensor(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function sends an event when it picks up a pulse from the ping sensor
+ * @note the param for this function has 0b10 for left and 0b01 for right
+ */
+uint8_t CheckPingSensor(void);
 
 #endif	/* SENSOREVENTCHECKER_H */
 

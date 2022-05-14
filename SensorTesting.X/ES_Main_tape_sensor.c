@@ -10,9 +10,9 @@
 #include <stdio.h>
 #include "pins.h"
 #include "motors.h"
+#include "LED.h"
 
-void main(void)
-{
+void main(void) {
     ES_Return_t ErrorType;
 
     BOARD_Init();
@@ -24,13 +24,13 @@ void main(void)
     AD_Init();
     PWM_Init();
     Motors_Init();
-    
+
     // init input pins
     TRACK_WIRE_SENSOR_LEFT_TRIS = 1;
     TRACK_WIRE_SENSOR_RIGHT_TRIS = 1;
     BEACON_DETECTOR_TRIS = 1;
-    
-    SetLeftMotorSpeed(0                                                                                                                                 );
+
+    SetLeftMotorSpeed(0);
 
     // now initialize the Events and Services Framework and start it running
     ErrorType = ES_Initialize();
@@ -40,15 +40,15 @@ void main(void)
     }
     //if we got to here, there was an error
     switch (ErrorType) {
-    case FailedPointer:
-        printf("Failed on NULL pointer");
-        break;
-    case FailedInit:
-        printf("Failed Initialization");
-        break;
-    default:
-        printf("Other Failure: %d", ErrorType);
-        break;
+        case FailedPointer:
+            printf("Failed on NULL pointer");
+            break;
+        case FailedInit:
+            printf("Failed Initialization");
+            break;
+        default:
+            printf("Other Failure: %d", ErrorType);
+            break;
     }
     for (;;)
         ;

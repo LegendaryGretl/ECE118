@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include "pins.h"
 #include "motors.h"
+#include "LED.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -153,7 +154,7 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             if (ThisEvent.EventParam & 0b10) {
                 SetLeftMotorSpeed(0);
                 ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
-            } 
+            }
             if (ThisEvent.EventParam & 0b01) {
                 SetRightMotorSpeed(0);
                 ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
@@ -161,12 +162,16 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             break;
 
         case ES_TAPE_DETECTED:
-            printf("\r\nTape detected: %x", ThisEvent.EventParam);
+            //LED_SetBank(LED_BANK3, ThisEvent.EventParam & 0b111);
+            //printf("\r\nTape detected: %x", ThisEvent.EventParam);
+            printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
             //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 
         case ES_NO_TAPE_DETECTED:
-            printf("\r\nNo tape detected: %x", ThisEvent.EventParam);
+            //LED_SetBank(LED_BANK3, ThisEvent.EventParam & 0b111);
+            //printf("\r\nNo tape detected: %x", ThisEvent.EventParam);
+            printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
             //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
             break;
 

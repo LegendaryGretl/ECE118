@@ -78,7 +78,7 @@ static ES_Event storedEvent;
  * @return TRUE or FALSE
  * @brief This function indicates whether or not track wire has been detected,
  * along with the side that the track wire was detected on
- * @note 00 = no detection, 01 = left only, 10 = right only, 11 = both sides
+ * @note 00 = no detection, 10 = left only, 01 = right only, 11 = both sides
  */
 uint8_t CheckTrackWire(void) {
     static ES_EventTyp_t lastEvent = ES_NO_TRACK_WIRE_DETECTED;
@@ -95,11 +95,11 @@ uint8_t CheckTrackWire(void) {
     // detected on
     if (TRACK_WIRE_SENSOR_LEFT) {
         curEvent = ES_TRACK_WIRE_DETECTED;
-        curParam |= 0b01;
+        curParam |= 0b10;
     }
     if (TRACK_WIRE_SENSOR_RIGHT) {
         curEvent = ES_TRACK_WIRE_DETECTED;
-        curParam |= 0b10;
+        curParam |= 0b01;
     }
 
     if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
@@ -126,17 +126,13 @@ uint8_t CheckTrackWire(void) {
  */
 uint8_t CheckBeacon(void) {
     static ES_EventTyp_t lastEvent = ES_NO_BEACON_DETECTED;
-    ES_EventTyp_t curEvent;
+    ES_EventTyp_t curEvent = ES_NO_BEACON_DETECTED;
     ES_Event thisEvent;
     uint8_t returnVal = FALSE;
-
-    //printf("beacon: %d", BEACON_DETECTOR);
 
     // returned event will indicate if beacon is detected or not
     if (BEACON_DETECTOR) {
         curEvent = ES_BEACON_DETECTED;
-    } else {
-        curEvent = ES_NO_BEACON_DETECTED;
     }
 
     if (curEvent != lastEvent) { // check for change from last time

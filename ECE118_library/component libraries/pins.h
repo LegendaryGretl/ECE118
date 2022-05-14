@@ -45,10 +45,8 @@
 
 
 // track wire pins *************************************************************
-//#define TRACK_WIRE_SENSOR_LEFT_TRIS PORTX12_TRIS
 #define TRACK_WIRE_SENSOR_LEFT AD_PORTV3
 
-//#define TRACK_WIRE_SENSOR_RIGHT_TRIS PORTX10_TRIS
 #define TRACK_WIRE_SENSOR_RIGHT AD_PORTV4
 
 
@@ -112,9 +110,12 @@
 
 #define NUMBER_OF_BUMPERS 8
 
-// bumper pins *****************************************************************
-#define PING_SENSOR_ENABLE 
-#define PING_SENSOR_ECHO
+// ping sensor pins ************************************************************
+#define PING_SENSOR_ENABLE_TRIS PORTX12_TRIS
+#define PING_SENSOR_ENABLE PORTX12_LAT
+
+#define PING_SENSOR_ECHO_TRIS PORTX10_TRIS
+#define PING_SENSOR_ECHO PORTX10_BIT
 
 #endif	/* PINS_H */
 

@@ -15,6 +15,9 @@
 #ifndef CONFIGURE_H
 #define CONFIGURE_H
 
+#include "PingSensorService.h"
+
+
 //#include "TapeSensorService.h"
 //#include "ReadSensorService.h"
 
@@ -64,7 +67,10 @@ typedef enum {
     ES_TURN_RIGHT_MOTOR_N_ROTATIONS,
     ES_MOTOR_ROTATION_COMPLETE, // param: 0b10 = left, 0b01 = right
     ES_BUMPER_HIT, // param shows pattern of bumpers currently pressed
-    ES_BUMPER_RELEASED, 
+    ES_BUMPER_RELEASED,
+    ES_PING_SENSOR_PULSE_HIGH,
+    ES_PING_SENSOR_PULSE_LOW, // param: high time of last pulse
+    ES_GET_PING_SENSOR_DISTANCE, // activates ping sensor 
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -95,8 +101,11 @@ static const char *EventNames[] = {
     "ES_TURN_RIGHT_MOTOR_N_DEGREES",
     "ES_TURN_RIGHT_MOTOR_N_ROTATIONS",
     "ES_MOTOR_ROTATION_COMPLETE",
-    "ES_BUMPER_HIT", 
-    "ES_BUMPER_RELEASED", 
+    "ES_BUMPER_HIT",
+    "ES_BUMPER_RELEASED",
+    "ES_PING_SENSOR_PULSE_HIGH",
+    "ES_PING_SENSOR_PULSE_LOW",
+    "ES_GET_PING_SENSOR_DISTANCE",
     "NUMBEROFEVENTS",
 };
 
@@ -109,7 +118,7 @@ static const char *EventNames[] = {
 
 /****************************************************************************/
 // This is the list of event checking functions
-#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckMotorEncoder, CheckBumpers
+#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckMotorEncoder, CheckBumpers, CheckPingSensor
 
 /****************************************************************************/
 // These are the definitions for the post functions to be executed when the
@@ -117,7 +126,7 @@ static const char *EventNames[] = {
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostReadSensorService
-#define TIMER1_RESP_FUNC TIMER_UNUSED
+#define TIMER1_RESP_FUNC PostPingSensorService
 #define TIMER2_RESP_FUNC TIMER_UNUSED
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
@@ -141,6 +150,7 @@ static const char *EventNames[] = {
 // the timer number matches where the timer event will be routed
 
 #define READ_SENSOR_TIMER 0  
+#define PING_SENSOR_ENABLE_TIMER 1
 
 
 /****************************************************************************/
@@ -152,7 +162,7 @@ static const char *EventNames[] = {
 /****************************************************************************/
 // This macro determines that nuber of services that are *actually* used in
 // a particular application. It will vary in value from 1 to MAX_NUM_SERVICES
-#define NUM_SERVICES 3
+#define NUM_SERVICES 4
 
 /****************************************************************************/
 // These are the definitions for Service 0, the lowest priority service
@@ -199,11 +209,11 @@ static const char *EventNames[] = {
 // These are the definitions for Service 3
 #if NUM_SERVICES > 3
 // the header file with the public fuction prototypes
-#define SERV_3_HEADER "TestService.h"
+#define SERV_3_HEADER "PingSensorService.h"
 // the name of the Init function
-#define SERV_3_INIT TestServiceInit
+#define SERV_3_INIT InitPingSensorService
 // the name of the run function
-#define SERV_3_RUN TestServiceRun
+#define SERV_3_RUN RunPingSensorService
 // How big should this services Queue be?
 #define SERV_3_QUEUE_SIZE 3
 #endif

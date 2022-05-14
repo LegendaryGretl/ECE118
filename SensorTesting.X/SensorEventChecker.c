@@ -102,11 +102,11 @@ uint8_t CheckTrackWire(void) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b10;
     }
-    
+
     if (right_voltage_level < TRACK_WIRE_DETECTED_LOGIC_HIGH) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b01;
-    } 
+    }
 
     if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
         thisEvent.EventType = curEvent;
@@ -249,6 +249,7 @@ uint8_t CheckMotorEncoder(void) {
 uint8_t CheckBumpers(void) {
     static ES_EventTyp_t lastEvent = ES_BUMPER_RELEASED;
     static uint16_t lastParam = 0x00;
+    static int counter = -1;
     ES_EventTyp_t curEvent = ES_BUMPER_RELEASED;
     uint16_t curParam = 0;
     ES_Event thisEvent;
@@ -269,12 +270,19 @@ uint8_t CheckBumpers(void) {
         marker <<= 1;
     }
 
-    if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
+    if (curParam != lastParam) { // detect change 
+        counter = 0;
+        lastEvent = curEvent;
+        lastParam = curParam;
+    } else if (counter > -1) { // debouncing, ensures that change is stable
+        counter++;
+    }
+
+    if (counter >= 250) { // report back only stable changes
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = curParam;
+        counter = -1;
         returnVal = TRUE;
-        lastEvent = curEvent; // update history
-        lastParam = curParam;
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
         PostReadSensorService(thisEvent);
 #else

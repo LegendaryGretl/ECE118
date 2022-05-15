@@ -3,13 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/MotorEncoderService.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/SensorEventChecker.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/ReadSensorService.h</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/TapeSensorService.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/ES_Main_tape_sensor.c</file>
-            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/motors.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/MotorEncoderService.h</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/ReadSensorService.c</file>
-            <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/SensorEventChecker.h</file>
-            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/pins.h</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/SensorTesting.X/ES_Configure.h</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/motors.h</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/include/ES_Events.h</file>
         </group>
     </open-files>
 </project-private>

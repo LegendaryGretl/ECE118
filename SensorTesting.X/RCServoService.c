@@ -21,24 +21,16 @@
 #include "BOARD.h"
 #include "AD.h"
 #include "ES_Configure.h"
-#include "SensorEventChecker.h"
 #include "ES_Framework.h"
+#include "RCServoService.h"
 #include "ReadSensorService.h"
 #include <stdio.h>
-#include "pins.h"
-#include "motors.h"
-#include "LED.h"
-#include "timers.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define DELAY_BETWEEN_READINGS 100
-
-#define BOTTOM_TAPE_SENSORS_MASK 0b00011111
-#define SIDE_TAPE_SENSORS_MASK 0b11100000
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -68,7 +60,8 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitReadSensorService(uint8_t Priority) {
+uint8_t InitTemplateService(uint8_t Priority)
+{
     ES_Event ThisEvent;
 
     MyPriority = Priority;
@@ -76,13 +69,6 @@ uint8_t InitReadSensorService(uint8_t Priority) {
     // in here you write your initialization code
     // this includes all hardware and software initialization
     // that needs to occur.
-    ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
-
-    // set up sensor reading pins to be inputs
-    AD_AddPins(TRACK_WIRE_SENSOR_LEFT);
-    AD_AddPins(TRACK_WIRE_SENSOR_RIGHT);
-    BEACON_DETECTOR_TRIS = 1;
-    ES_Timer_InitTimer(READ_SENSOR_TIMER, 2000);
 
     // post the initial transition event
     ThisEvent.EventType = ES_INIT;
@@ -102,7 +88,8 @@ uint8_t InitReadSensorService(uint8_t Priority) {
  *        be posted to. Remember to rename to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t PostReadSensorService(ES_Event ThisEvent) {
+uint8_t PostTemplateService(ES_Event ThisEvent)
+{
     return ES_PostToService(MyPriority, ThisEvent);
 }
 
@@ -115,108 +102,48 @@ uint8_t PostReadSensorService(ES_Event ThisEvent) {
  * @note Remember to rename to something appropriate.
  *       Returns ES_NO_EVENT if the event have been "consumed." 
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-ES_Event RunReadSensorService(ES_Event ThisEvent) {
+ES_Event RunTemplateService(ES_Event ThisEvent)
+{
     ES_Event ReturnEvent;
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
     /********************************************
      in here you write your service code
      *******************************************/
-    static ES_EventTyp_t lastEvent = ES_NO_EVENT;
+    static ES_EventTyp_t lastEvent = BATTERY_DISCONNECTED;
+    ES_EventTyp_t curEvent;
+    uint16_t batVoltage = AD_ReadADPin(BAT_VOLTAGE); // read the battery voltage
 
     switch (ThisEvent.EventType) {
-        case ES_INIT:
-            // No hardware initialization or single time setups, those
-            // go in the init function above.
-            //
-            // This section is used to reset service for some reason
-            lastEvent = ES_NO_EVENT;
-            ES_Timer_InitTimer(READ_SENSOR_TIMER, 2000);
-            break;
+    case ES_INIT:
+        // No hardware initialization or single time setups, those
+        // go in the init function above.
+        //
+        // This section is used to reset service for some reason
+        break;
 
-        case ES_TIMERACTIVE:
-        case ES_TIMERSTOPPED:
-            break;
-
-        case ES_TIMEOUT:
-            if (ThisEvent.EventParam != READ_SENSOR_TIMER) {
-                break;
-            }
-            SetLeftMotorSpeed(100);
-            SetRightMotorSpeed(100);
-            ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
-            ReturnEvent.EventParam = 10;
-            PostMotorEncoderService(ReturnEvent);
-            ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
-            ReturnEvent.EventParam = 10;
-            PostMotorEncoderService(ReturnEvent);
-            break;
-
-        case ES_MOTOR_ROTATION_COMPLETE:
-            printf("\r\nturn complete");
-            if (ThisEvent.EventParam & 0b10) {
-                SetLeftMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 3000);
-            }
-            if (ThisEvent.EventParam & 0b01) {
-                SetRightMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 3000);
-            }
-            break;
-
-        case ES_TAPE_DETECTED:
-            //LED_SetBank(LED_BANK3, ThisEvent.EventParam & 0b111);
-            //printf("\r\nTape detected: %x", ThisEvent.EventParam);
-            //printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
-            //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
-            break;
-
-        case ES_NO_TAPE_DETECTED:
-            //LED_SetBank(LED_BANK3, ThisEvent.EventParam & 0b111);
-            //printf("\r\nNo tape detected: %x", ThisEvent.EventParam);
-            //printf("\r\nthe ones plugged in:%d %d %d", ThisEvent.EventParam & 0b1, ThisEvent.EventParam & 0b010, ThisEvent.EventParam & 0b100);
-            //ES_Timer_InitTimer(READ_SENSOR_TIMER, DELAY_BETWEEN_READINGS);
-            break;
-
-        case ES_NO_BEACON_DETECTED:
-            printf("\r\nNo beacon detected");
-            break;
-
-        case ES_BEACON_DETECTED:
-            printf("\r\nBeacon detected");
-            break;
-
-        case ES_NO_TRACK_WIRE_DETECTED:
-            printf("\r\nNo track wire detected: %x", ThisEvent.EventParam);
-            break;
-
-        case ES_TRACK_WIRE_DETECTED:
-            printf("\r\nTrack wire detected: %x", ThisEvent.EventParam);
-            break;
-            
-        case ES_BUMPER_HIT:
-            if (ThisEvent.EventParam & BUMPER_FSL_MASK){
-                ES_Timer_StopTimer(READ_SENSOR_TIMER);
-                SetLeftMotorSpeed(0);
-                SetRightMotorSpeed(0);
-            }
-            if (ThisEvent.EventParam & BUMPER_FFL_MASK){
-                ES_Timer_StopTimer(READ_SENSOR_TIMER);
-                SetLeftMotorSpeed(75);
-                SetRightMotorSpeed(75);
-            }
-            printf("\r\nBumper hit: %x", ThisEvent.EventParam);
-            break;
-            
-        case ES_BUMPER_RELEASED:
-            printf("\r\nBumper released: %x", ThisEvent.EventParam);
-            break;
-
+    case ES_TIMEOUT:
+        if (batVoltage > BATTERY_DISCONNECT_THRESHOLD) { // is battery connected?
+            curEvent = BATTERY_CONNECTED;
+        } else {
+            curEvent = BATTERY_DISCONNECTED;
+        }
+        if (curEvent != lastEvent) { // check for change from last time
+            ReturnEvent.EventType = curEvent;
+            ReturnEvent.EventParam = batVoltage;
+            lastEvent = curEvent; // update history
+#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
+            PostReadSensorService(ReturnEvent);
+#else
+            PostTemplateService(ReturnEvent);
+#endif   
+        }
+        break;
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      
-        default:
-            printf("\r\nEvent: %s\tParam: 0x%X",
-                    EventNames[ThisEvent.EventType], ThisEvent.EventParam);
-            break;
+    default:
+        printf("\r\nEvent: %s\tParam: 0x%X",
+                EventNames[ThisEvent.EventType], ThisEvent.EventParam);
+        break;
 #endif
     }
 

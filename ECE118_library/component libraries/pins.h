@@ -37,10 +37,10 @@
 
 
 // pins for motor encoder ******************************************************
-#define LEFT_MOTOR_ENCODER PORTX03_BIT//PORTZ09_BIT
+#define LEFT_MOTOR_ENCODER PORTX03_BIT//PORTZ09_BIT -- this pin is a bit unresponsive
 #define LEFT_MOTOR_ENCODER_TRIS PORTX03_TRIS//PORTZ09_TRIS
 
-#define RIGHT_MOTOR_ENCODER PORTX04_BIT//PORTZ10_BIT
+#define RIGHT_MOTOR_ENCODER PORTX04_BIT//PORTZ10_BIT -- this pin is a bit unresponsive
 #define RIGHT_MOTOR_ENCODER_TRIS PORTX04_TRIS//PORTZ10_TRIS
 
 
@@ -84,11 +84,11 @@
 
 
 // bumper pins *****************************************************************
-#define BUMPER_FSL PORTX03_BIT
-#define BUMPER_FSL_TRIS PORTX03_TRIS
+#define BUMPER_FSL PORTZ09_BIT
+#define BUMPER_FSL_TRIS PORTZ09_TRIS
 
-#define BUMPER_FFL PORTX04_BIT
-#define BUMPER_FFL_TRIS PORTX04_TRIS
+#define BUMPER_FFL PORTZ10_BIT
+#define BUMPER_FFL_TRIS PORTZ10_TRIS
 
 #define BUMPER_FFR PORTX05_BIT
 #define BUMPER_FFR_TRIS PORTX05_TRIS
@@ -116,6 +116,9 @@
 
 #define PING_SENSOR_ECHO_TRIS PORTX10_TRIS
 #define PING_SENSOR_ECHO PORTX10_BIT
+
+// RC servo pins ***************************************************************
+#define RC_SERVO_PIN RC_PORTW08
 
 #endif	/* PINS_H */
 

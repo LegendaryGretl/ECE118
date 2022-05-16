@@ -35,7 +35,14 @@
 /*******************************************************************************
  * PUBLIC #DEFINES                                                             *
  ******************************************************************************/
-
+#define BUMPER_FSL_MASK (1<<0)
+#define BUMPER_FFL_MASK (1<<1) 
+#define BUMPER_FFR_MASK (1<<2)
+#define BUMPER_FSR_MASK (1<<3) 
+#define BUMPER_ASR_MASK (1<<4)
+#define BUMPER_AFR_MASK (1<<5)
+#define BUMPER_AFL_MASK (1<<6) 
+#define BUMPER_ASL_MASK (1<<7)
 
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *

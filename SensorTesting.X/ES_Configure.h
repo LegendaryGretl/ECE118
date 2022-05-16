@@ -15,7 +15,7 @@
 #ifndef CONFIGURE_H
 #define CONFIGURE_H
 
-#include "PingSensorService.h"
+//#include "PingSensorService.h"
 
 
 //#include "TapeSensorService.h"
@@ -118,7 +118,7 @@ static const char *EventNames[] = {
 
 /****************************************************************************/
 // This is the list of event checking functions
-#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckMotorEncoder, CheckBumpers, CheckPingSensor
+#define EVENT_CHECK_LIST  CheckTrackWire, CheckBeacon, CheckTapeSensors, CheckMotorEncoder, CheckBumpers
 
 /****************************************************************************/
 // These are the definitions for the post functions to be executed when the
@@ -126,7 +126,7 @@ static const char *EventNames[] = {
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostReadSensorService
-#define TIMER1_RESP_FUNC PostPingSensorService
+#define TIMER1_RESP_FUNC TIMER_UNUSED//PostPingSensorService
 #define TIMER2_RESP_FUNC TIMER_UNUSED
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
@@ -162,7 +162,7 @@ static const char *EventNames[] = {
 /****************************************************************************/
 // This macro determines that nuber of services that are *actually* used in
 // a particular application. It will vary in value from 1 to MAX_NUM_SERVICES
-#define NUM_SERVICES 4
+#define NUM_SERVICES 3
 
 /****************************************************************************/
 // These are the definitions for Service 0, the lowest priority service

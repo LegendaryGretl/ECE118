@@ -28,6 +28,7 @@
 #include "pins.h"
 #include "motors.h"
 #include "LED.h"
+#include "timers.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -81,7 +82,7 @@ uint8_t InitReadSensorService(uint8_t Priority) {
     AD_AddPins(TRACK_WIRE_SENSOR_LEFT);
     AD_AddPins(TRACK_WIRE_SENSOR_RIGHT);
     BEACON_DETECTOR_TRIS = 1;
-    ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+    ES_Timer_InitTimer(READ_SENSOR_TIMER, 2000);
 
     // post the initial transition event
     ThisEvent.EventType = ES_INIT;
@@ -130,6 +131,7 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             //
             // This section is used to reset service for some reason
             lastEvent = ES_NO_EVENT;
+            ES_Timer_InitTimer(READ_SENSOR_TIMER, 2000);
             break;
 
         case ES_TIMERACTIVE:
@@ -140,8 +142,8 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             if (ThisEvent.EventParam != READ_SENSOR_TIMER) {
                 break;
             }
-            SetLeftMotorSpeed(50);
-            SetRightMotorSpeed(50);
+            SetLeftMotorSpeed(100);
+            SetRightMotorSpeed(100);
             ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
             ReturnEvent.EventParam = 10;
             PostMotorEncoderService(ReturnEvent);
@@ -151,13 +153,14 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
             break;
 
         case ES_MOTOR_ROTATION_COMPLETE:
+            printf("\r\nturn complete");
             if (ThisEvent.EventParam & 0b10) {
                 SetLeftMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+                ES_Timer_InitTimer(READ_SENSOR_TIMER, 3000);
             }
             if (ThisEvent.EventParam & 0b01) {
                 SetRightMotorSpeed(0);
-                ES_Timer_InitTimer(READ_SENSOR_TIMER, 5000);
+                ES_Timer_InitTimer(READ_SENSOR_TIMER, 3000);
             }
             break;
 

@@ -305,7 +305,7 @@ uint8_t CheckBumpers(void) {
  */
 uint8_t CheckPingSensor(void) {
     static ES_EventTyp_t lastEvent = ES_PING_SENSOR_PULSE_LOW;
-    static unsigned int prevTime = TIMERS_GetTime();
+    static unsigned int prevTime = 0;
     ES_Event thisEvent;
     ES_EventTyp_t curEvent = ES_PING_SENSOR_PULSE_LOW;
     uint8_t returnVal;

@@ -4,7 +4,7 @@ build/default/production/SensorEventChecker.o: SensorEventChecker.c \
  MotorEncoderService.h ../ECE118_library/include/ES_Events.h \
  ../ECE118_library/include/serial.h ReadSensorService.h \
  ../ECE118_library/component\ libraries/pins.h \
- ../ECE118_library/include/pwm.h
+ ../ECE118_library/include/pwm.h ../ECE118_library/include/timers.h
 
 ES_Configure.h:
 
@@ -27,3 +27,5 @@ ReadSensorService.h:
 ../ECE118_library/component\ libraries/pins.h:
 
 ../ECE118_library/include/pwm.h:
+
+../ECE118_library/include/timers.h:

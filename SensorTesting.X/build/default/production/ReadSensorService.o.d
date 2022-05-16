@@ -19,7 +19,7 @@ build/default/production/ReadSensorService.o: ReadSensorService.c \
  ../ECE118_library/component\ libraries/pins.h \
  ../ECE118_library/include/pwm.h \
  ../ECE118_library/component\ libraries/motors.h \
- ../ECE118_library/include/LED.h
+ ../ECE118_library/include/LED.h ../ECE118_library/include/timers.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -76,3 +76,5 @@ ReadSensorService.h:
 ../ECE118_library/component\ libraries/motors.h:
 
 ../ECE118_library/include/LED.h:
+
+../ECE118_library/include/timers.h:

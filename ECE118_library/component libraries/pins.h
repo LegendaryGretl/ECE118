@@ -37,11 +37,11 @@
 
 
 // pins for motor encoder ******************************************************
-#define LEFT_MOTOR_ENCODER PORTZ09_BIT
-#define LEFT_MOTOR_ENCODER_TRIS PORTZ09_TRIS
+#define LEFT_MOTOR_ENCODER PORTX03_BIT//PORTZ09_BIT
+#define LEFT_MOTOR_ENCODER_TRIS PORTX03_TRIS//PORTZ09_TRIS
 
-#define RIGHT_MOTOR_ENCODER PORTZ10_BIT
-#define RIGHT_MOTOR_ENCODER_TRIS PORTZ10_TRIS
+#define RIGHT_MOTOR_ENCODER PORTX04_BIT//PORTZ10_BIT
+#define RIGHT_MOTOR_ENCODER_TRIS PORTX04_TRIS//PORTZ10_TRIS
 
 
 // track wire pins *************************************************************

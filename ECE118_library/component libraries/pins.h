@@ -84,11 +84,11 @@
 
 
 // bumper pins *****************************************************************
-#define BUMPER_FSL PORTZ09_BIT
-#define BUMPER_FSL_TRIS PORTZ09_TRIS
+#define BUMPER_FSL PORTZ12_BIT // pin Z09 is probably dead
+#define BUMPER_FSL_TRIS PORTZ12_TRIS
 
-#define BUMPER_FFL PORTZ10_BIT
-#define BUMPER_FFL_TRIS PORTZ10_TRIS
+#define BUMPER_FFL PORTZ11_BIT // pin Z10 is dead
+#define BUMPER_FFL_TRIS PORTZ11_TRIS
 
 #define BUMPER_FFR PORTX05_BIT
 #define BUMPER_FFR_TRIS PORTX05_TRIS

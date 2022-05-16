@@ -193,21 +193,28 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
         case ES_TRACK_WIRE_DETECTED:
             printf("\r\nTrack wire detected: %x", ThisEvent.EventParam);
             break;
-            
+
         case ES_BUMPER_HIT:
-            if (ThisEvent.EventParam & BUMPER_FSL_MASK){
+            if (ThisEvent.EventParam & BUMPER_FSL_MASK) {
                 ES_Timer_StopTimer(READ_SENSOR_TIMER);
                 SetLeftMotorSpeed(0);
                 SetRightMotorSpeed(0);
+                ReturnEvent.EventType = ES_RC_SERVO_STRIKE_START;
+                ReturnEvent.EventParam = 10;
+                PostRCServoService(ReturnEvent);
             }
-            if (ThisEvent.EventParam & BUMPER_FFL_MASK){
+            if (ThisEvent.EventParam & BUMPER_FFL_MASK) {
                 ES_Timer_StopTimer(READ_SENSOR_TIMER);
-                SetLeftMotorSpeed(75);
-                SetRightMotorSpeed(75);
+                SetLeftMotorSpeed(50);
+                SetRightMotorSpeed(50);
             }
             printf("\r\nBumper hit: %x", ThisEvent.EventParam);
             break;
-            
+
+        case ES_RC_SERVO_STRIKE_COMPLETE:
+            printf("\r\nStrike complete :)");
+            break;
+
         case ES_BUMPER_RELEASED:
             printf("\r\nBumper released: %x", ThisEvent.EventParam);
             break;

@@ -13,7 +13,7 @@ build/default/production/_ext/627994287/ES_Timers.o: \
  ../ECE118_library/include/ES_Queue.h \
  ../ECE118_library/include/ES_ServiceHeaders.h MotorEncoderService.h \
  ES_Configure.h ../ECE118_library/include/ES_Events.h ReadSensorService.h \
- ../ECE118_library/include/ES_TattleTale.h \
+ RCServoService.h ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/ES_ServiceHeaders.h \
  ../ECE118_library/include/ES_PostList.h \
  ../ECE118_library/include/ES_LookupTables.h \
@@ -54,6 +54,8 @@ ES_Configure.h:
 ../ECE118_library/include/ES_Events.h:
 
 ReadSensorService.h:
+
+RCServoService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
 

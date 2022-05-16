@@ -15,6 +15,9 @@
 #ifndef CONFIGURE_H
 #define CONFIGURE_H
 
+//#include "RCServoService.h"
+
+
 //#include "PingSensorService.h"
 
 
@@ -71,6 +74,8 @@ typedef enum {
     ES_PING_SENSOR_PULSE_HIGH,
     ES_PING_SENSOR_PULSE_LOW, // param: high time of last pulse
     ES_GET_PING_SENSOR_DISTANCE, // activates ping sensor 
+    ES_RC_SERVO_STRIKE_START, // sets off the RC servo to hit a ping pong ball
+    ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -106,6 +111,8 @@ static const char *EventNames[] = {
     "ES_PING_SENSOR_PULSE_HIGH",
     "ES_PING_SENSOR_PULSE_LOW",
     "ES_GET_PING_SENSOR_DISTANCE",
+    "ES_RC_SERVO_STRIKE_START",
+    "ES_RC_SERVO_STRIKE_COMPLETE",
     "NUMBEROFEVENTS",
 };
 
@@ -126,8 +133,8 @@ static const char *EventNames[] = {
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostReadSensorService
-#define TIMER1_RESP_FUNC TIMER_UNUSED//PostPingSensorService
-#define TIMER2_RESP_FUNC TIMER_UNUSED
+#define TIMER1_RESP_FUNC PostRCServoService
+#define TIMER2_RESP_FUNC TIMER_UNUSED//PostPingSensorService
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
 #define TIMER5_RESP_FUNC TIMER_UNUSED
@@ -150,7 +157,8 @@ static const char *EventNames[] = {
 // the timer number matches where the timer event will be routed
 
 #define READ_SENSOR_TIMER 0  
-#define PING_SENSOR_ENABLE_TIMER 1
+#define RC_SERVO_TIMER 1
+#define PING_SENSOR_ENABLE_TIMER 2
 
 
 /****************************************************************************/
@@ -162,7 +170,7 @@ static const char *EventNames[] = {
 /****************************************************************************/
 // This macro determines that nuber of services that are *actually* used in
 // a particular application. It will vary in value from 1 to MAX_NUM_SERVICES
-#define NUM_SERVICES 3
+#define NUM_SERVICES 4
 
 /****************************************************************************/
 // These are the definitions for Service 0, the lowest priority service
@@ -209,11 +217,11 @@ static const char *EventNames[] = {
 // These are the definitions for Service 3
 #if NUM_SERVICES > 3
 // the header file with the public fuction prototypes
-#define SERV_3_HEADER "PingSensorService.h"
+#define SERV_3_HEADER "RCServoService.h"
 // the name of the Init function
-#define SERV_3_INIT InitPingSensorService
+#define SERV_3_INIT InitRCServoService
 // the name of the run function
-#define SERV_3_RUN RunPingSensorService
+#define SERV_3_RUN RunRCServoService
 // How big should this services Queue be?
 #define SERV_3_QUEUE_SIZE 3
 #endif

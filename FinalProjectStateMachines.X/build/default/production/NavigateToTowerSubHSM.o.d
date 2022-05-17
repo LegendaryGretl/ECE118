@@ -15,7 +15,10 @@ build/default/production/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
  ../ECE118_library/component\ libraries/RCServoService.h \
  ../ECE118_library/include/ES_TattleTale.h \
- ../ECE118_library/include/BOARD.h TopLevelHSM.h NavigateToTowerSubHSM.h
+ ../ECE118_library/include/BOARD.h \
+ ../ECE118_library/component\ libraries/motors.h TopLevelHSM.h \
+ NavigateToTowerSubHSM.h ../ECE118_library/component\ libraries/pins.h \
+ ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/pwm.h
 
 ES_Configure.h:
 
@@ -59,6 +62,14 @@ ES_Configure.h:
 
 ../ECE118_library/include/BOARD.h:
 
+../ECE118_library/component\ libraries/motors.h:
+
 TopLevelHSM.h:
 
 NavigateToTowerSubHSM.h:
+
+../ECE118_library/component\ libraries/pins.h:
+
+../ECE118_library/include/IO_Ports.h:
+
+../ECE118_library/include/pwm.h:

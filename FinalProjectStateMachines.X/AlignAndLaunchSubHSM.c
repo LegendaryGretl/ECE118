@@ -1,15 +1,14 @@
 /*
  * File: TemplateSubHSM.c
  * Author: J. Edward Carryer
- * Modified: Gabriel Elkaim and Soja-Marie Morgens
+ * Modified: Gabriel H Elkaim
  *
  * Template file to set up a Heirarchical State Machine to work with the Events and
  * Services Framework (ES_Framework) on the Uno32 for the CMPE-118/L class. Note that
  * this file will need to be modified to fit your exact needs, and most of the names
  * will have to be changed to match your code.
  *
- * There is another template file for the SubHSM's that is slightly differet, and
- * should be used for all of the subordinate state machines (flat or heirarchical)
+ * There is for a substate machine. Make sure it has a unique name
  *
  * This is provided as an example and a good place to start.
  *
@@ -31,50 +30,41 @@
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "BOARD.h"
-#include "motors.h"
 #include "TopLevelHSM.h"
-#include "DetectBeaconSubHSM.h"
-#include "NavigateToTowerSubHSM.h"
-#include "AlignAndLaunchSubHSM.h" //#include all sub state machines called
-
-/*******************************************************************************
- * PRIVATE #DEFINES                                                            *
- ******************************************************************************/
-//Include any defines you need to do
+#include "AlignAndLaunchSubHSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
-
-
 typedef enum {
-    InitPState,
-    DetectBeacon, // detect first beacon
-    NavigateToTower, // navigate to the correct face of the tower
-    AlignAndLaunch, // align with hole, launch ball, and detect next tower
-} TopLevelHSMState_t;
+    InitPSubState,
+    AlignWithHole,
+    LaunchBall,
+    LookForNewBeacon,
+} AlignAndLaunchSubHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPState",
-	"DetectBeacon",
-	"NavigateToTower",
-	"AlignAndLaunch",
+	"InitPSubState",
+	"AlignWithHole",
+	"LaunchBall",
+	"LookForNewBeacon",
 };
+
 
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
-   relevant to the behavior of this state machine
-   Example: char RunAway(uint_8 seconds);*/
+   relevant to the behavior of this state machine */
+
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
  ******************************************************************************/
 /* You will need MyPriority and the state variable; you may need others as well.
  * The type of state variable should match that of enum in header file. */
 
-static TopLevelHSMState_t CurrentState = InitPState; // <- change enum name to match ENUM
+static AlignAndLaunchSubHSMState_t CurrentState = InitPSubState; // <- change name to match ENUM
 static uint8_t MyPriority;
 
 
@@ -83,7 +73,7 @@ static uint8_t MyPriority;
  ******************************************************************************/
 
 /**
- * @Function InitTemplateHSM(uint8_t Priority)
+ * @Function InitTemplateSubHSM(uint8_t Priority)
  * @param Priority - internal variable to track which event queue to use
  * @return TRUE or FALSE
  * @brief This will get called by the framework at the beginning of the code
@@ -92,33 +82,19 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitTopLevelHSM(uint8_t Priority) {
-    MyPriority = Priority;
-    // put us into the Initial PseudoState
-    CurrentState = InitPState;
-    // post the initial transition event
-    if (ES_PostToService(MyPriority, INIT_EVENT) == TRUE) {
+uint8_t InitAlignAndLaunchSubHSM(void) {
+    ES_Event returnEvent;
+
+    CurrentState = InitPSubState;
+    returnEvent = RunAlignAndLaunchSubHSM(INIT_EVENT);
+    if (returnEvent.EventType == ES_NO_EVENT) {
         return TRUE;
-    } else {
-        return FALSE;
     }
+    return FALSE;
 }
 
 /**
- * @Function PostTemplateHSM(ES_Event ThisEvent)
- * @param ThisEvent - the event (type and param) to be posted to queue
- * @return TRUE or FALSE
- * @brief This function is a wrapper to the queue posting function, and its name
- *        will be used inside ES_Configure to point to which queue events should
- *        be posted to. Remember to rename to something appropriate.
- *        Returns TRUE if successful, FALSE otherwise
- * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
-    return ES_PostToService(MyPriority, ThisEvent);
-}
-
-/**
- * @Function RunTemplateHSM(ES_Event ThisEvent)
+ * @Function RunTemplateSubHSM(ES_Event ThisEvent)
  * @param ThisEvent - the event (type and param) to be responded.
  * @return Event - return event (type and param), in general should be ES_NO_EVENT
  * @brief This function is where you implement the whole of the heirarchical state
@@ -132,60 +108,71 @@ uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
  *       not consumed as these need to pass pack to the higher level state machine.
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
-ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
+ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
-    TopLevelHSMState_t nextState; // <- change type to correct enum
+    AlignAndLaunchSubHSMState_t nextState; // <- change type to correct enum
 
     ES_Tattle(); // trace call stack
 
     switch (CurrentState) {
-        case InitPState: // If current state is initial Pseudo State
+        case InitPSubState: // If current state is initial Psedudo State
             if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
             {
                 // this is where you would put any actions associated with the
                 // transition from the initial pseudo-state into the actual
                 // initial state
-                // Initialize all sub-state machines
-                InitDetectBeaconSubHSM();
+
                 // now put the machine into the actual initial state
-                nextState = DetectBeacon;
+                nextState = AlignWithHole;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
-                ;
             }
             break;
 
-        case DetectBeacon: // point bot in the direct of a beacon
-            ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
+        case AlignWithHole: // align shooter with correct hole
+            // ThisEvent = RunAlignWithHoleFSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED:
+                case ES_ALIGNED_WITH_CORRECT_HOLE:
+                    nextState = LaunchBall;
                     makeTransition = TRUE;
-                    nextState = NavigateToTower;
-                default:
                     break;
-            }
-            break;
-
-        case NavigateToTower: // get bot on the correct face of a tower
-            ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
-            switch (ThisEvent.EventType) {
-                case ES_TRACK_WIRE_DETECTED:
-                    makeTransition = TRUE;
-                    nextState = AlignAndLaunch;
+                case ES_BEACON_DETECTED: // ignore beacon
+                    ThisEvent.EventType = ES_NO_EVENT;
                     break;
-                default:
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
                     break;
             }
             break;
 
-        case AlignAndLaunch: // align shooter with hole and launch ball
-            ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
+        case LaunchBall: // set off RC servo 
             switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED:
-                    makeTransition = TRUE;
-                    nextState = NavigateToTower;
+                case ES_ENTRY:
+                    ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;
+                    PostRCServoService(ThisEvent);
                     break;
-                default:
+                case ES_RC_SERVO_STRIKE_COMPLETE:
+                    nextState = LookForNewBeacon;
+                    makeTransition = TRUE;
+                    break;
+                case ES_BEACON_DETECTED: // ignore beacon 
+                    ThisEvent.EventType = ES_NO_EVENT;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case LookForNewBeacon:
+            //ThisEvent = RunLookForSecondBeaconFSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_BEACON_DETECTED: // ignore beacon 
+                    CurrentState = AlignWithHole;
+                    return ThisEvent;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
                     break;
             }
             break;
@@ -196,9 +183,9 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 
     if (makeTransition == TRUE) { // making a state transition, send EXIT and ENTRY
         // recursively call the current state with an exit event
-        RunTopLevelHSM(EXIT_EVENT);
+        RunAlignAndLaunchSubHSM(EXIT_EVENT); // <- rename to your own Run function
         CurrentState = nextState;
-        RunTopLevelHSM(ENTRY_EVENT);
+        RunAlignAndLaunchSubHSM(ENTRY_EVENT); // <- rename to your own Run function
     }
 
     ES_Tail(); // trace call stack end
@@ -209,3 +196,4 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
+

@@ -34,6 +34,7 @@
       <itemPath>TopLevelHSM.h</itemPath>
       <itemPath>DetectBeaconSubHSM.h</itemPath>
       <itemPath>NavigateToTowerSubHSM.h</itemPath>
+      <itemPath>AlignAndLaunchSubHSM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -66,6 +67,7 @@
       <itemPath>TopLevelHSM.c</itemPath>
       <itemPath>DetectBeaconSubHSM.c</itemPath>
       <itemPath>NavigateToTowerSubHSM.c</itemPath>
+      <itemPath>AlignAndLaunchSubHSM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

@@ -30,6 +30,7 @@
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "BOARD.h"
+#include "motors.h"
 #include "TopLevelHSM.h"
 #include "NavigateToTowerSubHSM.h"
 #include "pins.h"
@@ -46,11 +47,11 @@ typedef enum {
 } NavigateToTowerSubHSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "NavigateToBeacon",
-    "ReorientTowardBeacon",
-    "WallFollow",
-    "AvoidDeadBot",
+	"InitPSubState",
+	"NavigateToBeacon",
+	"ReorientTowardBeacon",
+	"WallFollow",
+	"AvoidDeadBot",
 };
 
 

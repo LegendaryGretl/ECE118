@@ -31,19 +31,21 @@
 #include "ES_Framework.h"
 #include "BOARD.h"
 #include "TopLevelHSM.h"
-#include "WallFollowSubHSM.h"
+#include "DetectBeaconSubHSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    SubFirstState,
-} TemplateSubHSMState_t;
+    LookForBeacon,
+    RandomWalk,
+    GetBackOnCourse,
+} DetectBeaconSubHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"SubFirstState",
+    "InitPSubState",
+    "SubFirstState",
 };
 
 
@@ -60,7 +62,7 @@ static const char *StateNames[] = {
 /* You will need MyPriority and the state variable; you may need others as well.
  * The type of state variable should match that of enum in header file. */
 
-static TemplateSubHSMState_t CurrentState = InitPSubState; // <- change name to match ENUM
+static DetectBeaconSubHSMState_t CurrentState = InitPSubState; // <- change name to match ENUM
 static uint8_t MyPriority;
 
 
@@ -78,12 +80,11 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitWallFollowSubHSM(void)
-{
+uint8_t InitDetectBeaconSubHSM(void) {
     ES_Event returnEvent;
 
     CurrentState = InitPSubState;
-    returnEvent = RunWallFollowSubHSM(INIT_EVENT);
+    returnEvent = RunDetectBeaconSubHSM(INIT_EVENT);
     if (returnEvent.EventType == ES_NO_EVENT) {
         return TRUE;
     }
@@ -105,45 +106,50 @@ uint8_t InitWallFollowSubHSM(void)
  *       not consumed as these need to pass pack to the higher level state machine.
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
-ES_Event RunWallFollowSubHSM(ES_Event ThisEvent)
-{
+ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
-    TemplateSubHSMState_t nextState; // <- change type to correct enum
+    DetectBeaconSubHSMState_t nextState; // <- change type to correct enum
 
     ES_Tattle(); // trace call stack
 
     switch (CurrentState) {
-    case InitPSubState: // If current state is initial Psedudo State
-        if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
-        {
-            // this is where you would put any actions associated with the
-            // transition from the initial pseudo-state into the actual
-            // initial state
+        case InitPSubState: // If current state is initial Psedudo State
+            if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
+            {
+                // this is where you would put any actions associated with the
+                // transition from the initial pseudo-state into the actual
+                // initial state
 
-            // now put the machine into the actual initial state
-            nextState = SubFirstState;
-            makeTransition = TRUE;
-            ThisEvent.EventType = ES_NO_EVENT;
-        }
-        break;
-
-    case SubFirstState: // in the first state, replace this with correct names
-        switch (ThisEvent.EventType) {
-        case ES_NO_EVENT:
-        default: // all unhandled events pass the event back up to the next level
+                // now put the machine into the actual initial state
+                nextState = LookForBeacon;
+                makeTransition = TRUE;
+                ThisEvent.EventType = ES_NO_EVENT;
+            }
             break;
-        }
-        break;
-        
-    default: // all unhandled states fall into here
-        break;
+
+        case LookForBeacon: // in the first state, replace this with correct names
+            switch (ThisEvent.EventType) {
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+            
+        case RandomWalk:
+            break;
+            
+        case GetBackOnCourse:
+            break;
+
+        default: // all unhandled states fall into here
+            break;
     } // end switch on Current State
 
     if (makeTransition == TRUE) { // making a state transition, send EXIT and ENTRY
         // recursively call the current state with an exit event
-        RunWallFollowSubHSM(EXIT_EVENT); // <- rename to your own Run function
+        RunDetectBeaconSubHSM(EXIT_EVENT); // <- rename to your own Run function
         CurrentState = nextState;
-        RunWallFollowSubHSM(ENTRY_EVENT); // <- rename to your own Run function
+        RunDetectBeaconSubHSM(ENTRY_EVENT); // <- rename to your own Run function
     }
 
     ES_Tail(); // trace call stack end

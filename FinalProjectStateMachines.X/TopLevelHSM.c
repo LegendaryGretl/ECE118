@@ -32,7 +32,7 @@
 #include "ES_Framework.h"
 #include "BOARD.h"
 #include "TopLevelHSM.h"
-#include "WallFollowSubHSM.h" //#include all sub state machines called
+#include "DetectBeaconSubHSM.h" //#include all sub state machines called
 /*******************************************************************************
  * PRIVATE #DEFINES                                                            *
  ******************************************************************************/
@@ -45,29 +45,18 @@
 
 typedef enum {
     InitPState,
-    LookForBeacon,
-    RandomWalk,
-    GetBackOnCourse,
-    NavigateToBeacon,
-    WallFollow,
-    AvoidDeadBot,
-    AlignWithHole,
-    ReorientTowardBeacon,
-    LaunchBall,
-    LookForNewBeacon
-} TemplateHSMState_t;
+    DetectBeacon, // detect first beacon
+    NavigateToTower, // navigate to the correct face of the tower
+    AlignAndLaunch, // align with hole, launch ball, and detect next tower
+    DetectNewBeacon, // find a new beacon to travel to
+} TopLevelHSMState_t;
 
 static const char *StateNames[] = {
-    "InitPState",
-    "LookForBeacon",
-    "RandomWalk",
-    "GetBackOnCourse",
-    "NavigateToBeacon",
-    "WallFollow",
-    "AvoidDeadBot",
-    "AlignWithHole",
-    "ReorientTowardBeacon",
-    "LaunchBall",
+	"InitPState",
+	"DetectBeacon",
+	"NavigateToTower",
+	"AlignAndLaunch",
+	"DetectNewBeacon",
 };
 
 
@@ -83,7 +72,7 @@ static const char *StateNames[] = {
 /* You will need MyPriority and the state variable; you may need others as well.
  * The type of state variable should match that of enum in header file. */
 
-static TemplateHSMState_t CurrentState = InitPState; // <- change enum name to match ENUM
+static TopLevelHSMState_t CurrentState = InitPState; // <- change enum name to match ENUM
 static uint8_t MyPriority;
 
 
@@ -143,7 +132,7 @@ uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
 ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
-    TemplateHSMState_t nextState; // <- change type to correct enum
+    TopLevelHSMState_t nextState; // <- change type to correct enum
 
     ES_Tattle(); // trace call stack
 
@@ -155,63 +144,62 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                 // transition from the initial pseudo-state into the actual
                 // initial state
                 // Initialize all sub-state machines
-                InitWallFollowSubHSM();
+                InitDetectBeaconSubHSM();
                 // now put the machine into the actual initial state
-                nextState = LookForBeacon;
+                nextState = DetectBeacon;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
                 ;
             }
             break;
 
-        case LookForBeacon: // in the first state, replace this with correct names
+        case DetectBeacon: // in the first state, replace this with correct names
             // run sub-state machine for this state
             //NOTE: the SubState Machine runs and responds to events before anything in the this
             //state machine does
-            ThisEvent = RunWallFollowSubHSM(ThisEvent);
+            ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:
-                    nextState = NavigateToBeacon;
-                case ES_TURN_COMPLETE:
-                    nextState = RandomWalk;
+                    makeTransition = TRUE;
+                    nextState = NavigateToTower;
                 default:
                     break;
             }
             break;
 
-        case RandomWalk:
-            switch(ThisEvent.EventType){
-                case ES_BEACON_DETECTED:
-                    nextState = NavigateToBeacon;
-                case ES_TAPE_DETECTED:
-                    nextState = GetBackOnCourse;
+        case NavigateToTower:
+            switch (ThisEvent.EventType) {
+                case ES_TRACK_WIRE_DETECTED:
+                    makeTransition = TRUE;
+                    nextState = AlignAndLaunch;
+                    break;
+                default:
+                    break;
             }
             break;
 
-        case GetBackOnCourse:
+        case AlignAndLaunch:
+            switch (ThisEvent.EventType) {
+                case ES_RC_SERVO_STRIKE_COMPLETE:
+                    makeTransition = TRUE;
+                    nextState = DetectNewBeacon;
+                    break;
+                default:
+                    break;
+            }
             break;
 
-        case NavigateToBeacon:
+        case DetectNewBeacon:
+            switch (ThisEvent.EventType) {
+                case ES_BEACON_DETECTED:
+                    makeTransition = TRUE;
+                    nextState = NavigateToTower;
+                    break;
+                default:
+                    break;
+            }
             break;
 
-        case ReorientTowardBeacon:
-            break;
-
-        case WallFollow:
-            break;
-
-        case AvoidDeadBot:
-            break;
-
-        case AlignWithHole:
-            break;
-
-        case LaunchBall:
-            break;
-
-        case LookForNewBeacon:
-            break;
-            
         default: // all unhandled states fall into here
             break;
     } // end switch on Current State

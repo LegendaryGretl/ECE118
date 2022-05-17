@@ -32,7 +32,7 @@
       <itemPath>../ECE118_library/component libraries/RCServoService.h</itemPath>
       <itemPath>ES_Configure.h</itemPath>
       <itemPath>TopLevelHSM.h</itemPath>
-      <itemPath>WallFollowSubHSM.h</itemPath>
+      <itemPath>DetectBeaconSubHSM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -63,7 +63,7 @@
       <itemPath>../ECE118_library/component libraries/SensorEventChecker.c</itemPath>
       <itemPath>ES_Main.c</itemPath>
       <itemPath>TopLevelHSM.c</itemPath>
-      <itemPath>WallFollowSubHSM.c</itemPath>
+      <itemPath>DetectBeaconSubHSM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

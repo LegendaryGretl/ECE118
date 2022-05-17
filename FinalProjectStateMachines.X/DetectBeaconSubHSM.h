@@ -17,8 +17,8 @@
  * Updated on 16/Sep/2013
  */
 
-#ifndef WALL_FOLLOW_HSM_H  // <- This should be changed to your own guard on both
-#define WALL_FOLLOW_HSM_H  //    of these lines
+#ifndef DETECT_BEACON_HSM_H  // <- This should be changed to your own guard on both
+#define DETECT_BEACON_HSM_H  //    of these lines
 
 
 /*******************************************************************************
@@ -51,7 +51,7 @@
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitWallFollowSubHSM(void);
+uint8_t InitDetectBeaconSubHSM(void);
 
 /**
  * @Function RunTemplateSubHSM(ES_Event ThisEvent)
@@ -68,7 +68,7 @@ uint8_t InitWallFollowSubHSM(void);
  *       not consumed as these need to pass pack to the higher level state machine.
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
-ES_Event RunWallFollowSubHSM(ES_Event ThisEvent);
+ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent);
 
-#endif /* WALL_FOLLOW_HSM_Template_H */
+#endif /* DETECT_BEACON_HSM_Template_H */
 

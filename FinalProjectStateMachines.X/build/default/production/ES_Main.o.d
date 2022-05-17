@@ -15,7 +15,10 @@ build/default/production/ES_Main.o: ES_Main.c \
  ../ECE118_library/component\ libraries/MotorEncoderService.h \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
  ../ECE118_library/component\ libraries/RCServoService.h \
- ../ECE118_library/include/ES_TattleTale.h
+ ../ECE118_library/include/ES_TattleTale.h \
+ ../ECE118_library/component\ libraries/motors.h \
+ ../ECE118_library/include/pwm.h ../ECE118_library/include/AD.h \
+ ../ECE118_library/include/RC_Servo.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -58,3 +61,11 @@ ES_Configure.h:
 ../ECE118_library/component\ libraries/RCServoService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
+
+../ECE118_library/component\ libraries/motors.h:
+
+../ECE118_library/include/pwm.h:
+
+../ECE118_library/include/AD.h:
+
+../ECE118_library/include/RC_Servo.h:

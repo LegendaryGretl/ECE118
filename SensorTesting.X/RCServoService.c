@@ -35,6 +35,7 @@
 #define BATTERY_DISCONNECT_THRESHOLD 175
 #define MIN_RC_ANGLE MINPULSE
 #define MAX_RC_ANGLE MAXPULSE
+#define MOVEMENT_TIME 1000
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -130,7 +131,7 @@ ES_Event RunRCServoService(ES_Event ThisEvent) {
 
         case ES_RC_SERVO_STRIKE_START:
             RC_SetPulseTime(RC_SERVO_PIN, MAX_RC_ANGLE);
-            ES_Timer_InitTimer(RC_SERVO_TIMER, 1000);
+            ES_Timer_InitTimer(RC_SERVO_TIMER, MOVEMENT_TIME);
             break;
 
         case ES_TIMEOUT:

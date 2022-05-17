@@ -23,6 +23,8 @@ int main(void) {
 
     BOARD_Init();
     RC_Init();
+    
+    printf("RC Servo Testing, complied on %s %s\r\n", __DATE__, __TIME__);
 
     RC_AddPins(RC_SERVO_PIN);
 

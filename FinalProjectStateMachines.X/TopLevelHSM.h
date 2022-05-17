@@ -66,8 +66,6 @@ uint8_t InitTopLevelHSM(uint8_t Priority);
 uint8_t PostTopLevelHSM(ES_Event ThisEvent);
 
 
-
-
 /**
  * @Function RunTemplateHSM(ES_Event ThisEvent)
  * @param ThisEvent - the event (type and param) to be responded.

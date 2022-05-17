@@ -76,6 +76,7 @@ typedef enum {
     ES_GET_PING_SENSOR_DISTANCE, // activates ping sensor 
     ES_RC_SERVO_STRIKE_START, // sets off the RC servo to hit a ping pong ball
     ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted
+    ES_TURN_COMPLETE, // the bot has finished turning without being interrupted
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 

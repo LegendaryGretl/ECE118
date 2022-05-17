@@ -45,12 +45,29 @@
 
 typedef enum {
     InitPState,
-    FirstState,
+    LookForBeacon,
+    RandomWalk,
+    GetBackOnCourse,
+    NavigateToBeacon,
+    WallFollow,
+    AvoidDeadBot,
+    AlignWithHole,
+    ReorientTowardBeacon,
+    LaunchBall,
+    LookForNewBeacon
 } TemplateHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPState",
-	"FirstState",
+    "InitPState",
+    "LookForBeacon",
+    "RandomWalk",
+    "GetBackOnCourse",
+    "NavigateToBeacon",
+    "WallFollow",
+    "AvoidDeadBot",
+    "AlignWithHole",
+    "ReorientTowardBeacon",
+    "LaunchBall",
 };
 
 
@@ -84,8 +101,7 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitTopLevelHSM(uint8_t Priority)
-{
+uint8_t InitTopLevelHSM(uint8_t Priority) {
     MyPriority = Priority;
     // put us into the Initial PseudoState
     CurrentState = InitPState;
@@ -106,8 +122,7 @@ uint8_t InitTopLevelHSM(uint8_t Priority)
  *        be posted to. Remember to rename to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t PostTopLevelHSM(ES_Event ThisEvent)
-{
+uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
     return ES_PostToService(MyPriority, ThisEvent);
 }
 
@@ -126,50 +141,86 @@ uint8_t PostTopLevelHSM(ES_Event ThisEvent)
  *       not consumed as these need to pass pack to the higher level state machine.
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
-ES_Event RunTopLevelHSM(ES_Event ThisEvent)
-{
+ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     TemplateHSMState_t nextState; // <- change type to correct enum
 
     ES_Tattle(); // trace call stack
 
     switch (CurrentState) {
-    case InitPState: // If current state is initial Pseudo State
-        if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
-        {
-            // this is where you would put any actions associated with the
-            // transition from the initial pseudo-state into the actual
-            // initial state
-            // Initialize all sub-state machines
-            InitTemplateSubHSM();
-            // now put the machine into the actual initial state
-            nextState = FirstState;
-            makeTransition = TRUE;
-            ThisEvent.EventType = ES_NO_EVENT;
-            ;
-        }
-        break;
-
-    case FirstState: // in the first state, replace this with correct names
-        // run sub-state machine for this state
-        //NOTE: the SubState Machine runs and responds to events before anything in the this
-        //state machine does
-        ThisEvent = RunTemplateSubHSM(ThisEvent);
-        switch (ThisEvent.EventType) {
-        case ES_NO_EVENT:
-        default:
+        case InitPState: // If current state is initial Pseudo State
+            if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
+            {
+                // this is where you would put any actions associated with the
+                // transition from the initial pseudo-state into the actual
+                // initial state
+                // Initialize all sub-state machines
+                InitWallFollowSubHSM();
+                // now put the machine into the actual initial state
+                nextState = LookForBeacon;
+                makeTransition = TRUE;
+                ThisEvent.EventType = ES_NO_EVENT;
+                ;
+            }
             break;
-        }
-        break;
-    default: // all unhandled states fall into here
-        break;
+
+        case LookForBeacon: // in the first state, replace this with correct names
+            // run sub-state machine for this state
+            //NOTE: the SubState Machine runs and responds to events before anything in the this
+            //state machine does
+            ThisEvent = RunWallFollowSubHSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_BEACON_DETECTED:
+                    nextState = NavigateToBeacon;
+                case ES_TURN_COMPLETE:
+                    nextState = RandomWalk;
+                default:
+                    break;
+            }
+            break;
+
+        case RandomWalk:
+            switch(ThisEvent.EventType){
+                case ES_BEACON_DETECTED:
+                    nextState = NavigateToBeacon;
+                case ES_TAPE_DETECTED:
+                    nextState = GetBackOnCourse;
+            }
+            break;
+
+        case GetBackOnCourse:
+            break;
+
+        case NavigateToBeacon:
+            break;
+
+        case ReorientTowardBeacon:
+            break;
+
+        case WallFollow:
+            break;
+
+        case AvoidDeadBot:
+            break;
+
+        case AlignWithHole:
+            break;
+
+        case LaunchBall:
+            break;
+
+        case LookForNewBeacon:
+            break;
+            
+        default: // all unhandled states fall into here
+            break;
     } // end switch on Current State
 
     if (makeTransition == TRUE) { // making a state transition, send EXIT and ENTRY
         // recursively call the current state with an exit event
-        RunTopLevelHSM(EXIT_EVENT); // <- rename to your own Run function
+        RunTopLevelHSM(EXIT_EVENT);
         CurrentState = nextState;
-        RunTopLevelHSM(ENTRY_EVENT); // <- rename to your own Run function
+        RunTopLevelHSM(ENTRY_EVENT);
     }
 
     ES_Tail(); // trace call stack end

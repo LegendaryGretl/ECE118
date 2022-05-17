@@ -31,7 +31,8 @@
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define TICKS_PER_ROTATION 408
+#define TICKS_PER_WHEEL_ROTATION 408
+#define WHEEL_ROTATION_FOR_360_BOT_TURN 1525
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -122,19 +123,19 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
             break;
 
         case ES_TURN_LEFT_MOTOR_N_DEGREES:
-            left_motor_ticks = (TICKS_PER_ROTATION * (int) ThisEvent.EventParam) / 360;
+            left_motor_ticks = (TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam) / 360;
             break;
 
         case ES_TURN_LEFT_MOTOR_N_ROTATIONS:
-            left_motor_ticks = TICKS_PER_ROTATION * (int) ThisEvent.EventParam;
+            left_motor_ticks = TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam;
             break;
 
         case ES_TURN_RIGHT_MOTOR_N_DEGREES:
-            right_motor_ticks = (TICKS_PER_ROTATION * (int) ThisEvent.EventParam) / 360;
+            right_motor_ticks = (TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam) / 360;
             break;
 
         case ES_TURN_RIGHT_MOTOR_N_ROTATIONS:
-            right_motor_ticks = TICKS_PER_ROTATION * (int) ThisEvent.EventParam;
+            right_motor_ticks = TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam;
             break;
 
         case ES_ENCODER_PULSE_DETECTED:

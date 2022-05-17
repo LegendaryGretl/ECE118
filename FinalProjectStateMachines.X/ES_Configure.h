@@ -76,7 +76,7 @@ typedef enum {
     ES_GET_PING_SENSOR_DISTANCE, // activates ping sensor 
     ES_RC_SERVO_STRIKE_START, // sets off the RC servo to hit a ping pong ball
     ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted
-    ES_TURN_COMPLETE, // the bot has finished turning without being interrupted
+    ES_BACK_ON_COURSE, // the bot has avoided the tape
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -114,7 +114,7 @@ static const char *EventNames[] = {
 	"ES_GET_PING_SENSOR_DISTANCE",
 	"ES_RC_SERVO_STRIKE_START",
 	"ES_RC_SERVO_STRIKE_COMPLETE",
-	"ES_TURN_COMPLETE",
+	"ES_BACK_ON_COURSE",
 	"NUMBEROFEVENTS",
 };
 

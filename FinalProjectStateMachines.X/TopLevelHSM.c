@@ -153,10 +153,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case DetectBeacon: // in the first state, replace this with correct names
-            // run sub-state machine for this state
-            //NOTE: the SubState Machine runs and responds to events before anything in the this
-            //state machine does
+        case DetectBeacon: // point bot in the direct of a beacon
             ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:
@@ -167,7 +164,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case NavigateToTower:
+        case NavigateToTower: // get bot on the correct face of a tower
+            //ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_TRACK_WIRE_DETECTED:
                     makeTransition = TRUE;
@@ -178,7 +176,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case AlignAndLaunch:
+        case AlignAndLaunch: // align shooter with hole and launch ball
+            //ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_RC_SERVO_STRIKE_COMPLETE:
                     makeTransition = TRUE;
@@ -189,7 +188,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case DetectNewBeacon:
+        case DetectNewBeacon: // point away from current beacon and look for a new one
+            //ThisEven = RunDetectNewBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:
                     makeTransition = TRUE;

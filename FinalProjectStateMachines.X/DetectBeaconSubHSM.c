@@ -32,6 +32,7 @@
 #include "BOARD.h"
 #include "TopLevelHSM.h"
 #include "DetectBeaconSubHSM.h"
+#include "motors.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -44,8 +45,10 @@ typedef enum {
 } DetectBeaconSubHSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "SubFirstState",
+	"InitPSubState",
+	"LookForBeacon",
+	"RandomWalk",
+	"GetBackOnCourse",
 };
 
 
@@ -127,18 +130,79 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case LookForBeacon: // in the first state, replace this with correct names
+        case LookForBeacon: // make a 360 turn to look for beacon
             switch (ThisEvent.EventType) {
+                case ES_ENTRY: // start a 360 degree turn
+                    break;
+                case ES_TAPE_DETECTED: // avoid tape and return to field
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    nextState = RandomWalk;
+                    makeTransition = TRUE;
+                    break;
+                case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    CurrentState = LookForBeacon;
+                    return ThisEvent;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE: // beacon not detected during 360 turn
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    nextState = RandomWalk;
+                    makeTransition = TRUE;
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
             }
             break;
-            
-        case RandomWalk:
+
+        case RandomWalk: // go forward to find a beacon
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY: // drive forward for some amount of time
+                    break;
+                case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    CurrentState = LookForBeacon;
+                    return ThisEvent;
+                    break;
+                case ES_TAPE_DETECTED: // avoid tape and return to field
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    nextState = RandomWalk;
+                    makeTransition = TRUE;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE: // stop motors and start a new 360 turn to look for a beacon
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    nextState = LookForBeacon;
+                    makeTransition = TRUE;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
             break;
-            
-        case GetBackOnCourse:
+
+        case GetBackOnCourse: // avoid tape, return to field
+            //ThisEvent = RunGetBackOnCourse(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_BACK_ON_COURSE: // bot has safely returned to the field
+                    nextState = LookForBeacon;
+                    makeTransition = TRUE;
+                    break;
+                case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
+                    SetLeftMotorSpeed(0);
+                    SetRightMotorSpeed(0);
+                    CurrentState = LookForBeacon;
+                    return ThisEvent;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
             break;
 
         default: // all unhandled states fall into here

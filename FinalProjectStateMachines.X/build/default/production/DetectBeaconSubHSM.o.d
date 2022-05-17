@@ -15,7 +15,8 @@ build/default/production/DetectBeaconSubHSM.o: DetectBeaconSubHSM.c \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
  ../ECE118_library/component\ libraries/RCServoService.h \
  ../ECE118_library/include/ES_TattleTale.h \
- ../ECE118_library/include/BOARD.h TopLevelHSM.h DetectBeaconSubHSM.h
+ ../ECE118_library/include/BOARD.h TopLevelHSM.h DetectBeaconSubHSM.h \
+ ../ECE118_library/component\ libraries/motors.h
 
 ES_Configure.h:
 
@@ -62,3 +63,5 @@ ES_Configure.h:
 TopLevelHSM.h:
 
 DetectBeaconSubHSM.h:
+
+../ECE118_library/component\ libraries/motors.h:

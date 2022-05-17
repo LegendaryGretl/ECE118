@@ -33,6 +33,7 @@
       <itemPath>ES_Configure.h</itemPath>
       <itemPath>TopLevelHSM.h</itemPath>
       <itemPath>DetectBeaconSubHSM.h</itemPath>
+      <itemPath>NavigateToTowerSubHSM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -64,6 +65,7 @@
       <itemPath>ES_Main.c</itemPath>
       <itemPath>TopLevelHSM.c</itemPath>
       <itemPath>DetectBeaconSubHSM.c</itemPath>
+      <itemPath>NavigateToTowerSubHSM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -193,7 +195,7 @@
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-cross-reference-file" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="heap-size" value=""/>
+        <property key="heap-size" value="10"/>
         <property key="input-libraries" value=""/>
         <property key="kseg-length" value=""/>
         <property key="kseg-origin" value=""/>
@@ -726,6 +728,9 @@
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>
         <property key="codecoverage.outputfile" value=""/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="lastid" value=""/>
         <property key="oscillator.auxfrequency" value="120"/>
         <property key="oscillator.auxfrequencyunit" value="Mega"/>
         <property key="oscillator.frequency" value="1"/>

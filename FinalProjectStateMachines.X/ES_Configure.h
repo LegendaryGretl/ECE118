@@ -15,27 +15,17 @@
 #ifndef CONFIGURE_H
 #define CONFIGURE_H
 
-//#include "RCServoService.h"
-
-
-//#include "PingSensorService.h"
-
-
-//#include "TapeSensorService.h"
-//#include "ReadSensorService.h"
-
-
 
 //defines for keyboard input
-//#define USE_KEYBOARD_INPUT
+#define USE_KEYBOARD_INPUT
 //What State machine are we testing
-//#define POSTFUNCTION_FOR_KEYBOARD_INPUT PostGenericService
+#define POSTFUNCTION_FOR_KEYBOARD_INPUT PostTopLevelHSM
 
 //define for TattleTale
 #define USE_TATTLETALE
 
 //uncomment to supress the entry and exit events
-//#define SUPPRESS_EXIT_ENTRY_IN_TATTLE
+#define SUPPRESS_EXIT_ENTRY_IN_TATTLE
 
 /****************************************************************************/
 // Name/define the events of interest
@@ -77,45 +67,46 @@ typedef enum {
     ES_RC_SERVO_STRIKE_START, // sets off the RC servo to hit a ping pong ball
     ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted
     ES_BACK_ON_COURSE, // the bot has avoided the tape
+    ES_DEAD_BOT_AVOIDED, // the bot has successfully gone around the dead bot
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
 static const char *EventNames[] = {
-	"ES_NO_EVENT",
-	"ES_ERROR",
-	"ES_INIT",
-	"ES_ENTRY",
-	"ES_EXIT",
-	"ES_KEYINPUT",
-	"ES_LISTEVENTS",
-	"ES_TIMEOUT",
-	"ES_TIMERACTIVE",
-	"ES_TIMERSTOPPED",
-	"BATTERY_CONNECTED",
-	"BATTERY_DISCONNECTED",
-	"ES_TAPE_DETECTED",
-	"ES_NO_TAPE_DETECTED",
-	"ES_READ_TAPE_SENSOR",
-	"ES_BEACON_DETECTED",
-	"ES_NO_BEACON_DETECTED",
-	"ES_TRACK_WIRE_DETECTED",
-	"ES_NO_TRACK_WIRE_DETECTED",
-	"ES_ENCODER_PULSE_DETECTED",
-	"ES_ENCODER_PULSE_LOW",
-	"ES_TURN_LEFT_MOTOR_N_DEGREES",
-	"ES_TURN_LEFT_MOTOR_N_ROTATIONS",
-	"ES_TURN_RIGHT_MOTOR_N_DEGREES",
-	"ES_TURN_RIGHT_MOTOR_N_ROTATIONS",
-	"ES_MOTOR_ROTATION_COMPLETE",
-	"ES_BUMPER_HIT",
-	"ES_BUMPER_RELEASED",
-	"ES_PING_SENSOR_PULSE_HIGH",
-	"ES_PING_SENSOR_PULSE_LOW",
-	"ES_GET_PING_SENSOR_DISTANCE",
-	"ES_RC_SERVO_STRIKE_START",
-	"ES_RC_SERVO_STRIKE_COMPLETE",
-	"ES_BACK_ON_COURSE",
-	"NUMBEROFEVENTS",
+    "ES_NO_EVENT",
+    "ES_ERROR",
+    "ES_INIT",
+    "ES_ENTRY",
+    "ES_EXIT",
+    "ES_KEYINPUT",
+    "ES_LISTEVENTS",
+    "ES_TIMEOUT",
+    "ES_TIMERACTIVE",
+    "ES_TIMERSTOPPED",
+    "BATTERY_CONNECTED",
+    "BATTERY_DISCONNECTED",
+    "ES_TAPE_DETECTED",
+    "ES_NO_TAPE_DETECTED",
+    "ES_READ_TAPE_SENSOR",
+    "ES_BEACON_DETECTED",
+    "ES_NO_BEACON_DETECTED",
+    "ES_TRACK_WIRE_DETECTED",
+    "ES_NO_TRACK_WIRE_DETECTED",
+    "ES_ENCODER_PULSE_DETECTED",
+    "ES_ENCODER_PULSE_LOW",
+    "ES_TURN_LEFT_MOTOR_N_DEGREES",
+    "ES_TURN_LEFT_MOTOR_N_ROTATIONS",
+    "ES_TURN_RIGHT_MOTOR_N_DEGREES",
+    "ES_TURN_RIGHT_MOTOR_N_ROTATIONS",
+    "ES_MOTOR_ROTATION_COMPLETE",
+    "ES_BUMPER_HIT",
+    "ES_BUMPER_RELEASED",
+    "ES_PING_SENSOR_PULSE_HIGH",
+    "ES_PING_SENSOR_PULSE_LOW",
+    "ES_GET_PING_SENSOR_DISTANCE",
+    "ES_RC_SERVO_STRIKE_START",
+    "ES_RC_SERVO_STRIKE_COMPLETE",
+    "ES_BACK_ON_COURSE",
+    "NUMBEROFEVENTS",
 };
 
 

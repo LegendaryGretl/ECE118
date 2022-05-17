@@ -31,24 +31,26 @@
 #include "ES_Framework.h"
 #include "BOARD.h"
 #include "TopLevelHSM.h"
-#include "DetectBeaconSubHSM.h"
-#include "motors.h"
+#include "NavigateToTowerSubHSM.h"
+#include "pins.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    LookForBeacon,
-    RandomWalk,
-    GetBackOnCourse,
-} DetectBeaconSubHSMState_t;
+    NavigateToBeacon,
+    ReorientTowardBeacon,
+    WallFollow,
+    AvoidDeadBot,
+} NavigateToTowerSubHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"LookForBeacon",
-	"RandomWalk",
-	"GetBackOnCourse",
+    "InitPSubState",
+    "NavigateToBeacon",
+    "ReorientTowardBeacon",
+    "WallFollow",
+    "AvoidDeadBot",
 };
 
 
@@ -65,7 +67,7 @@ static const char *StateNames[] = {
 /* You will need MyPriority and the state variable; you may need others as well.
  * The type of state variable should match that of enum in header file. */
 
-static DetectBeaconSubHSMState_t CurrentState = InitPSubState; // <- change name to match ENUM
+static NavigateToTowerSubHSMState_t CurrentState = InitPSubState; // <- change name to match ENUM
 static uint8_t MyPriority;
 
 
@@ -83,11 +85,11 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitDetectBeaconSubHSM(void) {
+uint8_t InitNavigateToTowerSubHSM(void) {
     ES_Event returnEvent;
 
     CurrentState = InitPSubState;
-    returnEvent = RunDetectBeaconSubHSM(INIT_EVENT);
+    returnEvent = RunNavigateToTowerSubHSM(INIT_EVENT);
     if (returnEvent.EventType == ES_NO_EVENT) {
         return TRUE;
     }
@@ -109,9 +111,11 @@ uint8_t InitDetectBeaconSubHSM(void) {
  *       not consumed as these need to pass pack to the higher level state machine.
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
-ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
+ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
-    DetectBeaconSubHSMState_t nextState; // <- change type to correct enum
+    NavigateToTowerSubHSMState_t nextState; // <- change type to correct enum
+    static int wiggle_direction = 1; // can be 0 or 1
+    static int wiggle_amount = 5; // turn amount in degrees
 
     ES_Tattle(); // trace call stack
 
@@ -124,32 +128,26 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                 // initial state
 
                 // now put the machine into the actual initial state
-                nextState = LookForBeacon;
+                nextState = NavigateToBeacon;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
             }
             break;
 
-        case LookForBeacon: // make a 360 turn to look for beacon
+        case NavigateToBeacon: // Drive towards the beacon
             switch (ThisEvent.EventType) {
-                case ES_ENTRY: // start a 360 degree turn
+                case ES_ENTRY: // drive bot forwards
+                    SetLeftMotorSpeed(100);
+                    SetRightMotorSpeed(100);
                     break;
-                case ES_TAPE_DETECTED: // avoid tape and return to field
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    nextState = GetBackOnCourse;
+                case ES_NO_BEACON_DETECTED: // transition to reorienting to beacon
+                    // stop robot
+                    nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;
-                case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    CurrentState = LookForBeacon;
-                    return ThisEvent;
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE: // beacon not detected during 360 turn
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    nextState = RandomWalk;
+                case ES_BUMPER_HIT:
+                    // stop robot
+                    nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
@@ -158,26 +156,34 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case RandomWalk: // go forward to find a beacon
+        case ReorientTowardBeacon: // wiggle back and forth to look for beacon
             switch (ThisEvent.EventType) {
-                case ES_ENTRY: // drive forward for some amount of time
+                case ES_ENTRY: // init wiggle
+                    wiggle_direction = 1;
+                    wiggle_amount = 5;
+                    // tank turn left wiggle amount
                     break;
-                case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    CurrentState = LookForBeacon;
-                    return ThisEvent;
-                    break;
-                case ES_TAPE_DETECTED: // avoid tape and return to field
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    nextState = RandomWalk;
+                case ES_BEACON_DETECTED: // stop wiggle and return to beacon navigation
+                    // stop robot
+                    wiggle_direction = 1;
+                    wiggle_amount = 0;
+                    nextState = NavigateToBeacon;
                     makeTransition = TRUE;
                     break;
-                case ES_MOTOR_ROTATION_COMPLETE: // stop motors and start a new 360 turn to look for a beacon
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    nextState = LookForBeacon;
+                case ES_MOTOR_ROTATION_COMPLETE: // wiggle in opposite direction with increasing angle
+                    wiggle_direction ^= 1;
+                    if (wiggle_direction == 1) {
+                        wiggle_amount += 5;
+                        // tank turn left 2 * wiggle amount
+                    } else {
+                        // tank turn right 2 * wiggle amount
+                    }
+                    break;
+                case ES_BUMPER_HIT: // investigate bumper collision
+                    // stop robot
+                    wiggle_direction = 1;
+                    wiggle_amount = 0;
+                    nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
@@ -186,18 +192,35 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
             }
             break;
 
-        case GetBackOnCourse: // avoid tape, return to field
-            //ThisEvent = RunGetBackOnCourseFSM(ThisEvent);
+        case WallFollow: // follow along wall of tower until track wire is detected
+            //ThisEvent = RunWallFollowFSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_BACK_ON_COURSE: // bot has safely returned to the field
-                    nextState = LookForBeacon;
+                case ES_TRACK_WIRE_DETECTED: // check for both detectors, the exit to align sub hsm
+                    if (ThisEvent.EventParam == 0b11) {
+                        CurrentState = NavigateToBeacon;
+                        return ThisEvent;
+                        break;
+                    } else{
+                        ThisEvent.EventType = ES_NO_EVENT;
+                    }
+                    break;
+                case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
+                    nextState = AvoidDeadBot;
                     makeTransition = TRUE;
                     break;
-                case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    CurrentState = LookForBeacon;
-                    return ThisEvent;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case AvoidDeadBot: // go around dead bot and try to find the beacon again
+            //ThisEvent = AvoidDeadBotFSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_DEAD_BOT_AVOIDED:
+                    nextState = NavigateToBeacon;
+                    makeTransition = TRUE;
+                    break;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -211,9 +234,9 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
 
     if (makeTransition == TRUE) { // making a state transition, send EXIT and ENTRY
         // recursively call the current state with an exit event
-        RunDetectBeaconSubHSM(EXIT_EVENT); // <- rename to your own Run function
+        RunNavigateToTowerSubHSM(EXIT_EVENT); // <- rename to your own Run function
         CurrentState = nextState;
-        RunDetectBeaconSubHSM(ENTRY_EVENT); // <- rename to your own Run function
+        RunNavigateToTowerSubHSM(ENTRY_EVENT); // <- rename to your own Run function
     }
 
     ES_Tail(); // trace call stack end

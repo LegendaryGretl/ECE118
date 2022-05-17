@@ -199,15 +199,15 @@ ES_Event RunReadSensorService(ES_Event ThisEvent) {
                 ES_Timer_StopTimer(READ_SENSOR_TIMER);
                 SetLeftMotorSpeed(0);
                 SetRightMotorSpeed(0);
-                ReturnEvent.EventType = ES_RC_SERVO_STRIKE_START;
-                ReturnEvent.EventParam = 10;
-                PostRCServoService(ReturnEvent);
             }
             if (ThisEvent.EventParam & BUMPER_FFL_MASK) {
                 ES_Timer_StopTimer(READ_SENSOR_TIMER);
                 SetLeftMotorSpeed(50);
                 SetRightMotorSpeed(50);
             }
+            ReturnEvent.EventType = ES_RC_SERVO_STRIKE_START;
+            ReturnEvent.EventParam = 10;
+            PostRCServoService(ReturnEvent);
             printf("\r\nBumper hit: %x", ThisEvent.EventParam);
             break;
 

@@ -108,7 +108,6 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
     /********************************************
      in here you write your service code
      *******************************************/
-    ES_EventTyp_t curEvent;
     static int left_motor_ticks = -1;
     static int right_motor_ticks = -1;
 

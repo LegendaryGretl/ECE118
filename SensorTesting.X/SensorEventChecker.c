@@ -92,13 +92,12 @@ uint8_t CheckTrackWire(void) {
     ES_Event thisEvent;
     uint8_t returnVal = FALSE;
 
-    //printf("track wire: %d %d", TRACK_WIRE_SENSOR_LEFT, TRACK_WIRE_SENSOR_RIGHT);
-
     // the returned event will indicate whether or not the track wire has been
     // detected, with the parameter indicating which side the track wire was 
     // detected on
     int left_voltage_level = (3300 * AD_ReadADPin(TRACK_WIRE_SENSOR_LEFT)) / 1023;
     int right_voltage_level = (3300 * AD_ReadADPin(TRACK_WIRE_SENSOR_RIGHT)) / 1023;
+    
     if (left_voltage_level < TRACK_WIRE_DETECTED_LOGIC_HIGH) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b10;

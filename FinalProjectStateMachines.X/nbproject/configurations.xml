@@ -261,10 +261,6 @@
         <property key="stack-smashing" value=""/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
-      <item path="RobotMovementService.c" ex="true" overriding="false">
-      </item>
-      <item path="RobotMovementService.h" ex="true" overriding="false">
-      </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>

@@ -33,7 +33,6 @@
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
 #define TICKS_PER_WHEEL_ROTATION 408
-#define WHEEL_ROTATION_FOR_360_BOT_TURN 1525
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *

@@ -41,7 +41,6 @@
  * MODULE #DEFINES                                                             *
  ******************************************************************************/
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define BEACON_DETECTED_LOGIC_LEVEL 0
 #define TRACK_WIRE_DETECTED_LOGIC_HIGH 2000 // units: mV
 #define TRACK_WIRE_DETECTED_LOGIC_LOW 1300 
 
@@ -137,7 +136,7 @@ uint8_t CheckBeacon(void) {
     uint8_t returnVal = FALSE;
 
     // returned event will indicate if beacon is detected or not
-    if (BEACON_DETECTOR == BEACON_DETECTED_LOGIC_LEVEL) {
+    if (BEACON_DETECTOR == 0) {
         curEvent = ES_BEACON_DETECTED;
     }
 

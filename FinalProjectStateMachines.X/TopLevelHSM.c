@@ -186,6 +186,9 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 #endif
 #ifdef TEST_SENSOR_INTEGRATION
             switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    SetLeftMotorSpeed(100);
+                    SetRightMotorSpeed(100);
                 case ES_BEACON_DETECTED:
                     printf("\r\nBeacon Detected");
                     break;
@@ -199,7 +202,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     printf("\r\nTrack Wire Not Detected: %x", ThisEvent.EventParam);
                     break;
                 case ES_TAPE_DETECTED:
-                    printf("\r\nTape Detected -- ");
+                    printf("\r\nTape Detected -- %x", ThisEvent.EventParam);
                     if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
                         printf("Bottom Tape Sensors: %x", ThisEvent.EventParam & BOTTOM_TAPE_SENSORS);
                     }

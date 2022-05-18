@@ -32,6 +32,8 @@
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
 #define STOP_TIME 500
+#define WHEEL_ROTATION_FOR_360_BOT_TURN 1525
+#define TICKS_PER_WHEEL_ROTATION 408
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -111,7 +113,6 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
      *******************************************/
 
     ES_EventTyp_t curEvent;
-    uint16_t batVoltage = AD_ReadADPin(BAT_VOLTAGE); // read the battery voltage
 
     switch (ThisEvent.EventType) {
         case ES_INIT:
@@ -144,6 +145,38 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
             break;
 
+        case ES_MOVE_BOT_TANK_TURN_LEFT:
+            // Stop the bot for 1/2 second, then start turn
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
+        case ES_MOVE_BOT_TANK_TURN_RIGHT:
+            // Stop the bot for 1/2 second, then start turn
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
+        case ES_MOVE_BOT_GRADUAL_TURN_LEFT:
+            // Stop the bot for 1/2 second, then start turn
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
+        case ES_MOVE_BOT_GRADUAL_TURN_RIGHT:
+            // Stop the bot for 1/2 second, then start turn
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
         case ES_TIMERACTIVE:
         case ES_TIMERSTOPPED:
             break;
@@ -152,30 +185,87 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             if (ThisEvent.EventParam != ROBOT_MOVEMENT_TIMER) {
                 break;
             }
+            int rotation_ticks;
             switch (lastEvent.EventType) {
                 case ES_MOVE_BOT_DRIVE_FORWARDS:
                     SetCalibratedLeftMotorSpeed(100);
                     SetCalibratedRightMotorSpeed(100);
                     if (ThisEvent.EventParam > 0) {
-                        ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
-                        ReturnEvent.EventParam = ThisEvent.EventParam;
-                        PostMotorEncoderService(ReturnEvent);
-                        ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
-                        ReturnEvent.EventParam = ThisEvent.EventParam;
-                        PostMotorEncoderService(ReturnEvent);
+                        rotation_ticks = lastEvent.EventParam;
+                    } else {
+                        rotation_ticks = 10;
                     }
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_DRIVE_BACKWARDS:
                     SetCalibratedLeftMotorSpeed(-100);
                     SetCalibratedRightMotorSpeed(-100);
                     if (ThisEvent.EventParam > 0) {
-                        ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
-                        ReturnEvent.EventParam = ThisEvent.EventParam;
-                        PostMotorEncoderService(ReturnEvent);
-                        ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
-                        ReturnEvent.EventParam = ThisEvent.EventParam;
-                        PostMotorEncoderService(ReturnEvent);
+                        rotation_ticks = lastEvent.EventParam;
+                    } else {
+                        rotation_ticks = 10;
                     }
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
+                case ES_MOVE_BOT_TANK_TURN_LEFT:
+                    SetCalibratedLeftMotorSpeed(-100);
+                    SetCalibratedRightMotorSpeed(100);
+                    rotation_ticks = (WHEEL_ROTATION_FOR_360_BOT_TURN * lastEvent.EventParam) / 360;
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_DEGREES;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
+                case ES_MOVE_BOT_TANK_TURN_RIGHT:
+                    SetCalibratedLeftMotorSpeed(100);
+                    SetCalibratedRightMotorSpeed(-100);
+                    rotation_ticks = (WHEEL_ROTATION_FOR_360_BOT_TURN * lastEvent.EventParam) / 360;
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_DEGREES;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
+                case ES_MOVE_BOT_GRADUAL_TURN_LEFT:
+                    if (lastEvent.EventParam) { // drive forwards
+                        SetCalibratedLeftMotorSpeed(80);
+                        SetCalibratedRightMotorSpeed(100);
+                    } else { // drive backwards
+                        SetCalibratedLeftMotorSpeed(-80);
+                        SetCalibratedRightMotorSpeed(-100);
+                    }
+                    rotation_ticks = 10;
+                    // limit drive amount to 10 wheel rotations
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
+                case ES_MOVE_BOT_GRADUAL_TURN_RIGHT:
+                    if (lastEvent.EventParam) { // drive forwards
+                        SetCalibratedLeftMotorSpeed(100);
+                        SetCalibratedRightMotorSpeed(80);
+                    } else { // drive backwards
+                        SetCalibratedLeftMotorSpeed(-100);
+                        SetCalibratedRightMotorSpeed(-80);
+                    }
+                    rotation_ticks = 10;
+                    // limit drive amount to 10 wheel rotations
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    PostMotorEncoderService(ReturnEvent);
                     break;
             }
 

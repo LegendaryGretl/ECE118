@@ -17,9 +17,9 @@
 
 
 //defines for keyboard input
-#define USE_KEYBOARD_INPUT
+//#define USE_KEYBOARD_INPUT
 //What State machine are we testing
-#define POSTFUNCTION_FOR_KEYBOARD_INPUT PostTopLevelHSM
+//#define POSTFUNCTION_FOR_KEYBOARD_INPUT PostTopLevelHSM
 
 //define for TattleTale
 #define USE_TATTLETALE
@@ -69,6 +69,9 @@ typedef enum {
     ES_BACK_ON_COURSE, // the bot has avoided the tape
     ES_DEAD_BOT_AVOIDED, // the bot has successfully gone around the dead bot
     ES_ALIGNED_WITH_CORRECT_HOLE, // the bot is ready to launch a ping pong ball
+    ES_START_MOTOR_CALIBRATION, // calibrate motors so max speed of faster one matches that of slower one
+    ES_MOTOR_CALIBRATION_LEFT_SLOWER, // param: # of ticks left over on slower motor
+    ES_MOTOR_CALIBRATION_RIGHT_SLOWER,
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -109,6 +112,9 @@ static const char *EventNames[] = {
 	"ES_BACK_ON_COURSE",
 	"ES_DEAD_BOT_AVOIDED",
 	"ES_ALIGNED_WITH_CORRECT_HOLE",
+	"ES_START_MOTOR_CALIBRATION",
+	"ES_MOTOR_CALIBRATION_LEFT_SLOWER",
+	"ES_MOTOR_CALIBRATION_RIGHT_SLOWER",
 	"NUMBEROFEVENTS",
 };
 

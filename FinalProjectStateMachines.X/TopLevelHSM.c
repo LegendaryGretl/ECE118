@@ -156,6 +156,39 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             break;
 
         case DetectBeacon: // point bot in the direct of a beacon
+#ifdef MOTOR_CALIBRATION
+            ThisEvent.EventType = ES_START_MOTOR_CALIBRATION;
+            PostMotorEncoderService(ThisEvent);
+            break;
+#endif
+#ifdef TEST_MOTOR_SYNC
+            if (ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) {
+                if (ThisEvent.EventParam & 0b10){
+                    SetCalibratedLeftMotorSpeed(0);
+                }
+                if (ThisEvent.EventParam & 0b01){
+                    SetCalibratedRightMotorSpeed(0);
+                }
+                break;
+            }
+            SetCalibratedLeftMotorSpeed(100);
+            SetCalibratedRightMotorSpeed(100);
+            ThisEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+            ThisEvent.EventParam = 10;
+            PostMotorEncoderService(ThisEvent);
+            ThisEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+            ThisEvent.EventParam = 10;
+            PostMotorEncoderService(ThisEvent);
+            break;
+#endif
+#ifdef RC_SERVO_SERVICE_TEST
+            if (ThisEvent.EventType = ES_RC_SERVO_STRIKE_COMPLETE){
+                break;
+            }
+            ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;
+            PostRCServoService(ThisEvent);
+            break;
+#endif 
             ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:

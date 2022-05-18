@@ -19,7 +19,8 @@ build/default/production/_ext/1612843869/MotorEncoderService.o: \
  ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/component\ libraries/MotorEncoderService.h \
  ../ECE118_library/component\ libraries/pins.h \
- ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/pwm.h
+ ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/pwm.h \
+ ../ECE118_library/component\ libraries/motors.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -70,3 +71,5 @@ ES_Configure.h:
 ../ECE118_library/include/IO_Ports.h:
 
 ../ECE118_library/include/pwm.h:
+
+../ECE118_library/component\ libraries/motors.h:

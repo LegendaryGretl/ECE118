@@ -6,10 +6,12 @@
  */
 
 
+#include <stdio.h>
 #include "xc.h"
 #include "BOARD.h"
 #include "RC_Servo.h"
 #include "pins.h"
+
 
 // Basic RC Servo test code
 

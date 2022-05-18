@@ -179,7 +179,7 @@ uint8_t CheckTapeSensors(void) {
 
     // read each tape sensor, indicate if they have been tripped or not
     for (i = 0; i < NUMBER_OF_TAPE_SENSORS; i++) {
-        if (tape_sensors[i]) {
+        if (tape_sensors[i] == 0) { // when the tape sensor reads low, either tape or nothing is detected
             curEvent = ES_TAPE_DETECTED;
             curParam |= marker;
         }

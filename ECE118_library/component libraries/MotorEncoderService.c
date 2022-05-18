@@ -25,6 +25,7 @@
 #include "MotorEncoderService.h"
 #include <stdio.h>
 #include "pins.h"
+#include "motors.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -111,6 +112,7 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
      *******************************************/
     static int left_motor_ticks = -1;
     static int right_motor_ticks = -1;
+    static ES_EventTyp_t lastEvent = ES_NO_EVENT;
 
     switch (ThisEvent.EventType) {
         case ES_INIT:
@@ -123,19 +125,31 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
             break;
 
         case ES_TURN_LEFT_MOTOR_N_DEGREES:
+            lastEvent = ThisEvent.EventType;
             left_motor_ticks = (TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam) / 360;
             break;
 
         case ES_TURN_LEFT_MOTOR_N_ROTATIONS:
+            lastEvent = ThisEvent.EventType;
             left_motor_ticks = TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam;
             break;
 
         case ES_TURN_RIGHT_MOTOR_N_DEGREES:
+            lastEvent = ThisEvent.EventType;
             right_motor_ticks = (TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam) / 360;
             break;
 
         case ES_TURN_RIGHT_MOTOR_N_ROTATIONS:
+            lastEvent = ThisEvent.EventType;
             right_motor_ticks = TICKS_PER_WHEEL_ROTATION * (int) ThisEvent.EventParam;
+            break;
+
+        case ES_START_MOTOR_CALIBRATION:
+            lastEvent = ThisEvent.EventType;
+            left_motor_ticks = 5000;
+            right_motor_ticks = 5000;
+            SetLeftMotorSpeed(100);
+            SetRightMotorSpeed(100);
             break;
 
         case ES_ENCODER_PULSE_DETECTED:
@@ -155,7 +169,7 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
                 right_motor_ticks = -1;
             }
 
-            if (curParam) {
+            if ((curParam) && (lastEvent != ES_START_MOTOR_CALIBRATION)) {
                 ReturnEvent.EventType = ES_MOTOR_ROTATION_COMPLETE;
                 ReturnEvent.EventParam = curParam;
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
@@ -164,6 +178,22 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
 #else
                 PostMotorEncoderService(ReturnEvent);
 #endif  
+            } else if (curParam) {
+                if (curParam & 0b10) { // left motor is faster
+                    ReturnEvent.EventType = ES_MOTOR_CALIBRATION_RIGHT_SLOWER;
+                    ReturnEvent.EventParam = right_motor_ticks;
+                    printf("\r\nCalibration complete. Right motor slower by %d ticks", right_motor_ticks);
+                } else { // right motor is faster
+                    ReturnEvent.EventType = ES_MOTOR_CALIBRATION_LEFT_SLOWER;
+                    ReturnEvent.EventParam = left_motor_ticks;
+                    printf("\r\nCalibration complete. Left motor slower by %d ticks", left_motor_ticks);
+                }
+#ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
+                //PostReadSensorService(ReturnEvent);
+                PostTopLevelHSM(ReturnEvent);
+#else
+                PostMotorEncoderService(ReturnEvent);
+#endif
             }
 
 #ifdef SIMPLESERVICE_TEST     // keep this as is for test harness      

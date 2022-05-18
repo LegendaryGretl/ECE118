@@ -51,5 +51,26 @@ char SetLeftMotorSpeed(int speed);
  * @author Margaret Silva 5.12.2022 */
 char SetRightMotorSpeed(int speed);
 
+/**
+ * @Function SetCalibratedLeftMotorSpeed(void)
+ * @param speed, an integer in range [-100, 100]. negative makes the motor run 
+ *          backwards
+ * @return SUCCESS or ERROR
+ * @brief  Sets the left motor to turn at the provided speed
+ * @note  This function uses SetLeftMotorSpeed, but calibrates the speed based 
+ *        on the last motor calibration
+ * @author Margaret Silva 5.17.2022 */
+char SetCalibratedLeftMotorSpeed(int speed);
+
+/**
+ * @Function SetCalibratedRightMotorSpeed(void)
+ * @param speed, an integer in range [-100, 100]. negative makes the motor run 
+ *          backwards
+ * @return SUCCESS or ERROR
+ * @brief  Sets the right motor to turn at the provided speed
+ * @note  This function uses SetRightMotorSpeed, but calibrates the speed based 
+ *        on the last motor calibration
+ * @author Margaret Silva 5.17.2022 */
+char SetCalibratedRightMotorSpeed(int speed);
 #endif	/* MOTORS_H */
 

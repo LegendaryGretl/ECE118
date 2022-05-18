@@ -35,6 +35,7 @@
 /*******************************************************************************
  * PUBLIC #DEFINES                                                             *
  ******************************************************************************/
+// Bumper masks
 #define BUMPER_FSL_MASK (1<<0)
 #define BUMPER_FFL_MASK (1<<1) 
 #define BUMPER_FFR_MASK (1<<2)
@@ -43,6 +44,10 @@
 #define BUMPER_AFR_MASK (1<<5)
 #define BUMPER_AFL_MASK (1<<6) 
 #define BUMPER_ASL_MASK (1<<7)
+
+// Tape Sensor Masks
+#define BOTTOM_TAPE_SENSORS 0b00011111
+#define SIDE_TAPE_SENSORS 0b11100000
 
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *

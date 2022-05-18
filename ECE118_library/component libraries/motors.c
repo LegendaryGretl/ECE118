@@ -10,6 +10,11 @@
 #include "IO_Ports.h"
 #include "pins.h"
 
+// #DEFINE CONSTANTS   
+// formula for max speed : (100 * (5000 - ticks left over on slower motor)) / 5000
+#define LEFT_MOTOR_MAX_SPEED 100
+#define RIGHT_MOTOR_MAX_SPEED 97//(100 * (5000 - 230)) / 5000
+
 /**
  * @Function Motors_Init(void)
  * @param None
@@ -31,7 +36,7 @@ char Motors_Init(void) {
     H_BRIDGE_IN2_TRIS = 0;
     H_BRIDGE_IN3_TRIS = 0;
     H_BRIDGE_IN4_TRIS = 0;
-    
+
     // set pins connected to encoder outputs to input mode
     LEFT_MOTOR_ENCODER_TRIS = 1;
     RIGHT_MOTOR_ENCODER_TRIS = 1;
@@ -115,6 +120,34 @@ char SetRightMotorSpeed(int speed) {
     return result;
 }
 
+/**
+ * @Function SetCalibratedLeftMotorSpeed(void)
+ * @param speed, an integer in range [-100, 100]. negative makes the motor run 
+ *          backwards
+ * @return SUCCESS or ERROR
+ * @brief  Sets the left motor to turn at the provided speed
+ * @note  This function uses SetLeftMotorSpeed, but calibrates the speed based 
+ *        on the last motor calibration
+ * @author Margaret Silva 5.17.2022 */
+char SetCalibratedLeftMotorSpeed(int speed) {
+    int calib_speed = (LEFT_MOTOR_MAX_SPEED * speed) / 100;
+    return SetLeftMotorSpeed(calib_speed);
+}
+
+/**
+ * @Function SetCalibratedRightMotorSpeed(void)
+ * @param speed, an integer in range [-100, 100]. negative makes the motor run 
+ *          backwards
+ * @return SUCCESS or ERROR
+ * @brief  Sets the right motor to turn at the provided speed
+ * @note  This function uses SetRightMotorSpeed, but calibrates the speed based 
+ *        on the last motor calibration
+ * @author Margaret Silva 5.17.2022 */
+char SetCalibratedRightMotorSpeed(int speed) {
+    int calib_speed = (RIGHT_MOTOR_MAX_SPEED * speed) / 100;
+    return SetRightMotorSpeed(calib_speed);
+}
+
 
 // TEST HARNESS
 #ifdef TEST_MOTOR_LIBRARY
@@ -156,7 +189,7 @@ int main(void) {
     printf("Stop motor\r\n");
     SetLeftMotorSpeed(0);
     DELAY(A_LOT);
-    
+
     printf("Testing right motor:\r\n");
     printf("Drive forward at\r\n");
     printf("25 speed, ");
@@ -184,7 +217,7 @@ int main(void) {
     printf("Stop motor\r\n");
     SetRightMotorSpeed(0);
     DELAY(A_LOT);
-    
+
     printf("Testing both motor:\r\n");
     printf("Drive both forward at\r\n");
     printf("50 speed, ");
@@ -248,16 +281,16 @@ static unsigned int wait = 0;
 #define DELAY(x)    for (wait = 0; wait <= x; wait++) {asm("nop");}
 #define A_LOT       10*183000
 
-int main(void){
+int main(void) {
     BOARD_Init();
     PWM_Init();
     Motors_Init();
 
     printf("Motor Encoder Test Harness, complied on %s %s\r\n", __DATE__, __TIME__);
-    
+
     SetLeftMotorSpeed(100);
-    
-    while(1);
+
+    while (1);
 }
-        
+
 #endif

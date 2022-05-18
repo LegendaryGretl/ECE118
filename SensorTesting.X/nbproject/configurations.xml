@@ -125,7 +125,7 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <item path="../ECE118_library/RC_Servo_testing_main.c"
-            ex="true"
+            ex="false"
             overriding="false">
         <C32>
         </C32>
@@ -279,7 +279,7 @@
         <property key="stack-smashing" value=""/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
-      <item path="ES_Main_tape_sensor.c" ex="false" overriding="false">
+      <item path="ES_Main_tape_sensor.c" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>

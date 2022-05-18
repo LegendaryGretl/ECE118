@@ -22,7 +22,7 @@
 //#define POSTFUNCTION_FOR_KEYBOARD_INPUT PostTopLevelHSM
 
 //define for TattleTale
-#define USE_TATTLETALE
+//#define USE_TATTLETALE
 
 //uncomment to supress the entry and exit events
 #define SUPPRESS_EXIT_ENTRY_IN_TATTLE
@@ -45,33 +45,42 @@ typedef enum {
     /* User-defined events start here */
     BATTERY_CONNECTED,
     BATTERY_DISCONNECTED,
+    // Sensor Events ***********************************************************
     ES_TAPE_DETECTED, // param shows pattern of tape sensor signals
     ES_NO_TAPE_DETECTED,
-    ES_READ_TAPE_SENSOR,
     ES_BEACON_DETECTED, // param is always 0
     ES_NO_BEACON_DETECTED,
     ES_TRACK_WIRE_DETECTED, // param shows which track wire is tripped
     ES_NO_TRACK_WIRE_DETECTED,
+    ES_BUMPER_HIT, // param shows pattern of bumpers currently pressed
+    ES_BUMPER_RELEASED,
+    // Motor Encoder Events ****************************************************
     ES_ENCODER_PULSE_DETECTED, // param: 0b10 = left, 0b01 = right
     ES_ENCODER_PULSE_LOW,
     ES_TURN_LEFT_MOTOR_N_DEGREES, // param: number of degrees to rotate
     ES_TURN_LEFT_MOTOR_N_ROTATIONS, // param: number of rotations to complete
     ES_TURN_RIGHT_MOTOR_N_DEGREES,
     ES_TURN_RIGHT_MOTOR_N_ROTATIONS,
-    ES_MOTOR_ROTATION_COMPLETE, // param: 0b10 = left, 0b01 = right
-    ES_BUMPER_HIT, // param shows pattern of bumpers currently pressed
-    ES_BUMPER_RELEASED,
-    ES_PING_SENSOR_PULSE_HIGH,
-    ES_PING_SENSOR_PULSE_LOW, // param: high time of last pulse
-    ES_GET_PING_SENSOR_DISTANCE, // activates ping sensor 
+    ES_MOTOR_ROTATION_COMPLETE, // param: 0b10 = left, 0b01 = right            
+    // RC Servo Events *********************************************************
     ES_RC_SERVO_STRIKE_START, // sets off the RC servo to hit a ping pong ball
-    ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted
+    ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted            
+    // State Machine Events ****************************************************
     ES_BACK_ON_COURSE, // the bot has avoided the tape
     ES_DEAD_BOT_AVOIDED, // the bot has successfully gone around the dead bot
-    ES_ALIGNED_WITH_CORRECT_HOLE, // the bot is ready to launch a ping pong ball
+    ES_ALIGNED_WITH_CORRECT_HOLE, // the bot is ready to launch a ping pong ball            
+    // Motor Calibration Events ************************************************
     ES_START_MOTOR_CALIBRATION, // calibrate motors so max speed of faster one matches that of slower one
     ES_MOTOR_CALIBRATION_LEFT_SLOWER, // param: # of ticks left over on slower motor
     ES_MOTOR_CALIBRATION_RIGHT_SLOWER,
+    // Robot Movement Events ***************************************************
+    ES_MOVE_BOT_DRIVE_FORWARDS, // param: time to drive. 0 means drive forever
+    ES_MOVE_BOT_DRIVE_BACKWARDS,
+    ES_MOVE_BOT_STOP,
+    ES_MOVE_BOT_TANK_TURN_LEFT, // param: degrees to turn
+    ES_MOVE_BOT_TANK_TURN_RIGHT,
+    ES_MOVE_BOT_GRADUAL_TURN_LEFT, // param: time to drive. 0 means drive forever
+    ES_MOVE_BOT_GRADUAL_TURN_RIGHT,
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -90,11 +99,12 @@ static const char *EventNames[] = {
 	"BATTERY_DISCONNECTED",
 	"ES_TAPE_DETECTED",
 	"ES_NO_TAPE_DETECTED",
-	"ES_READ_TAPE_SENSOR",
 	"ES_BEACON_DETECTED",
 	"ES_NO_BEACON_DETECTED",
 	"ES_TRACK_WIRE_DETECTED",
 	"ES_NO_TRACK_WIRE_DETECTED",
+	"ES_BUMPER_HIT",
+	"ES_BUMPER_RELEASED",
 	"ES_ENCODER_PULSE_DETECTED",
 	"ES_ENCODER_PULSE_LOW",
 	"ES_TURN_LEFT_MOTOR_N_DEGREES",
@@ -102,11 +112,6 @@ static const char *EventNames[] = {
 	"ES_TURN_RIGHT_MOTOR_N_DEGREES",
 	"ES_TURN_RIGHT_MOTOR_N_ROTATIONS",
 	"ES_MOTOR_ROTATION_COMPLETE",
-	"ES_BUMPER_HIT",
-	"ES_BUMPER_RELEASED",
-	"ES_PING_SENSOR_PULSE_HIGH",
-	"ES_PING_SENSOR_PULSE_LOW",
-	"ES_GET_PING_SENSOR_DISTANCE",
 	"ES_RC_SERVO_STRIKE_START",
 	"ES_RC_SERVO_STRIKE_COMPLETE",
 	"ES_BACK_ON_COURSE",
@@ -115,6 +120,13 @@ static const char *EventNames[] = {
 	"ES_START_MOTOR_CALIBRATION",
 	"ES_MOTOR_CALIBRATION_LEFT_SLOWER",
 	"ES_MOTOR_CALIBRATION_RIGHT_SLOWER",
+	"ES_MOVE_BOT_DRIVE_FORWARDS",
+	"ES_MOVE_BOT_DRIVE_BACKWARDS",
+	"ES_MOVE_BOT_STOP",
+	"ES_MOVE_BOT_TANK_TURN_LEFT",
+	"ES_MOVE_BOT_TANK_TURN_RIGHT",
+	"ES_MOVE_BOT_GRADUAL_TURN_LEFT",
+	"ES_MOVE_BOT_GRADUAL_TURN_RIGHT",
 	"NUMBEROFEVENTS",
 };
 
@@ -135,7 +147,7 @@ static const char *EventNames[] = {
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostRCServoService
-#define TIMER1_RESP_FUNC TIMER_UNUSED
+#define TIMER1_RESP_FUNC TIMER_UNUSED//PostRobotMovementService
 #define TIMER2_RESP_FUNC TIMER_UNUSED
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
@@ -159,6 +171,7 @@ static const char *EventNames[] = {
 // the timer number matches where the timer event will be routed
 
 #define RC_SERVO_TIMER 0
+#define ROBOT_MOVEMENT_TIMER 1
 
 
 /****************************************************************************/
@@ -230,11 +243,11 @@ static const char *EventNames[] = {
 // These are the definitions for Service 4
 #if NUM_SERVICES > 4
 // the header file with the public fuction prototypes
-#define SERV_4_HEADER "TestService.h"
+#define SERV_4_HEADER "RobotMovementService.h"
 // the name of the Init function
-#define SERV_4_INIT TestServiceInit
+#define SERV_4_INIT InitRobotMovementService
 // the name of the run function
-#define SERV_4_RUN TestServiceRun
+#define SERV_4_RUN RunRobotMovementService
 // How big should this services Queue be?
 #define SERV_4_QUEUE_SIZE 3
 #endif

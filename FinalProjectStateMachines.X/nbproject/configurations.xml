@@ -35,6 +35,7 @@
       <itemPath>DetectBeaconSubHSM.h</itemPath>
       <itemPath>NavigateToTowerSubHSM.h</itemPath>
       <itemPath>AlignAndLaunchSubHSM.h</itemPath>
+      <itemPath>RobotMovementService.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -68,6 +69,7 @@
       <itemPath>DetectBeaconSubHSM.c</itemPath>
       <itemPath>NavigateToTowerSubHSM.c</itemPath>
       <itemPath>AlignAndLaunchSubHSM.c</itemPath>
+      <itemPath>RobotMovementService.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -140,7 +142,7 @@
         <property key="place-data-into-section" value="false"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
-        <property key="preprocessor-macros" value="RC_SERVO_SERVICE_TEST"/>
+        <property key="preprocessor-macros" value="TEST_SENSOR_INTEGRATION"/>
         <property key="strict-ansi" value="false"/>
         <property key="support-ansi" value="false"/>
         <property key="tentative-definitions" value="-fno-common"/>
@@ -259,6 +261,10 @@
         <property key="stack-smashing" value=""/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
+      <item path="RobotMovementService.c" ex="true" overriding="false">
+      </item>
+      <item path="RobotMovementService.h" ex="true" overriding="false">
+      </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>

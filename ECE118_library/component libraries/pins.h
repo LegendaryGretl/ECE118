@@ -51,8 +51,8 @@
 
 
 // beacon detector pins ********************************************************
-#define BEACON_DETECTOR_TRIS PORTX11_TRIS
-#define BEACON_DETECTOR PORTX11_BIT
+#define BEACON_DETECTOR_TRIS PORTZ12_TRIS
+#define BEACON_DETECTOR PORTZ12_BIT
 
 
 // tape sensor pins ************************************************************
@@ -84,11 +84,11 @@
 
 
 // bumper pins *****************************************************************
-#define BUMPER_FSL PORTZ12_BIT // pin Z09 is probably dead
-#define BUMPER_FSL_TRIS PORTZ12_TRIS
+#define BUMPER_FSL PORTX11_BIT // pin Z09 is probably dead
+#define BUMPER_FSL_TRIS PORTX11_TRIS
 
-#define BUMPER_FFL PORTZ11_BIT // pin Z10 is dead
-#define BUMPER_FFL_TRIS PORTZ11_TRIS
+#define BUMPER_FFL PORTX12_BIT // pin Z10 is dead
+#define BUMPER_FFL_TRIS PORTX12_TRIS
 
 #define BUMPER_FFR PORTX05_BIT
 #define BUMPER_FFR_TRIS PORTX05_TRIS
@@ -96,26 +96,20 @@
 #define BUMPER_FSR PORTX06_BIT
 #define BUMPER_FSR_TRIS PORTX06_TRIS
 
-#define BUMPER_ASL PORTX07_BIT
-#define BUMPER_ASL_TRIS PORTX07_TRIS
+#define BUMPER_ASR PORTX07_BIT
+#define BUMPER_ASR_TRIS PORTX07_TRIS
 
-#define BUMPER_AFL PORTX08_BIT
-#define BUMPER_AFL_TRIS PORTX08_TRIS
+#define BUMPER_AFR PORTX08_BIT
+#define BUMPER_AFR_TRIS PORTX08_TRIS
 
-#define BUMPER_AFR PORTX09_BIT
-#define BUMPER_AFR_TRIS PORTX09_TRIS
+#define BUMPER_AFL PORTX09_BIT
+#define BUMPER_AFL_TRIS PORTX09_TRIS
 
-#define BUMPER_ASR PORTZ08_BIT
-#define BUMPER_ASR_TRIS PORTZ08_TRIS
+#define BUMPER_ASL PORTX10_BIT
+#define BUMPER_ASL_TRIS PORTX10_TRIS
 
 #define NUMBER_OF_BUMPERS 8
 
-// ping sensor pins ************************************************************
-#define PING_SENSOR_ENABLE_TRIS PORTX12_TRIS
-#define PING_SENSOR_ENABLE PORTX12_LAT
-
-#define PING_SENSOR_ECHO_TRIS PORTX10_TRIS
-#define PING_SENSOR_ECHO PORTX10_BIT
 
 // RC servo pins ***************************************************************
 #define RC_SERVO_PIN RC_PORTW08

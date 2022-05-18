@@ -17,7 +17,9 @@ build/default/production/TopLevelHSM.o: TopLevelHSM.c ES_Configure.h \
  ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/BOARD.h \
  ../ECE118_library/component\ libraries/motors.h TopLevelHSM.h \
- DetectBeaconSubHSM.h NavigateToTowerSubHSM.h AlignAndLaunchSubHSM.h
+ DetectBeaconSubHSM.h NavigateToTowerSubHSM.h AlignAndLaunchSubHSM.h \
+ ../ECE118_library/component\ libraries/SensorEventChecker.h \
+ ../ECE118_library/include/AD.h ../ECE118_library/include/IO_Ports.h
 
 ES_Configure.h:
 
@@ -70,3 +72,9 @@ DetectBeaconSubHSM.h:
 NavigateToTowerSubHSM.h:
 
 AlignAndLaunchSubHSM.h:
+
+../ECE118_library/component\ libraries/SensorEventChecker.h:
+
+../ECE118_library/include/AD.h:
+
+../ECE118_library/include/IO_Ports.h:

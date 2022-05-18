@@ -28,6 +28,8 @@
  * MODULE #INCLUDE                                                             *
  ******************************************************************************/
 
+#include <stdio.h>
+
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "BOARD.h"
@@ -35,7 +37,8 @@
 #include "TopLevelHSM.h"
 #include "DetectBeaconSubHSM.h"
 #include "NavigateToTowerSubHSM.h"
-#include "AlignAndLaunchSubHSM.h" //#include all sub state machines called
+#include "AlignAndLaunchSubHSM.h"
+#include "SensorEventChecker.h" //#include all sub state machines called
 
 /*******************************************************************************
  * PRIVATE #DEFINES                                                            *
@@ -163,10 +166,10 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 #endif
 #ifdef TEST_MOTOR_SYNC
             if (ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) {
-                if (ThisEvent.EventParam & 0b10){
+                if (ThisEvent.EventParam & 0b10) {
                     SetCalibratedLeftMotorSpeed(0);
                 }
-                if (ThisEvent.EventParam & 0b01){
+                if (ThisEvent.EventParam & 0b01) {
                     SetCalibratedRightMotorSpeed(0);
                 }
                 break;
@@ -181,12 +184,45 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             PostMotorEncoderService(ThisEvent);
             break;
 #endif
-#ifdef RC_SERVO_SERVICE_TEST
-            if (ThisEvent.EventType = ES_RC_SERVO_STRIKE_COMPLETE){
-                break;
+#ifdef TEST_SENSOR_INTEGRATION
+            switch (ThisEvent.EventType) {
+                case ES_BEACON_DETECTED:
+                    printf("\r\nBeacon Detected");
+                    break;
+                case ES_NO_BEACON_DETECTED:
+                    printf("\r\nBeacon Not Detected");
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                    printf("\r\nTrack Wire Detected: %x", ThisEvent.EventParam);
+                    break;
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    printf("\r\nTrack Wire Not Detected: %x", ThisEvent.EventParam);
+                    break;
+                case ES_TAPE_DETECTED:
+                    printf("\r\nTape Detected -- ");
+                    if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
+                        printf("Bottom Tape Sensors: %x", ThisEvent.EventParam & BOTTOM_TAPE_SENSORS);
+                    }
+                    if (ThisEvent.EventParam & SIDE_TAPE_SENSORS) {
+                        printf("Side Tape Sensors: %x", ThisEvent.EventParam & SIDE_TAPE_SENSORS);
+                    }
+                    break;
+                case ES_NO_TAPE_DETECTED:
+                    printf("\r\nTape Not Detected -- ");
+                    if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
+                        printf("Side Tape Sensors: %x", ThisEvent.EventParam & BOTTOM_TAPE_SENSORS);
+                    }
+                    if (ThisEvent.EventParam & SIDE_TAPE_SENSORS) {
+                        printf("Side Tape Sensors: %x", ThisEvent.EventParam & SIDE_TAPE_SENSORS);
+                    }
+                    break;
+                case ES_BUMPER_HIT:
+                    printf("\r\nBumper Hit: %x", ThisEvent.EventParam);
+                    break;
+                case ES_BUMPER_RELEASED:
+                    printf("\r\nBumper Released: %x", ThisEvent.EventParam);
+                    break;
             }
-            ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;
-            PostRCServoService(ThisEvent);
             break;
 #endif 
             ThisEvent = RunDetectBeaconSubHSM(ThisEvent);

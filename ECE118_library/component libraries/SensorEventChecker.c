@@ -263,7 +263,7 @@ uint8_t CheckBumpers(void) {
 
     // read each tape sensor, indicate if they have been tripped or not
     for (i = 0; i < NUMBER_OF_BUMPERS; i++) {
-        if (bumpers[i]) {
+        if (bumpers[i] == 0) {
             curEvent = ES_BUMPER_HIT;
             curParam |= marker;
         }
@@ -302,32 +302,32 @@ uint8_t CheckBumpers(void) {
  * This is done to account for the fact that the timer outputs a 32 bit unsigned
  * integer, while the event's param is only 16 bits
  */
-uint8_t CheckPingSensor(void) {
-    static ES_EventTyp_t lastEvent = ES_PING_SENSOR_PULSE_LOW;
-    static unsigned int prevTime = 0;
-    ES_Event thisEvent;
-    ES_EventTyp_t curEvent = ES_PING_SENSOR_PULSE_LOW;
-    uint8_t returnVal;
-    unsigned int curTime = TIMERS_GetTime();
-    
-    if (PING_SENSOR_ECHO) {
-        curEvent = ES_PING_SENSOR_PULSE_HIGH;
-        prevTime = curTime;
-    }
-
-    if ((curEvent != lastEvent) && (curEvent == ES_PING_SENSOR_PULSE_LOW)) {
-        thisEvent.EventType = curEvent;
-        thisEvent.EventParam = curTime - prevTime; // indicates pulse high time
-        lastEvent = curEvent;
-#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
-        PostMotorEncoderService(thisEvent);
-#else
-        SaveEvent(thisEvent);
-#endif  
-    }
-    
-    return (returnVal);
-}
+//uint8_t CheckPingSensor(void) {
+//    static ES_EventTyp_t lastEvent = ES_PING_SENSOR_PULSE_LOW;
+//    static unsigned int prevTime = 0;
+//    ES_Event thisEvent;
+//    ES_EventTyp_t curEvent = ES_PING_SENSOR_PULSE_LOW;
+//    uint8_t returnVal;
+//    unsigned int curTime = TIMERS_GetTime();
+//    
+//    if (PING_SENSOR_ECHO) {
+//        curEvent = ES_PING_SENSOR_PULSE_HIGH;
+//        prevTime = curTime;
+//    }
+//
+//    if ((curEvent != lastEvent) && (curEvent == ES_PING_SENSOR_PULSE_LOW)) {
+//        thisEvent.EventType = curEvent;
+//        thisEvent.EventParam = curTime - prevTime; // indicates pulse high time
+//        lastEvent = curEvent;
+//#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+//        PostMotorEncoderService(thisEvent);
+//#else
+//        SaveEvent(thisEvent);
+//#endif  
+//    }
+//    
+//    return (returnVal);
+//}
 
 /* 
  * The Test Harness for the event checkers is conditionally compiled using

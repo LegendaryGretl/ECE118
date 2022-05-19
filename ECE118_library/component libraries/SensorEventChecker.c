@@ -180,7 +180,7 @@ uint8_t CheckTapeSensors(void) {
 
     // read each tape sensor, indicate if they have been tripped or not
     for (i = 0; i < NUMBER_OF_TAPE_SENSORS; i++) {
-        if (tape_sensors[i] == 0) { // when the tape sensor reads low, either tape or nothing is detected
+        if (tape_sensors[i] == 1) { // when the tape sensor reads low, either tape or nothing is detected
             curEvent = ES_TAPE_DETECTED;
             curParam |= marker;
         }
@@ -193,6 +193,9 @@ uint8_t CheckTapeSensors(void) {
         returnVal = TRUE;
         lastEvent = curEvent; // update history
         lastParam = curParam;
+#ifndef TEST_SENSOR_INTEGRATION
+        prevPollTime = curPollTime;
+#endif
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
         PostTopLevelHSM(thisEvent);
 #else
@@ -205,14 +208,15 @@ uint8_t CheckTapeSensors(void) {
         returnVal = TRUE;
         lastEvent = curEvent; // update history
         lastParam = curParam;
+#ifndef TEST_SENSOR_INTEGRATION
+        prevPollTime = curPollTime;
+#endif
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
         PostTopLevelHSM(thisEvent);
 #else
         SaveEvent(thisEvent);
 #endif 
     }
-
-    prevPollTime = curPollTime
     return (returnVal);
 }
 

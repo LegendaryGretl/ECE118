@@ -49,13 +49,14 @@ typedef enum {
 } GetBackOnCourseFSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "TapeFrontLeft",
-    "TapeFrontCenter",
-    "TapeFrontRight",
-    "TapeBackLeft",
-    "TapeBackRight",
-    "CheckForTapeEvent",
+	"InitPSubState",
+	"TapeFrontLeft",
+	"TapeFrontCenter",
+	"TapeFrontRight",
+	"TapeBackLeft",
+	"TapeBackRight",
+	"CheckForTapeEvent",
+	"RetreatFromTape",
 };
 
 

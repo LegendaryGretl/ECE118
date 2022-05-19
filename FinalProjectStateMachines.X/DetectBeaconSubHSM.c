@@ -47,10 +47,10 @@ typedef enum {
 } DetectBeaconSubHSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "LookForBeacon",
-    "RandomWalk",
-    "GetBackOnCourse",
+	"InitPSubState",
+	"LookForBeacon",
+	"RandomWalk",
+	"GetBackOnCourse",
 };
 
 

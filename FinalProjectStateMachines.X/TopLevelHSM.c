@@ -45,6 +45,13 @@
  * PRIVATE #DEFINES                                                            *
  ******************************************************************************/
 //Include any defines you need to do
+static void TankTurnLeft(int degrees);
+static void TankTurnRight(int degrees);
+static void DriveForwards(int distance);
+static void DriveBackwards(int distance);
+static void StopMoving(void);
+static void GradualTurnLeft(int direction);
+static void GradualTurnRight(int direction);
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -141,7 +148,7 @@ uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
 ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     TopLevelHSMState_t nextState; // <- change type to correct enum
-    static int marker = 0;
+    int i = 0;
 
     ES_Tattle(); // trace call stack
 
@@ -149,16 +156,20 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case InitPState: // If current state is initial Pseudo State
             if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
             {
+#ifdef GENERAL_TESTING
+                nextState = TestCode;
+                makeTransition = TRUE;
+                ThisEvent.EventType = ES_NO_EVENT;
+                break;
+#endif
                 // this is where you would put any actions associated with the
                 // transition from the initial pseudo-state into the actual
                 // initial state
                 // Initialize all sub-state machines
                 InitDetectBeaconSubHSM();
                 // now put the machine into the actual initial state
+
                 nextState = DetectBeacon;
-#ifdef GENERAL_TESTING
-                nextState = TestCode;
-#endif
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
                 ;
@@ -230,8 +241,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 #ifdef TEST_SENSOR_INTEGRATION
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    SetLeftMotorSpeed(100);
-                    SetRightMotorSpeed(100);
+                    printf("\r\nSensor Integration Test. Compiled on %s %s", __DATE__, __TIME__);
+                    StopMoving();
                 case ES_BEACON_DETECTED:
                     printf("\r\nBeacon Detected");
                     break;
@@ -245,28 +256,44 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     printf("\r\nTrack Wire Not Detected: %x", ThisEvent.EventParam);
                     break;
                 case ES_TAPE_DETECTED:
-                    printf("\r\nTape Detected -- %x", ThisEvent.EventParam);
-                    if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
-                        printf("Bottom Tape Sensors: %x", ThisEvent.EventParam & BOTTOM_TAPE_SENSORS);
-                    }
-                    if (ThisEvent.EventParam & SIDE_TAPE_SENSORS) {
-                        printf("Side Tape Sensors: %x", ThisEvent.EventParam & SIDE_TAPE_SENSORS);
+                    printf("\r\nTape Detected -- ");
+                    for (i = 0b01; i <= 0xFF; i <<= 1) {
+                        if (i & ThisEvent.EventParam) {
+                            printf("1");
+                        } else {
+                            printf("0");
+                        }
                     }
                     break;
                 case ES_NO_TAPE_DETECTED:
                     printf("\r\nTape Not Detected -- ");
-                    if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
-                        printf("Side Tape Sensors: %x", ThisEvent.EventParam & BOTTOM_TAPE_SENSORS);
-                    }
-                    if (ThisEvent.EventParam & SIDE_TAPE_SENSORS) {
-                        printf("Side Tape Sensors: %x", ThisEvent.EventParam & SIDE_TAPE_SENSORS);
+                    for (i = 0b01; i <= 0xFF; i <<= 1) {
+                        if (i & ThisEvent.EventParam) {
+                            printf("1");
+                        } else {
+                            printf("0");
+                        }
                     }
                     break;
                 case ES_BUMPER_HIT:
-                    printf("\r\nBumper Hit: %x", ThisEvent.EventParam);
+                    printf("\r\nBumper Hit: ");
+                    for (i = 0b01; i <= 0xFF; i <<= 1) {
+                        if (i & ThisEvent.EventParam) {
+                            printf("1");
+                        } else {
+                            printf("0");
+                        }
+                    }
                     break;
                 case ES_BUMPER_RELEASED:
-                    printf("\r\nBumper Released: %x", ThisEvent.EventParam);
+                    printf("\r\nBumper Released: ");
+                    for (i = 0b01; i <= 0xFF; i <<= 1) {
+                        if (i & ThisEvent.EventParam) {
+                            printf("1");
+                        } else {
+                            printf("0");
+                        }
+                    }
                     break;
             }
             break;
@@ -322,7 +349,54 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
     return ThisEvent;
 }
 
-
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
+
+void TankTurnLeft(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void TankTurnRight(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void DriveForwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_FORWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void DriveBackwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void StopMoving(void) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_STOP;
+    PostRobotMovementService(event);
+}
+
+void GradualTurnLeft(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}
+
+void GradualTurnRight(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_RIGHT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}

@@ -171,9 +171,9 @@ uint8_t CheckTapeSensors(void) {
     uint16_t marker;
     uint8_t returnVal = FALSE;
 
-    int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_1, TAPE_SENSOR_2,
-        TAPE_SENSOR_3, TAPE_SENSOR_4, TAPE_SENSOR_5, TAPE_SENSOR_6, TAPE_SENSOR_7,
-        TAPE_SENSOR_8};
+    int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_FL, TAPE_SENSOR_FC,
+        TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SC,
+        TAPE_SENSOR_SR};
     marker = 0b01;
 
     // read each tape sensor, indicate if they have been tripped or not

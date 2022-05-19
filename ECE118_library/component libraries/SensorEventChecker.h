@@ -48,6 +48,14 @@
 // Tape Sensor Masks
 #define BOTTOM_TAPE_SENSORS 0b00011111
 #define SIDE_TAPE_SENSORS 0b11100000
+#define TAPE_SENSOR_FL_MASK (1<<0)
+#define TAPE_SENSOR_FC_MASK (1<<1)
+#define TAPE_SENSOR_FR_MASK (1<<2)
+#define TAPE_SENSOR_BL_MASK (1<<3)
+#define TAPE_SENSOR_BR_MASK (1<<4)
+#define TAPE_SENSOR_SL_MASK (1<<5)
+#define TAPE_SENSOR_SC_MASK (1<<6)
+#define TAPE_SENSOR_SR_MASK (1<<7)
 
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *

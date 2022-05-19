@@ -56,6 +56,7 @@ typedef enum {
     DetectBeacon, // detect first beacon
     NavigateToTower, // navigate to the correct face of the tower
     AlignAndLaunch, // align with hole, launch ball, and detect next tower
+    TestCode, // this state is only used to hold test code 
 } TopLevelHSMState_t;
 
 static const char *StateNames[] = {
@@ -63,6 +64,7 @@ static const char *StateNames[] = {
 	"DetectBeacon",
 	"NavigateToTower",
 	"AlignAndLaunch",
+	"TestCode",
 };
 
 
@@ -154,6 +156,9 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                 InitDetectBeaconSubHSM();
                 // now put the machine into the actual initial state
                 nextState = DetectBeacon;
+#ifdef GENERAL_TESTING
+                nextState = TestCode;
+#endif
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
                 ;
@@ -161,6 +166,42 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             break;
 
         case DetectBeacon: // point bot in the direct of a beacon
+            ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_BEACON_DETECTED:
+                    makeTransition = TRUE;
+                    nextState = NavigateToTower;
+                default:
+                    break;
+            }
+            break;
+
+        case NavigateToTower: // get bot on the correct face of a tower
+            ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_TRACK_WIRE_DETECTED:
+                    makeTransition = TRUE;
+                    nextState = AlignAndLaunch;
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case AlignAndLaunch: // align shooter with hole and launch ball
+            ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_BEACON_DETECTED:
+                    makeTransition = TRUE;
+                    nextState = NavigateToTower;
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case TestCode:
+#ifdef GENERAL_TESTING  
 #ifdef MOTOR_CALIBRATION
             ThisEvent.EventType = ES_START_MOTOR_CALIBRATION;
             PostRobotMovementService(ThisEvent);
@@ -263,38 +304,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 #endif
-            ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
-            switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED:
-                    makeTransition = TRUE;
-                    nextState = NavigateToTower;
-                default:
-                    break;
-            }
-            break;
-
-        case NavigateToTower: // get bot on the correct face of a tower
-            ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
-            switch (ThisEvent.EventType) {
-                case ES_TRACK_WIRE_DETECTED:
-                    makeTransition = TRUE;
-                    nextState = AlignAndLaunch;
-                    break;
-                default:
-                    break;
-            }
-            break;
-
-        case AlignAndLaunch: // align shooter with hole and launch ball
-            ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
-            switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED:
-                    makeTransition = TRUE;
-                    nextState = NavigateToTower;
-                    break;
-                default:
-                    break;
-            }
+#endif
             break;
 
         default: // all unhandled states fall into here

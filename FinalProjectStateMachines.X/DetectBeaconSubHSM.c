@@ -33,6 +33,8 @@
 #include "TopLevelHSM.h"
 #include "DetectBeaconSubHSM.h"
 #include "motors.h"
+#include "SensorEventChecker.h"
+#include "GetBackOnCourseFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -45,10 +47,10 @@ typedef enum {
 } DetectBeaconSubHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"LookForBeacon",
-	"RandomWalk",
-	"GetBackOnCourse",
+    "InitPSubState",
+    "LookForBeacon",
+    "RandomWalk",
+    "GetBackOnCourse",
 };
 
 
@@ -58,6 +60,13 @@ static const char *StateNames[] = {
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
    relevant to the behavior of this state machine */
+void TankTurnLeft(int degrees);
+void TankTurnRight(int degrees);
+void DriveForwards(int distance);
+void DriveBackwards(int distance);
+void StopMoving(void);
+void GradualTurnLeft(int direction);
+void GradualTurnRight(int direction);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -123,6 +132,9 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                 // transition from the initial pseudo-state into the actual
                 // initial state
 
+                // init all sub state machines
+                InitGetBackOnCourseFSM();
+
                 // now put the machine into the actual initial state
                 nextState = LookForBeacon;
                 makeTransition = TRUE;
@@ -133,22 +145,24 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
         case LookForBeacon: // make a 360 turn to look for beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // start a 360 degree turn
+                    TankTurnLeft(360);
                     break;
                 case ES_TAPE_DETECTED: // avoid tape and return to field
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
-                    nextState = GetBackOnCourse;
-                    makeTransition = TRUE;
+                    if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
+                        // make sure that tape sensors are under the bot
+                        StopMoving();
+                        RunGetBackOnCourseFSM(ThisEvent);
+                        nextState = GetBackOnCourse;
+                        makeTransition = TRUE;
+                    }
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
+                    StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // beacon not detected during 360 turn
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
+                    StopMoving();
                     nextState = RandomWalk;
                     makeTransition = TRUE;
                     break;
@@ -161,22 +175,20 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
         case RandomWalk: // go forward to find a beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // drive forward for some amount of time
+                    DriveForwards(3);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
+                    StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
                     break;
                 case ES_TAPE_DETECTED: // avoid tape and return to field
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
+                    StopMoving();
                     nextState = RandomWalk;
                     makeTransition = TRUE;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // stop motors and start a new 360 turn to look for a beacon
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
+                    StopMoving();
                     nextState = LookForBeacon;
                     makeTransition = TRUE;
                     break;
@@ -187,15 +199,14 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
             break;
 
         case GetBackOnCourse: // avoid tape, return to field
-            //ThisEvent = RunGetBackOnCourseFSM(ThisEvent);
+            ThisEvent = RunGetBackOnCourseFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BACK_ON_COURSE: // bot has safely returned to the field
                     nextState = LookForBeacon;
                     makeTransition = TRUE;
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
-                    SetLeftMotorSpeed(0);
-                    SetRightMotorSpeed(0);
+                    StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
                     break;
@@ -211,17 +222,65 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
 
     if (makeTransition == TRUE) { // making a state transition, send EXIT and ENTRY
         // recursively call the current state with an exit event
-        RunDetectBeaconSubHSM(EXIT_EVENT); // <- rename to your own Run function
+        RunDetectBeaconSubHSM(EXIT_EVENT);
         CurrentState = nextState;
-        RunDetectBeaconSubHSM(ENTRY_EVENT); // <- rename to your own Run function
+        RunDetectBeaconSubHSM(ENTRY_EVENT);
     }
 
     ES_Tail(); // trace call stack end
     return ThisEvent;
 }
 
-
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
 
+// wrapper functions for using robot movement functions
+
+void TankTurnLeft(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void TankTurnRight(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void DriveForwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_FORWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void DriveBackwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void StopMoving(void) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_STOP;
+    PostRobotMovementService(event);
+}
+
+void GradualTurnLeft(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}
+
+void GradualTurnRight(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_RIGHT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}

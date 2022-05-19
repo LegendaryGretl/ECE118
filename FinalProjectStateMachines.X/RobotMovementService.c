@@ -126,6 +126,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
         case ES_MOVE_BOT_STOP:
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
+            ThisEvent.EventType = ES_INIT;
+            PostRobotMovementService(ThisEvent);
             break;
 
         case ES_MOVE_BOT_DRIVE_FORWARDS:

@@ -43,6 +43,7 @@
 #define BATTERY_DISCONNECT_THRESHOLD 175
 #define TRACK_WIRE_DETECTED_LOGIC_HIGH 2000 // units: mV
 #define TRACK_WIRE_DETECTED_LOGIC_LOW 1300 
+#define BEACON_DETECTED_LOGIC_HIGH 2000
 
 /*******************************************************************************
  * EVENTCHECKER_TEST SPECIFIC CODE                                                             *
@@ -135,11 +136,11 @@ uint8_t CheckBeacon(void) {
     ES_Event thisEvent;
     uint8_t returnVal = FALSE;
 
-    // returned event will indicate if beacon is detected or not
-    if (BEACON_DETECTOR == 0) {
+    int beacon_voltage_level = (3300 * AD_ReadADPin(BEACON_DETECTOR)) / 1023;
+    if (beacon_voltage_level < BEACON_DETECTED_LOGIC_HIGH) {
         curEvent = ES_BEACON_DETECTED;
     }
-
+    
     if (curEvent != lastEvent) { // check for change from last time
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = 0;

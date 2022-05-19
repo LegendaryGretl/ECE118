@@ -18,7 +18,9 @@ build/default/production/ES_Main.o: ES_Main.c \
  RobotMovementService.h ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/component\ libraries/motors.h \
  ../ECE118_library/include/pwm.h ../ECE118_library/include/AD.h \
- ../ECE118_library/include/RC_Servo.h
+ ../ECE118_library/include/RC_Servo.h \
+ ../ECE118_library/component\ libraries/pins.h \
+ ../ECE118_library/include/IO_Ports.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -71,3 +73,7 @@ RobotMovementService.h:
 ../ECE118_library/include/AD.h:
 
 ../ECE118_library/include/RC_Servo.h:
+
+../ECE118_library/component\ libraries/pins.h:
+
+../ECE118_library/include/IO_Ports.h:

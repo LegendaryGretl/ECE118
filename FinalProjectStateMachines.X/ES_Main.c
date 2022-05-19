@@ -7,6 +7,7 @@
 #include "pwm.h"
 #include "AD.h"
 #include "RC_Servo.h"
+#include "pins.h"
 
 void main(void)
 {
@@ -23,6 +24,9 @@ void main(void)
     AD_Init();
     RC_Init();
     Motors_Init();
+    AD_AddPins(TRACK_WIRE_SENSOR_LEFT);
+    AD_AddPins(TRACK_WIRE_SENSOR_RIGHT);
+    AD_AddPins(BEACON_DETECTOR);
     
 
     // now initialize the Events and Services Framework and start it running

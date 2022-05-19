@@ -96,7 +96,7 @@ uint8_t CheckTrackWire(void) {
     // detected on
     int left_voltage_level = (3300 * AD_ReadADPin(TRACK_WIRE_SENSOR_LEFT)) / 1023;
     int right_voltage_level = (3300 * AD_ReadADPin(TRACK_WIRE_SENSOR_RIGHT)) / 1023;
-    
+
     if (left_voltage_level < TRACK_WIRE_DETECTED_LOGIC_HIGH) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b10;
@@ -164,6 +164,7 @@ uint8_t CheckBeacon(void) {
 uint8_t CheckTapeSensors(void) {
     static ES_EventTyp_t lastEvent = ES_NO_TAPE_DETECTED;
     static uint16_t lastParam = 0x00;
+    static unsigned int prevPollTime = 0;
     ES_EventTyp_t curEvent = ES_NO_TAPE_DETECTED;
     uint16_t curParam = 0;
     ES_Event thisEvent;
@@ -174,6 +175,7 @@ uint8_t CheckTapeSensors(void) {
     int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_FL, TAPE_SENSOR_FC,
         TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SC,
         TAPE_SENSOR_SR};
+    unsigned int curPollTime = TIMERS_GetTime();
     marker = 0b01;
 
     // read each tape sensor, indicate if they have been tripped or not
@@ -196,7 +198,21 @@ uint8_t CheckTapeSensors(void) {
 #else
         SaveEvent(thisEvent);
 #endif   
+    } else if ((curEvent == ES_TAPE_DETECTED) && ((curPollTime - prevPollTime) > 100)) {
+        // report event every .1 seconds that the bot's still on tape
+        thisEvent.EventType = curEvent;
+        thisEvent.EventParam = curParam;
+        returnVal = TRUE;
+        lastEvent = curEvent; // update history
+        lastParam = curParam;
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+        PostTopLevelHSM(thisEvent);
+#else
+        SaveEvent(thisEvent);
+#endif 
     }
+
+    prevPollTime = curPollTime
     return (returnVal);
 }
 

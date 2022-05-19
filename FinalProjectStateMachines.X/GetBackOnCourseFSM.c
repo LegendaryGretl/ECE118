@@ -44,7 +44,8 @@ typedef enum {
     TapeFrontRight,
     TapeBackLeft,
     TapeBackRight,
-    CheckTapeSensors,
+    CheckForTapeEvent,
+    RetreatFromTape,
 } GetBackOnCourseFSMState_t;
 
 static const char *StateNames[] = {
@@ -54,6 +55,7 @@ static const char *StateNames[] = {
     "TapeFrontRight",
     "TapeBackLeft",
     "TapeBackRight",
+    "CheckForTapeEvent",
 };
 
 
@@ -63,13 +65,13 @@ static const char *StateNames[] = {
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
    relevant to the behavior of this state machine */
-void TankTurnLeft(int degrees);
-void TankTurnRight(int degrees);
-void DriveForwards(int distance);
-void DriveBackwards(int distance);
-void StopMoving(void);
-void GradualTurnLeft(int direction);
-void GradualTurnRight(int direction);
+static void TankTurnLeft(int degrees);
+static void TankTurnRight(int degrees);
+static void DriveForwards(int distance);
+static void DriveBackwards(int distance);
+static void StopMoving(void);
+static void GradualTurnLeft(int direction);
+static void GradualTurnRight(int direction);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -124,6 +126,7 @@ uint8_t InitGetBackOnCourseFSM(void) {
 ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     GetBackOnCourseFSMState_t nextState; // <- change type to correct enum
+    static ES_EventTyp_t lastEvent = ES_NO_EVENT;
 
     ES_Tattle(); // trace call stack
 
@@ -136,40 +139,128 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                 // initial state
 
                 // now put the machine into the actual initial state
-                nextState = CheckTapeSensors;
+                nextState = CheckForTapeEvent;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
             }
             break;
 
-        case CheckTapeSensors: // in the first state, replace this with correct names
+        case CheckForTapeEvent: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    StopMoving();
+                    break;
                 case ES_TAPE_DETECTED:
-                    if (ThisEvent.EventParam & TAPE_SENSOR_FC_MASK){
-                        
+                    if (ThisEvent.EventParam & TAPE_SENSOR_FL_MASK) {
+                        nextState = TapeFrontLeft;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_FR_MASK) {
+                        nextState = TapeFrontRight;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_FC_MASK) {
+                        nextState = TapeFrontCenter;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_BL_MASK) {
+                        nextState = TapeBackLeft;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_BR_MASK) {
+                        nextState = TapeBackRight;
+                    } else {
+                        CurrentState = CheckForTapeEvent;
+                        return ThisEvent;
                     }
-                    if (ThisEvent.EventParam & TAPE_SENSOR_FL_MASK){
-                        TankTurnLeft(45);
-                    }
-                case ES_NO_EVENT:
-                default: // all unhandled events pass the event back up to the next level
+                    makeTransition = TRUE;
                     break;
             }
             break;
 
         case TapeFrontLeft:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnRight(45);
+                    lastEvent = ThisEvent.EventType;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = RetreatFromTape;
+                    makeTransition = TRUE;
+                    break;
+            }
             break;
-            
+
         case TapeFrontCenter:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveBackwards(1);
+                    lastEvent = ThisEvent.EventType;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
+                        StopMoving();
+                        nextState = RetreatFromTape;
+                        makeTransition = TRUE;
+                    }
+                    TankTurnRight(90);
+                    lastEvent = ThisEvent.EventType;
+                    break;
+            }
             break;
-            
+
         case TapeFrontRight:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnLeft(45);
+                    lastEvent = ThisEvent.EventType;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = RetreatFromTape;
+                    makeTransition = TRUE;
+                    break;
+            }
             break;
-            
+
         case TapeBackLeft:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnRight(45);
+                    lastEvent = ThisEvent.EventType;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = RetreatFromTape;
+                    makeTransition = TRUE;
+                    break;
+            }
             break;
-            
+
         case TapeBackRight:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnLeft(45);
+                    lastEvent = ThisEvent.EventType;
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = RetreatFromTape;
+                    makeTransition = TRUE;
+                    break;
+            }
+            break;
+
+        case RetreatFromTape:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwards(1);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    CurrentState = CheckForTapeEvent;
+                    return ThisEvent;
+                    break;
+                case ES_TAPE_DETECTED:
+                    if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
+                        StopMoving();
+                        nextState = CheckForTapeEvent;
+                        makeTransition = TRUE;
+                    }
+                    break;
+            }
             break;
 
         default: // all unhandled states fall into here

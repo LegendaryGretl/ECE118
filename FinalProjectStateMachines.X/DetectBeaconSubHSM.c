@@ -60,13 +60,13 @@ static const char *StateNames[] = {
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
    relevant to the behavior of this state machine */
-void TankTurnLeft(int degrees);
-void TankTurnRight(int degrees);
-void DriveForwards(int distance);
-void DriveBackwards(int distance);
-void StopMoving(void);
-void GradualTurnLeft(int direction);
-void GradualTurnRight(int direction);
+static void TankTurnLeft(int degrees);
+static void TankTurnRight(int degrees);
+static void DriveForwards(int distance);
+static void DriveBackwards(int distance);
+static void StopMoving(void);
+static void GradualTurnLeft(int direction);
+static void GradualTurnRight(int direction);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -151,7 +151,6 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
                         // make sure that tape sensors are under the bot
                         StopMoving();
-                        RunGetBackOnCourseFSM(ThisEvent);
                         nextState = GetBackOnCourse;
                         makeTransition = TRUE;
                     }

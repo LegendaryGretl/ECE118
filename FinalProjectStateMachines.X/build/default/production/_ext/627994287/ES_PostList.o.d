@@ -7,7 +7,8 @@ build/default/production/_ext/627994287/ES_PostList.o: \
  ../ECE118_library/include/ES_KeyboardInput.h \
  ../ECE118_library/component\ libraries/MotorEncoderService.h \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
- ../ECE118_library/component\ libraries/RCServoService.h
+ ../ECE118_library/component\ libraries/RCServoService.h \
+ RobotMovementService.h
 
 ES_Configure.h:
 
@@ -30,3 +31,5 @@ TopLevelHSM.h:
 ES_Configure.h:
 
 ../ECE118_library/component\ libraries/RCServoService.h:
+
+RobotMovementService.h:

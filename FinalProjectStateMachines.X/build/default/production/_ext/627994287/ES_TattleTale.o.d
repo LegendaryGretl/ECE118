@@ -15,7 +15,7 @@ build/default/production/_ext/627994287/ES_TattleTale.o: \
  ../ECE118_library/component\ libraries/MotorEncoderService.h \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
  ../ECE118_library/component\ libraries/RCServoService.h \
- ../ECE118_library/include/ES_TattleTale.h \
+ RobotMovementService.h ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/serial.h
 
@@ -56,6 +56,8 @@ TopLevelHSM.h:
 ES_Configure.h:
 
 ../ECE118_library/component\ libraries/RCServoService.h:
+
+RobotMovementService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
 

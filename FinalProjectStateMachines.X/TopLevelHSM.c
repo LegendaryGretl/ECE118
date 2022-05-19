@@ -38,7 +38,8 @@
 #include "DetectBeaconSubHSM.h"
 #include "NavigateToTowerSubHSM.h"
 #include "AlignAndLaunchSubHSM.h"
-#include "SensorEventChecker.h" //#include all sub state machines called
+#include "SensorEventChecker.h" 
+#include "RobotMovementService.h"
 
 /*******************************************************************************
  * PRIVATE #DEFINES                                                            *
@@ -161,7 +162,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case DetectBeacon: // point bot in the direct of a beacon
 #ifdef MOTOR_CALIBRATION
             ThisEvent.EventType = ES_START_MOTOR_CALIBRATION;
-            PostMotorEncoderService(ThisEvent);
+            PostRobotMovementService(ThisEvent);
             break;
 #endif
 #ifdef TEST_MOTOR_SYNC
@@ -228,6 +229,14 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 #endif 
+#ifdef TEST_ROBOT_MOVEMENT_FUNCTIONS
+            if (ThisEvent.EventType == ES_ENTRY){
+                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+                ThisEvent.EventParam = 360;
+                PostRobotMovementService(ThisEvent);
+            }
+            break;
+#endif
             ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:

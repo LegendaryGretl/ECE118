@@ -20,7 +20,7 @@ build/default/production/_ext/627994287/ES_Framework.o: \
  ../ECE118_library/component\ libraries/MotorEncoderService.h \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
  ../ECE118_library/component\ libraries/RCServoService.h \
- ../ECE118_library/include/ES_TattleTale.h \
+ RobotMovementService.h ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/ES_KeyboardInput.h \
  ../ECE118_library/include/BOARD.h \
  ../ECE118_library/include/ES_ServiceHeaders.h \
@@ -71,6 +71,8 @@ TopLevelHSM.h:
 ES_Configure.h:
 
 ../ECE118_library/component\ libraries/RCServoService.h:
+
+RobotMovementService.h:
 
 ../ECE118_library/include/ES_TattleTale.h:
 

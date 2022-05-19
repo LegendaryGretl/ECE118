@@ -31,9 +31,10 @@
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define STOP_TIME 500
-#define WHEEL_ROTATION_FOR_360_BOT_TURN 1525
+#define STOP_TIME 750
+#define WHEEL_ROTATION_FOR_360_BOT_TURN (1525 - 360)
 #define TICKS_PER_WHEEL_ROTATION 408
+#define TANK_TURN_SPEED 85
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -63,7 +64,7 @@ static uint8_t MyPriority;
  *        to rename this to something appropriate.
  *        Returns TRUE if successful, FALSE otherwise
  * @author J. Edward Carryer, 2011.10.23 19:25 */
-uint8_t InitTemplateService(uint8_t Priority) {
+uint8_t InitRobotMovementService(uint8_t Priority) {
     ES_Event ThisEvent;
 
     MyPriority = Priority;
@@ -108,12 +109,6 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
     static ES_Event lastEvent;
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
-    /********************************************
-     in here you write your service code
-     *******************************************/
-
-    ES_EventTyp_t curEvent;
-
     switch (ThisEvent.EventType) {
         case ES_INIT:
             // No hardware initialization or single time setups, those
@@ -121,6 +116,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             //
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
+            ReturnEvent.EventParam = ES_INIT;
+            PostMotorEncoderService(ReturnEvent);
             // This section is used to reset service for some reason
             break;
 
@@ -134,6 +131,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
             lastEvent = ThisEvent;
+            ReturnEvent.EventType = ES_INIT;
+            PostMotorEncoderService(ReturnEvent);
             ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
             break;
 
@@ -177,6 +176,10 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
             break;
 
+        case ES_START_MOTOR_CALIBRATION:
+            PostMotorEncoderService(ThisEvent);
+            break;
+
         case ES_TIMERACTIVE:
         case ES_TIMERSTOPPED:
             break;
@@ -199,6 +202,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_DRIVE_BACKWARDS:
@@ -213,26 +217,29 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_TANK_TURN_LEFT:
-                    SetCalibratedLeftMotorSpeed(-100);
-                    SetCalibratedRightMotorSpeed(100);
+                    SetCalibratedLeftMotorSpeed(-TANK_TURN_SPEED);
+                    SetCalibratedRightMotorSpeed(TANK_TURN_SPEED);
                     rotation_ticks = (WHEEL_ROTATION_FOR_360_BOT_TURN * lastEvent.EventParam) / 360;
                     ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_TANK_TURN_RIGHT:
-                    SetCalibratedLeftMotorSpeed(100);
-                    SetCalibratedRightMotorSpeed(-100);
+                    SetCalibratedLeftMotorSpeed(TANK_TURN_SPEED);
+                    SetCalibratedRightMotorSpeed(-TANK_TURN_SPEED);
                     rotation_ticks = (WHEEL_ROTATION_FOR_360_BOT_TURN * lastEvent.EventParam) / 360;
                     ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_GRADUAL_TURN_LEFT:
@@ -249,6 +256,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_GRADUAL_TURN_RIGHT:
@@ -265,20 +273,30 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
             }
+            break;
 
         case ES_MOTOR_ROTATION_COMPLETE:
             if (ThisEvent.EventParam & 0b10) {
-                SetCalibratedLeftMotorSpeed(0);
+                printf("\r\nleft wheel rotation complete");
+                if ((lastEvent.EventType != ES_MOVE_BOT_TANK_TURN_LEFT) && (lastEvent.EventType != ES_MOVE_BOT_TANK_TURN_RIGHT)) {
+                    SetCalibratedLeftMotorSpeed(0);
+                }
             }
             if (ThisEvent.EventParam & 0b01) {
-                SetCalibratedRightMotorSpeed(0);
+                printf("\r\nright wheel rotation complete");
+                if ((lastEvent.EventType != ES_MOVE_BOT_TANK_TURN_LEFT) && (lastEvent.EventType != ES_MOVE_BOT_TANK_TURN_RIGHT)) {
+                    SetCalibratedRightMotorSpeed(0);
+                }
             }
             if (lastEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) { // check that both motors are ready to be stopped
-                ReturnEvent.EventType = curEvent;
-                ReturnEvent.EventParam = 0;
+                ReturnEvent.EventType = ThisEvent.EventType;
+                ReturnEvent.EventParam = 0b11;
+                SetCalibratedLeftMotorSpeed(0);
+                SetCalibratedRightMotorSpeed(0);
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
                 PostTopLevelHSM(ReturnEvent);
 #else

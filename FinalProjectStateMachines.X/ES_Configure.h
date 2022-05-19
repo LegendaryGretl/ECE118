@@ -43,6 +43,7 @@ typedef enum {
     ES_TIMERACTIVE, /* signals that a timer has become active */
     ES_TIMERSTOPPED, /* signals that a timer has stopped*/
     /* User-defined events start here */
+    // Battery Events **********************************************************
     BATTERY_CONNECTED,
     BATTERY_DISCONNECTED,
     // Sensor Events ***********************************************************
@@ -64,7 +65,7 @@ typedef enum {
     ES_MOTOR_ROTATION_COMPLETE, // param: 0b10 = left, 0b01 = right            
     // RC Servo Events *********************************************************
     ES_RC_SERVO_STRIKE_START, // sets off the RC servo to hit a ping pong ball
-    ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit and the servo has retracted            
+    ES_RC_SERVO_STRIKE_COMPLETE, // indicates that the ball has been hit            
     // State Machine Events ****************************************************
     ES_BACK_ON_COURSE, // the bot has avoided the tape
     ES_DEAD_BOT_AVOIDED, // the bot has successfully gone around the dead bot
@@ -147,7 +148,7 @@ static const char *EventNames[] = {
 // a timers, then you can use TIMER_UNUSED
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostRCServoService
-#define TIMER1_RESP_FUNC TIMER_UNUSED//PostRobotMovementService
+#define TIMER1_RESP_FUNC PostRobotMovementService
 #define TIMER2_RESP_FUNC TIMER_UNUSED
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
@@ -183,7 +184,7 @@ static const char *EventNames[] = {
 /****************************************************************************/
 // This macro determines that nuber of services that are *actually* used in
 // a particular application. It will vary in value from 1 to MAX_NUM_SERVICES
-#define NUM_SERVICES 4
+#define NUM_SERVICES 5
 
 /****************************************************************************/
 // These are the definitions for Service 0, the lowest priority service

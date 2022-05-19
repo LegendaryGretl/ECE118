@@ -173,7 +173,7 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
                 ReturnEvent.EventParam = curParam;
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
                 //PostReadSensorService(ReturnEvent);
-                PostTopLevelHSM(ReturnEvent);
+                PostRobotMovementService(ReturnEvent);
 #else
                 PostMotorEncoderService(ReturnEvent);
 #endif  
@@ -189,7 +189,7 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
                 }
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
                 //PostReadSensorService(ReturnEvent);
-                PostTopLevelHSM(ReturnEvent);
+                PostRobotMovementService(ReturnEvent);
 #else
                 PostMotorEncoderService(ReturnEvent);
 #endif

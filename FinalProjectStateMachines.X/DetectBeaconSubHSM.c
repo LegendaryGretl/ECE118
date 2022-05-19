@@ -183,7 +183,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED: // avoid tape and return to field
                     StopMoving();
-                    nextState = RandomWalk;
+                    nextState = GetBackOnCourse;
                     makeTransition = TRUE;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // stop motors and start a new 360 turn to look for a beacon

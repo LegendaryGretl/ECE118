@@ -148,6 +148,7 @@ uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
 ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     TopLevelHSMState_t nextState; // <- change type to correct enum
+    static int marker = 0;
     int i = 0;
 
     ES_Tattle(); // trace call stack
@@ -299,22 +300,22 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             break;
 #endif 
 #ifdef TEST_ROBOT_MOVEMENT_FUNCTIONS
+//            if (ThisEvent.EventType == ES_ENTRY) {
+//                ThisEvent.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
+//                ThisEvent.EventParam = 1;
+//                PostRobotMovementService(ThisEvent);
+//            }
             if (ThisEvent.EventType == ES_ENTRY) {
-                ThisEvent.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
-                ThisEvent.EventParam = 1;
+                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+                ThisEvent.EventParam = 360;
                 PostRobotMovementService(ThisEvent);
             }
-            //            if (ThisEvent.EventType == ES_ENTRY) {
-            //                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
-            //                ThisEvent.EventParam = 360;
-            //                PostRobotMovementService(ThisEvent);
-            //            }
-            //            if ((ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) && (marker == 0)){
-            //                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
-            //                ThisEvent.EventParam = 360;
-            //                PostRobotMovementService(ThisEvent);
-            //                marker++;
-            //            }
+            if ((ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) && (marker == 0)) {
+                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+                ThisEvent.EventParam = 360;
+                PostRobotMovementService(ThisEvent);
+                marker++;
+            }
             break;
 #endif
 #ifdef RC_SERVO_INTEGRATION_TEST

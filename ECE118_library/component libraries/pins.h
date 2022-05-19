@@ -51,8 +51,6 @@
 
 
 // beacon detector pins ********************************************************
-//#define BEACON_DETECTOR_TRIS PORTZ12_TRIS
-//#define BEACON_DETECTOR PORTZ12_BIT
 #define BEACON_DETECTOR AD_PORTV5
 
 

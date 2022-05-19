@@ -139,6 +139,7 @@ uint8_t PostTopLevelHSM(ES_Event ThisEvent) {
 ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     TopLevelHSMState_t nextState; // <- change type to correct enum
+    static int marker = 0;
 
     ES_Tattle(); // trace call stack
 
@@ -230,10 +231,35 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             break;
 #endif 
 #ifdef TEST_ROBOT_MOVEMENT_FUNCTIONS
-            if (ThisEvent.EventType == ES_ENTRY){
-                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
-                ThisEvent.EventParam = 360;
+            if (ThisEvent.EventType == ES_ENTRY) {
+                ThisEvent.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
+                ThisEvent.EventParam = 1;
                 PostRobotMovementService(ThisEvent);
+            }
+            //            if (ThisEvent.EventType == ES_ENTRY) {
+            //                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+            //                ThisEvent.EventParam = 360;
+            //                PostRobotMovementService(ThisEvent);
+            //            }
+            //            if ((ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) && (marker == 0)){
+            //                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+            //                ThisEvent.EventParam = 360;
+            //                PostRobotMovementService(ThisEvent);
+            //                marker++;
+            //            }
+            break;
+#endif
+#ifdef RC_SERVO_INTEGRATION_TEST
+            if (ThisEvent.EventType == ES_ENTRY) {
+                ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;
+                PostRCServoService(ThisEvent);
+            }
+            if (ThisEvent.EventType == ES_RC_SERVO_STRIKE_COMPLETE) {
+                ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 1000);
+            }
+            if (ThisEvent.EventType == ES_TIMEOUT) {
+                ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;
+                PostRCServoService(ThisEvent);
             }
             break;
 #endif

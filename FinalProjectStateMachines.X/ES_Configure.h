@@ -149,7 +149,7 @@ static const char *EventNames[] = {
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC PostRCServoService
 #define TIMER1_RESP_FUNC PostRobotMovementService
-#define TIMER2_RESP_FUNC TIMER_UNUSED
+#define TIMER2_RESP_FUNC PostTopLevelHSM
 #define TIMER3_RESP_FUNC TIMER_UNUSED
 #define TIMER4_RESP_FUNC TIMER_UNUSED
 #define TIMER5_RESP_FUNC TIMER_UNUSED
@@ -173,6 +173,7 @@ static const char *EventNames[] = {
 
 #define RC_SERVO_TIMER 0
 #define ROBOT_MOVEMENT_TIMER 1
+#define TOP_LEVEL_HSM_TIMER 2
 
 
 /****************************************************************************/

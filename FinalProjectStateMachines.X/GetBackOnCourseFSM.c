@@ -167,7 +167,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                         return ThisEvent;
                     }
                     makeTransition = TRUE;
-                    break;
+                    break;                    
             }
             break;
 

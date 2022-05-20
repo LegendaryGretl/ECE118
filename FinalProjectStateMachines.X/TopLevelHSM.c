@@ -155,25 +155,30 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 
     switch (CurrentState) {
         case InitPState: // If current state is initial Pseudo State
+
+#ifdef GENERAL_TESTING
             if (ThisEvent.EventType == ES_INIT)// only respond to ES_Init
             {
-#ifdef GENERAL_TESTING
                 nextState = TestCode;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
                 break;
+            }
 #endif
-                // this is where you would put any actions associated with the
-                // transition from the initial pseudo-state into the actual
-                // initial state
-                // Initialize all sub-state machines
-                InitDetectBeaconSubHSM();
+            // this is where you would put any actions associated with the
+            // transition from the initial pseudo-state into the actual
+            // initial state
+            if (ThisEvent.EventType == ES_INIT) {
+                // give time for all the sensors to settle
+                ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 500);
+            } else if (ThisEvent.EventType == ES_TIMEOUT) {
                 // now put the machine into the actual initial state
-
+                InitDetectBeaconSubHSM();
+                InitNavigateToTowerSubHSM();
+                InitAlignAndLaunchSubHSM();
                 nextState = DetectBeacon;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
-                ;
             }
             break;
 
@@ -300,11 +305,11 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             break;
 #endif 
 #ifdef TEST_ROBOT_MOVEMENT_FUNCTIONS
-//            if (ThisEvent.EventType == ES_ENTRY) {
-//                ThisEvent.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
-//                ThisEvent.EventParam = 1;
-//                PostRobotMovementService(ThisEvent);
-//            }
+            //            if (ThisEvent.EventType == ES_ENTRY) {
+            //                ThisEvent.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
+            //                ThisEvent.EventParam = 1;
+            //                PostRobotMovementService(ThisEvent);
+            //            }
             if (ThisEvent.EventType == ES_ENTRY) {
                 ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
                 ThisEvent.EventParam = 360;

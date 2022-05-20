@@ -132,6 +132,7 @@ uint8_t CheckTrackWire(void) {
  */
 uint8_t CheckBeacon(void) {
     static ES_EventTyp_t lastEvent = ES_NO_BEACON_DETECTED;
+    static int counter = -1;
     ES_EventTyp_t curEvent = ES_NO_BEACON_DETECTED;
     ES_Event thisEvent;
     uint8_t returnVal = FALSE;
@@ -141,11 +142,18 @@ uint8_t CheckBeacon(void) {
         curEvent = ES_BEACON_DETECTED;
     }
     
-    if (curEvent != lastEvent) { // check for change from last time
+    if (curEvent != lastEvent){
+        counter = 0;
+        lastEvent = curEvent;
+    } else if (counter > -1){
+        counter ++;
+    }
+    
+    if (counter > 100) { // check for change from last time
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = 0;
         returnVal = TRUE;
-        lastEvent = curEvent; // update history
+        counter = -1;
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
         PostTopLevelHSM(thisEvent);
 #else

@@ -20,7 +20,7 @@ build/default/production/ES_Main.o: ES_Main.c \
  ../ECE118_library/include/pwm.h ../ECE118_library/include/AD.h \
  ../ECE118_library/include/RC_Servo.h \
  ../ECE118_library/component\ libraries/pins.h \
- ../ECE118_library/include/IO_Ports.h
+ ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/timers.h
 
 ../ECE118_library/include/BOARD.h:
 
@@ -77,3 +77,5 @@ RobotMovementService.h:
 ../ECE118_library/component\ libraries/pins.h:
 
 ../ECE118_library/include/IO_Ports.h:
+
+../ECE118_library/include/timers.h:

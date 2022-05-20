@@ -27,6 +27,8 @@
  * MODULE #INCLUDE                                                             *
  ******************************************************************************/
 
+#include <stdio.h>
+
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "BOARD.h"
@@ -164,23 +166,35 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                         nextState = TapeBackRight;
                     } else {
                         CurrentState = CheckForTapeEvent;
+                        ThisEvent.EventType = ES_BACK_ON_COURSE;
                         return ThisEvent;
                     }
                     makeTransition = TRUE;
-                    break;                    
+                    break;
+                case ES_NO_TAPE_DETECTED:
+                    CurrentState = CheckForTapeEvent;
+                    ThisEvent.EventType = ES_BACK_ON_COURSE;
+                    return ThisEvent;
+                    break;
             }
             break;
 
         case TapeFrontLeft:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnRight(45);
-                    lastEvent = ThisEvent.EventType;
+                    DriveBackwards(1);
+                    lastEvent = ES_ENTRY;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
-                    StopMoving();
-                    nextState = RetreatFromTape;
-                    makeTransition = TRUE;
+                    if (lastEvent == ES_ENTRY) {
+                        TankTurnRight(90);
+                        lastEvent = ThisEvent.EventType;
+                    }
+                    if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
+                        StopMoving();
+                        nextState = RetreatFromTape;
+                        makeTransition = TRUE;
+                    }
                     break;
             }
             break;
@@ -189,16 +203,18 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     DriveBackwards(1);
-                    lastEvent = ThisEvent.EventType;
+                    lastEvent = ES_ENTRY;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
+                    if (lastEvent == ES_ENTRY) {
+                        TankTurnRight(90);
+                        lastEvent = ThisEvent.EventType;
+                    }
                     if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
                         StopMoving();
                         nextState = RetreatFromTape;
                         makeTransition = TRUE;
                     }
-                    TankTurnRight(90);
-                    lastEvent = ThisEvent.EventType;
                     break;
             }
             break;
@@ -206,13 +222,19 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
         case TapeFrontRight:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnLeft(45);
-                    lastEvent = ThisEvent.EventType;
+                    DriveBackwards(1);
+                    lastEvent = ES_ENTRY;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
-                    StopMoving();
-                    nextState = RetreatFromTape;
-                    makeTransition = TRUE;
+                    if (lastEvent == ES_ENTRY) {
+                        TankTurnLeft(90);
+                        lastEvent = ThisEvent.EventType;
+                    }
+                    if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
+                        StopMoving();
+                        nextState = RetreatFromTape;
+                        makeTransition = TRUE;
+                    }
                     break;
             }
             break;
@@ -251,8 +273,9 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                     DriveForwards(1);
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
-                    CurrentState = CheckForTapeEvent;
-                    return ThisEvent;
+                    StopMoving();
+                    nextState = CheckForTapeEvent;
+                    makeTransition = TRUE;
                     break;
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {

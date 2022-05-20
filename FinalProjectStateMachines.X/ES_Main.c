@@ -8,6 +8,7 @@
 #include "AD.h"
 #include "RC_Servo.h"
 #include "pins.h"
+#include "timers.h"
 
 void main(void)
 {
@@ -24,6 +25,7 @@ void main(void)
     AD_Init();
     RC_Init();
     Motors_Init();
+    TIMERS_Init();
     AD_AddPins(TRACK_WIRE_SENSOR_LEFT);
     AD_AddPins(TRACK_WIRE_SENSOR_RIGHT);
     AD_AddPins(BEACON_DETECTOR);

@@ -155,9 +155,11 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                         StopMoving();
                         nextState = GetBackOnCourse;
                         makeTransition = TRUE;
+                        printf("\r\nTape detected"); 
                     }
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
+                    break;
                     StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
@@ -179,6 +181,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     DriveForwards(3);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
+                    break;
                     StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
@@ -207,6 +210,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     makeTransition = TRUE;
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
+                    break;
                     StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;

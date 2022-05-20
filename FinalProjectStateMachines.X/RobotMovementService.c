@@ -37,6 +37,7 @@
 #define TANK_TURN_SPEED 85
 #define DEFAULT_TRAVEL_DIST 3
 #define GRADUAL_TURN_RATIO 80 // the ratio is calulated by dividing this number by 100
+#define BOT_MOVEMENT_SPEED 85
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -195,8 +196,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             int rotation_ticks;
             switch (lastEvent.EventType) {
                 case ES_MOVE_BOT_DRIVE_FORWARDS:
-                    SetCalibratedLeftMotorSpeed(100);
-                    SetCalibratedRightMotorSpeed(100);
+                    SetCalibratedLeftMotorSpeed(BOT_MOVEMENT_SPEED);
+                    SetCalibratedRightMotorSpeed(BOT_MOVEMENT_SPEED);
                     if (ThisEvent.EventParam > 0) {
                         rotation_ticks = lastEvent.EventParam;
                     } else {
@@ -210,8 +211,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_DRIVE_BACKWARDS:
-                    SetCalibratedLeftMotorSpeed(-100);
-                    SetCalibratedRightMotorSpeed(-100);
+                    SetCalibratedLeftMotorSpeed(-BOT_MOVEMENT_SPEED);
+                    SetCalibratedRightMotorSpeed(-BOT_MOVEMENT_SPEED);
                     if (ThisEvent.EventParam > 0) {
                         rotation_ticks = lastEvent.EventParam;
                     } else {
@@ -265,10 +266,10 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     break;
                 case ES_MOVE_BOT_GRADUAL_TURN_RIGHT:
                     if (lastEvent.EventParam) { // drive forwards
-                        SetCalibratedLeftMotorSpeed(100);
+                        SetCalibratedLeftMotorSpeed(BOT_MOVEMENT_SPEED);
                         SetCalibratedRightMotorSpeed(GRADUAL_TURN_RATIO);
                     } else { // drive backwards
-                        SetCalibratedLeftMotorSpeed(-100);
+                        SetCalibratedLeftMotorSpeed(-BOT_MOVEMENT_SPEED);
                         SetCalibratedRightMotorSpeed(-GRADUAL_TURN_RATIO);
                     }
                     rotation_ticks = DEFAULT_TRAVEL_DIST;

@@ -185,6 +185,9 @@ uint8_t CheckTapeSensors(void) {
         TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SC,
         TAPE_SENSOR_SR};
     unsigned int curPollTime = TIMERS_GetTime();
+#ifdef TEST_SENSOR_INTEGRATION
+    curPollTime = 0;
+#endif
     marker = 0b01;
 
     // read each tape sensor, indicate if they have been tripped or not
@@ -210,8 +213,8 @@ uint8_t CheckTapeSensors(void) {
 #else
         SaveEvent(thisEvent);
 #endif   
-    } else if ((curEvent == ES_TAPE_DETECTED) && ((curPollTime - prevPollTime) > 100)) {
-        // report event every .1 seconds that the bot's still on tape
+    } else if ((curEvent == ES_TAPE_DETECTED) && ((curPollTime - prevPollTime) > 500)) {
+        // report event every .5 seconds that the bot's still on tape
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = curParam;
         returnVal = TRUE;

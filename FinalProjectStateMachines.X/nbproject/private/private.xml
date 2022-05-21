@@ -5,12 +5,16 @@
         <group>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/GetBackOnCourseFSM.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/src/timers.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/ES_Main.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/DetectBeaconSubHSM.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/SensorEventChecker.h</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/include/timers.h</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/ES_Configure.h</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/SensorEventChecker.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/RobotMovementService.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/pins.h</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/TopLevelHSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/include/ES_Events.h</file>
         </group>
     </open-files>
 </project-private>

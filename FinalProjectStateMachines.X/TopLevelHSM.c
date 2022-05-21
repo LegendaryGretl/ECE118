@@ -186,7 +186,9 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:
+#ifdef TEST_ONLY_DETECT_BEACON
                     break;
+#endif
                     makeTransition = TRUE;
                     nextState = NavigateToTower;
                     break;

@@ -95,6 +95,16 @@ uint8_t CheckBeacon(void);
 uint8_t CheckTapeSensors(void);
 
 /**
+ * @Function PollTapeSensors(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function indicates whether or not there's been a change in the tape detected
+ * @note behaves the same as check tape sensors, except that it always reports an event when called
+ *      mainly used by the get back on course state machine when checking for tape events
+ */
+uint8_t PollTapeSensors(void);
+
+/**
  * @Function CheckMotorEncoder(void)
  * @param none
  * @return TRUE or FALSE

@@ -141,14 +141,14 @@ uint8_t CheckBeacon(void) {
     if (beacon_voltage_level < BEACON_DETECTED_LOGIC_HIGH) {
         curEvent = ES_BEACON_DETECTED;
     }
-    
-    if (curEvent != lastEvent){
+
+    if (curEvent != lastEvent) {
         counter = 0;
         lastEvent = curEvent;
-    } else if (counter > -1){
-        counter ++;
+    } else if (counter > -1) {
+        counter++;
     }
-    
+
     if (counter > 100) { // check for change from last time
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = 0;
@@ -229,6 +229,49 @@ uint8_t CheckTapeSensors(void) {
         SaveEvent(thisEvent);
 #endif 
     }
+    return (returnVal);
+}
+
+/**
+ * @Function PollTapeSensors(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function indicates whether or not there's been a change in the tape detected
+ * @note behaves the same as check tape sensors, except that it always reports an event when called
+ *      mainly used by the get back on course state machine when checking for tape events
+ */
+uint8_t PollTapeSensors(void) {
+    ES_EventTyp_t curEvent = ES_NO_TAPE_DETECTED;
+    uint16_t curParam = 0;
+    ES_Event thisEvent;
+    int i;
+    uint16_t marker;
+    uint8_t returnVal = FALSE;
+
+    int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_FL, TAPE_SENSOR_FC,
+        TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SC,
+        TAPE_SENSOR_SR};
+
+    marker = 0b01;
+
+    // read each tape sensor, indicate if they have been tripped or not
+    for (i = 0; i < NUMBER_OF_TAPE_SENSORS; i++) {
+        if (tape_sensors[i] == 1) { // when the tape sensor reads low, either tape or nothing is detected
+            curEvent = ES_TAPE_DETECTED;
+            curParam |= marker;
+        }
+        marker <<= 1;
+    }
+
+    thisEvent.EventType = curEvent;
+    thisEvent.EventParam = curParam;
+    returnVal = TRUE;
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+    PostTopLevelHSM(thisEvent);
+#else
+    SaveEvent(thisEvent);
+#endif   
+
     return (returnVal);
 }
 

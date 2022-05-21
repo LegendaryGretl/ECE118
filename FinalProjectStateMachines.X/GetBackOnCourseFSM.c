@@ -152,6 +152,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     StopMoving();
+                    //PollTapeSensors(); // ensures a tape sensor event will occur
                     break;
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & TAPE_SENSOR_FL_MASK) {
@@ -189,8 +190,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                     if (lastEvent == ES_ENTRY) {
                         TankTurnRight(90);
                         lastEvent = ThisEvent.EventType;
-                    }
-                    if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
+                    } else if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
                         StopMoving();
                         nextState = RetreatFromTape;
                         makeTransition = TRUE;
@@ -209,8 +209,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                     if (lastEvent == ES_ENTRY) {
                         TankTurnRight(90);
                         lastEvent = ThisEvent.EventType;
-                    }
-                    if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
+                    } else if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
                         StopMoving();
                         nextState = RetreatFromTape;
                         makeTransition = TRUE;
@@ -229,8 +228,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
                     if (lastEvent == ES_ENTRY) {
                         TankTurnLeft(90);
                         lastEvent = ThisEvent.EventType;
-                    }
-                    if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
+                    } else if (lastEvent == ES_MOTOR_ROTATION_COMPLETE) {
                         StopMoving();
                         nextState = RetreatFromTape;
                         makeTransition = TRUE;

@@ -31,7 +31,7 @@
  ******************************************************************************/
 
 #define BATTERY_DISCONNECT_THRESHOLD 175
-#define STOP_TIME 750
+#define STOP_TIME 250
 #define WHEEL_ROTATION_FOR_360_BOT_TURN (1525 - 310) // 1165 = ideal ticks for left tank turn @ 85 speed
 #define TICKS_PER_WHEEL_ROTATION 408
 #define TANK_TURN_SPEED 85

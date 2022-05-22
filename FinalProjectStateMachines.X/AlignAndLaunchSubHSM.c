@@ -130,7 +130,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             break;
 
         case AlignWithHole: // align shooter with correct hole
-            // ThisEvent = RunAlignWithHoleFSM(ThisEvent);
+            ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_ALIGNED_WITH_CORRECT_HOLE:
                     nextState = LaunchBall;

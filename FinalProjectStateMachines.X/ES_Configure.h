@@ -82,6 +82,8 @@ typedef enum {
     ES_MOVE_BOT_TANK_TURN_RIGHT,
     ES_MOVE_BOT_GRADUAL_TURN_LEFT, // param: direction of drive. 1 = forward, 0 = backwards
     ES_MOVE_BOT_GRADUAL_TURN_RIGHT,
+    ES_MOVE_BOT_PIVOT_TURN_RIGHT, // param: direction of drive. 1 = forward, 0 = backwards
+    ES_MOVE_BOT_SET_SPEED, // param: new default speed for motors
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 
@@ -128,6 +130,8 @@ static const char *EventNames[] = {
 	"ES_MOVE_BOT_TANK_TURN_RIGHT",
 	"ES_MOVE_BOT_GRADUAL_TURN_LEFT",
 	"ES_MOVE_BOT_GRADUAL_TURN_RIGHT",
+	"ES_MOVE_BOT_PIVOT_TURN_RIGHT",
+	"ES_MOVE_BOT_SET_SPEED",
 	"NUMBEROFEVENTS",
 };
 

@@ -40,24 +40,16 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    CheckBumpers,
+    CheckForBumperEvent,
     WallFollow,
     TurnAroundCorner,
 } WallFollowFSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "CheckBumpers",
-    "ForeRightTurn",
-    "ForeLeftTurn",
-    "AftTurn",
-    "AftSideLeftTurn",
-    "AftSideRightTurn",
-    "DriveForward",
-    "LeftSideHit",
-    "AlignWithWall",
-    "WallFollow",
-    "TurnAroundCorner",
+	"InitPSubState",
+	"CheckForBumperEvent",
+	"WallFollow",
+	"TurnAroundCorner",
 };
 
 
@@ -74,6 +66,7 @@ static void DriveBackwards(int distance);
 static void StopMoving(void);
 static void GradualTurnLeft(int direction);
 static void GradualTurnRight(int direction);
+static void PivotTurnRight(int direction);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -140,13 +133,13 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                 // initial state
 
                 // now put the machine into the actual initial state
-                nextState = CheckBumpers;
+                nextState = CheckForBumperEvent;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
             }
             break;
 
-        case CheckBumpers: // in the first state, replace this with correct names
+        case CheckForBumperEvent: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
                 case ES_BUMPER_HIT:
                     if ((ThisEvent.EventParam & BUMPER_FFL) || (ThisEvent.EventParam & BUMPER_FSL)) {
@@ -156,13 +149,13 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                     } else if (ThisEvent.EventParam & BUMPER_FSR) {
                         nextState = WallFollow;
                         makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_AFL_MASK){
+                    } else if (ThisEvent.EventParam & BUMPER_AFL_MASK) {
                         TankTurnRight(180);
-                    } else if (ThisEvent.EventParam & BUMPER_AFR_MASK){
+                    } else if (ThisEvent.EventParam & BUMPER_AFR_MASK) {
                         TankTurnRight(180);
-                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK){
+                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
                         TankTurnRight(180);
-                    } else if (ThisEvent.EventParam & BUMPER_ASL_MASK){
+                    } else if (ThisEvent.EventParam & BUMPER_ASL_MASK) {
                         TankTurnRight(180);
                     }
                     break;
@@ -175,7 +168,7 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
         case WallFollow:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    GradualTurnRight();
+                    GradualTurnRight(1);
                     break;
                 case ES_BUMPER_RELEASED:
                 case ES_BUMPER_HIT:
@@ -188,14 +181,14 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED: // check for dead bot
                     if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
-                        CurrentState = CheckBumpers;
+                        CurrentState = CheckForBumperEvent;
                         return ThisEvent;
                     }
                     break;
                 case ES_TRACK_WIRE_DETECTED:
                     if ((ThisEvent.EventParam & 0b11) == 0b11) {
                         StopMoving();
-                        CurrentState = CheckBumpers;
+                        CurrentState = CheckForBumperEvent;
                         return ThisEvent;
                     } else if (ThisEvent.EventParam & 0b10) {
                         // possibly add a counter clockwise wall follow fsm?
@@ -211,14 +204,15 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                     break;
             }
             break;
-            
+
         case TurnAroundCorner:
-            switch (ThisEvent.EventType){
+            switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     // pivot turn around right wheel
+                    PivotTurnRight(1);
                     break;
                 case ES_BUMPER_HIT:
-                    if (ThisEvent.EventParam & BUMPER_FSR_MASK){
+                    if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
                         nextState = WallFollow;
                         makeTransition = TRUE;
                         break;
@@ -256,9 +250,6 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
             //                    break;
             //            }
             //            break;
-
-        case TurnAroundCorner:
-            break;
 
         default: // all unhandled states fall into here
             break;
@@ -323,6 +314,13 @@ void GradualTurnLeft(int direction) {
 void GradualTurnRight(int direction) {
     ES_Event event;
     event.EventType = ES_MOVE_BOT_GRADUAL_TURN_RIGHT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}
+
+static void PivotTurnRight(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_PIVOT_TURN_RIGHT;
     event.EventParam = direction;
     PostRobotMovementService(event);
 }

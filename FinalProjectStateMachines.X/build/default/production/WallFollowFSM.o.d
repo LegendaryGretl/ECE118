@@ -15,7 +15,11 @@ build/default/production/WallFollowFSM.o: WallFollowFSM.c ES_Configure.h \
  ../ECE118_library/include/ES_Events.h TopLevelHSM.h ES_Configure.h \
  ../ECE118_library/component\ libraries/RCServoService.h \
  RobotMovementService.h ../ECE118_library/include/ES_TattleTale.h \
- ../ECE118_library/include/BOARD.h TopLevelHSM.h WallFollowFSM.h
+ ../ECE118_library/include/BOARD.h TopLevelHSM.h WallFollowFSM.h \
+ ../ECE118_library/component\ libraries/SensorEventChecker.h \
+ ../ECE118_library/include/AD.h ../ECE118_library/include/IO_Ports.h \
+ ../ECE118_library/component\ libraries/pins.h \
+ ../ECE118_library/include/pwm.h
 
 ES_Configure.h:
 
@@ -64,3 +68,13 @@ RobotMovementService.h:
 TopLevelHSM.h:
 
 WallFollowFSM.h:
+
+../ECE118_library/component\ libraries/SensorEventChecker.h:
+
+../ECE118_library/include/AD.h:
+
+../ECE118_library/include/IO_Ports.h:
+
+../ECE118_library/component\ libraries/pins.h:
+
+../ECE118_library/include/pwm.h:

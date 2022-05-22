@@ -54,8 +54,9 @@
 #define TAPE_SENSOR_BL_MASK (1<<3)
 #define TAPE_SENSOR_BR_MASK (1<<4)
 #define TAPE_SENSOR_SL_MASK (1<<5)
-#define TAPE_SENSOR_SC_MASK (1<<6)
+#define TAPE_SENSOR_SB_MASK (1<<6)
 #define TAPE_SENSOR_SR_MASK (1<<7)
+#define TAPE_SENSOR_SL_SR_MASK (TAPE_SENSOR_SL_MASK | TAPE_SENSOR_SR_MASK)
 
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *

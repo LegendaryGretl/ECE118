@@ -36,14 +36,14 @@
  * PUBLIC #DEFINES                                                             *
  ******************************************************************************/
 // Bumper masks
-#define BUMPER_FSL_MASK (1<<0)
-#define BUMPER_FFL_MASK (1<<1) 
-#define BUMPER_FFR_MASK (1<<2)
-#define BUMPER_FSR_MASK (1<<3) 
-#define BUMPER_ASR_MASK (1<<4)
-#define BUMPER_AFR_MASK (1<<5)
-#define BUMPER_AFL_MASK (1<<6) 
-#define BUMPER_ASL_MASK (1<<7)
+#define BUMPER_FSL_MASK (1<<0) // fore side left
+#define BUMPER_FFL_MASK (1<<1) // fore front left
+#define BUMPER_FFR_MASK (1<<2) // fore front right
+#define BUMPER_FSR_MASK (1<<3) // fore side right
+#define BUMPER_ASR_MASK (1<<4) // aft side right
+#define BUMPER_AFR_MASK (1<<5) // aft front right
+#define BUMPER_AFL_MASK (1<<6) // aft front left
+#define BUMPER_ASL_MASK (1<<7) // aft side left
 
 // Tape Sensor Masks
 #define BOTTOM_TAPE_SENSORS 0b00011111

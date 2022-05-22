@@ -160,7 +160,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     StopMoving();
                     nextState = WallFollow;
                     makeTransition = TRUE;
-                    RunWallFollowFSM(ThisEvent);
+                    RunWallFollowFSM(ThisEvent); // use bumper event to start state machine
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level

@@ -33,6 +33,7 @@
 #include "TopLevelHSM.h"
 #include "WallFollowFSM.h"
 #include "SensorEventChecker.h"
+#include "pins.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -40,14 +41,6 @@
 typedef enum {
     InitPSubState,
     CheckBumpers,
-    ForeRightTurn,
-    ForeLeftTurn,
-    AftTurn,
-    AftSideLeftTurn,
-    AftSideRightTurn,
-    DriveForward,
-    RightSideHit,
-    AlignWithWall,
     WallFollow,
     TurnAroundCorner,
 } WallFollowFSMState_t;
@@ -155,6 +148,24 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
 
         case CheckBumpers: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_FFL) || (ThisEvent.EventParam & BUMPER_FSL)) {
+                        TankTurnLeft(30);
+                    } else if (ThisEvent.EventParam & BUMPER_FFR) {
+                        TankTurnLeft(20);
+                    } else if (ThisEvent.EventParam & BUMPER_FSR) {
+                        nextState = WallFollow;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & BUMPER_AFL_MASK){
+                        TankTurnRight(180);
+                    } else if (ThisEvent.EventParam & BUMPER_AFR_MASK){
+                        TankTurnRight(180);
+                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK){
+                        TankTurnRight(180);
+                    } else if (ThisEvent.EventParam & BUMPER_ASL_MASK){
+                        TankTurnRight(180);
+                    }
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -166,14 +177,85 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                 case ES_ENTRY:
                     GradualTurnRight();
                     break;
-                case ES_TAPE_DETECTED:
+                case ES_BUMPER_RELEASED:
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) {
+                        StopMoving();
+                        nextState = TurnAroundCorner;
+                        makeTransition = TRUE;
+                        break;
+                    }
+                    break;
+                case ES_TAPE_DETECTED: // check for dead bot
                     if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
                         CurrentState = CheckBumpers;
                         return ThisEvent;
                     }
                     break;
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        StopMoving();
+                        CurrentState = CheckBumpers;
+                        return ThisEvent;
+                    } else if (ThisEvent.EventParam & 0b10) {
+                        // possibly add a counter clockwise wall follow fsm?
+                        // if not implemented, just go around the entire tower again
+                        break;
+                    } else if (ThisEvent.EventParam & 0b01) {
+                        // continue the clockwise tower follow
+                        break;
+                    }
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
             }
             break;
+            
+        case TurnAroundCorner:
+            switch (ThisEvent.EventType){
+                case ES_ENTRY:
+                    // pivot turn around right wheel
+                    break;
+                case ES_BUMPER_HIT:
+                    if (ThisEvent.EventParam & BUMPER_FSR_MASK){
+                        nextState = WallFollow;
+                        makeTransition = TRUE;
+                        break;
+                    }
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+            //        case AlignWithWall:
+            //            switch (ThisEvent.EventType) {
+            //                case ES_ENTRY:
+            //                    TankTurnLeft();
+            //                    break;
+            //                case ES_TAPE_DETECTED:
+            //                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
+            //                        CurrentState = CheckBumpers;
+            //                        return ThisEvent;
+            //                    }
+            //                    break;
+            //                case ES_TRACK_WIRE_DETECTED:
+            //                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+            //                        CurrentState = CheckBumpers;
+            //                        return ThisEvent;
+            //                    } else if (ThisEvent.EventParam & 0b10) {
+            //                        // possibly add a counter clockwise wall follow fsm?
+            //                        // if not implemented, just go around the entire tower again
+            //                        break;
+            //                    } else if (ThisEvent.EventParam & 0b01) {
+            //                        // continue the clockwise tower follow
+            //                        break;
+            //                    }
+            //                    break;
+            //            }
+            //            break;
 
         case TurnAroundCorner:
             break;

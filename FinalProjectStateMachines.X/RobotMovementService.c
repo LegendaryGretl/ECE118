@@ -119,7 +119,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             //
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
-            ReturnEvent.EventParam = ES_INIT;
+            ReturnEvent.EventType = ES_INIT;
             PostMotorEncoderService(ReturnEvent);
             // This section is used to reset service for some reason
             break;

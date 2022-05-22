@@ -37,6 +37,7 @@
       <itemPath>AlignAndLaunchSubHSM.h</itemPath>
       <itemPath>RobotMovementService.h</itemPath>
       <itemPath>GetBackOnCourseFSM.h</itemPath>
+      <itemPath>WallFollowFSM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -72,6 +73,7 @@
       <itemPath>AlignAndLaunchSubHSM.c</itemPath>
       <itemPath>RobotMovementService.c</itemPath>
       <itemPath>GetBackOnCourseFSM.c</itemPath>
+      <itemPath>WallFollowFSM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -144,7 +146,7 @@
         <property key="place-data-into-section" value="false"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
-        <property key="preprocessor-macros" value="RC_SERVO_INTEGRATION_TEST"/>
+        <property key="preprocessor-macros" value="TEST_ONLY_DETECT_BEACON"/>
         <property key="strict-ansi" value="false"/>
         <property key="support-ansi" value="false"/>
         <property key="tentative-definitions" value="-fno-common"/>

@@ -77,7 +77,7 @@ static void GradualTurnLeft(int direction);
 static void GradualTurnRight(int direction);
 
 /*******************************************************************************
- * PRIVATE MODULE VARIABLES                                                            *
+ * PRIVATE MODULE VARIABLES                                                    *
  ******************************************************************************/
 /* You will need MyPriority and the state variable; you may need others as well.
  * The type of state variable should match that of enum in header file. */
@@ -152,7 +152,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     StopMoving();
-                    //PollTapeSensors(); // ensures a tape sensor event will occur
+                    PollTapeSensors(); // ensures a tape sensor event will occur
                     break;
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & TAPE_SENSOR_FL_MASK) {
@@ -240,7 +240,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
         case TapeBackLeft:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnRight(45);
+                    TankTurnRight(90);
                     lastEvent = ThisEvent.EventType;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
@@ -254,7 +254,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
         case TapeBackRight:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnLeft(45);
+                    TankTurnLeft(90);
                     lastEvent = ThisEvent.EventType;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:

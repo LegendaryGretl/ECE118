@@ -34,6 +34,7 @@
 #include "TopLevelHSM.h"
 #include "NavigateToTowerSubHSM.h"
 #include "pins.h"
+#include "WallFollowFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -61,6 +62,13 @@ static const char *StateNames[] = {
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
    relevant to the behavior of this state machine */
+static void TankTurnLeft(int degrees);
+static void TankTurnRight(int degrees);
+static void DriveForwards(int distance);
+static void DriveBackwards(int distance);
+static void StopMoving(void);
+static void GradualTurnLeft(int direction);
+static void GradualTurnRight(int direction);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -127,6 +135,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 // this is where you would put any actions associated with the
                 // transition from the initial pseudo-state into the actual
                 // initial state
+                InitWallFollowFSM();
 
                 // now put the machine into the actual initial state
                 nextState = NavigateToBeacon;
@@ -138,18 +147,20 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
         case NavigateToBeacon: // Drive towards the beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // drive bot forwards
-                    SetLeftMotorSpeed(100);
-                    SetRightMotorSpeed(100);
+                    DriveForwards(10);
                     break;
                 case ES_NO_BEACON_DETECTED: // transition to reorienting to beacon
                     // stop robot
+                    StopMoving();
                     nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;
                 case ES_BUMPER_HIT:
                     // stop robot
+                    StopMoving();
                     nextState = WallFollow;
                     makeTransition = TRUE;
+                    RunWallFollowFSM(ThisEvent);
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -163,9 +174,11 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     wiggle_direction = 1;
                     wiggle_amount = 5;
                     // tank turn left wiggle amount
+                    TankTurnLeft(wiggle_amount);
                     break;
                 case ES_BEACON_DETECTED: // stop wiggle and return to beacon navigation
                     // stop robot
+                    StopMoving();
                     wiggle_direction = 1;
                     wiggle_amount = 0;
                     nextState = NavigateToBeacon;
@@ -176,12 +189,15 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     if (wiggle_direction == 1) {
                         wiggle_amount += 5;
                         // tank turn left 2 * wiggle amount
+                        TankTurnLeft(2*wiggle_amount);
                     } else {
                         // tank turn right 2 * wiggle amount
+                        TankTurnRight(2*wiggle_amount);
                     }
                     break;
                 case ES_BUMPER_HIT: // investigate bumper collision
                     // stop robot
+                    StopMoving();
                     wiggle_direction = 1;
                     wiggle_amount = 0;
                     nextState = WallFollow;
@@ -194,7 +210,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
             break;
 
         case WallFollow: // follow along wall of tower until track wire is detected
-            //ThisEvent = RunWallFollowFSM(ThisEvent);
+            ThisEvent = RunWallFollowFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_TRACK_WIRE_DETECTED: // check for both detectors, the exit to align sub hsm
                     if (ThisEvent.EventParam == 0b11) {
@@ -206,6 +222,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
+                    StopMoving();
                     nextState = AvoidDeadBot;
                     makeTransition = TRUE;
                     break;
@@ -221,7 +238,6 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 case ES_DEAD_BOT_AVOIDED:
                     nextState = NavigateToBeacon;
                     makeTransition = TRUE;
-                    break;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -249,3 +265,50 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
 
+void TankTurnLeft(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void TankTurnRight(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void DriveForwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_FORWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void DriveBackwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void StopMoving(void) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_STOP;
+    PostRobotMovementService(event);
+}
+
+void GradualTurnLeft(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}
+
+void GradualTurnRight(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_RIGHT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}

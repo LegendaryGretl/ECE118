@@ -174,8 +174,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             } else if (ThisEvent.EventType == ES_TIMEOUT) {
                 // now put the machine into the actual initial state
                 InitDetectBeaconSubHSM();
-                InitNavigateToTowerSubHSM();
-                InitAlignAndLaunchSubHSM();
+                //InitNavigateToTowerSubHSM();
+                //InitAlignAndLaunchSubHSM();
                 nextState = DetectBeacon;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
@@ -187,6 +187,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED:
 #ifdef TEST_ONLY_DETECT_BEACON
+                    makeTransition = TRUE;
+                    nextState = DetectBeacon;
                     break;
 #endif
                     makeTransition = TRUE;

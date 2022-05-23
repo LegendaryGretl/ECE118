@@ -33,6 +33,7 @@
 #define BATTERY_DISCONNECT_THRESHOLD 175
 #define STOP_TIME 250
 #define WHEEL_ROTATION_FOR_360_BOT_TURN (1525 - 310) // 1165 = ideal ticks for left tank turn @ 85 speed
+//#define WHEEL_ROTATION_FOR_360_BOT_TURN 1525
 #define TICKS_PER_WHEEL_ROTATION 408
 #define TANK_TURN_SPEED 90
 #define DEFAULT_TRAVEL_DIST 3
@@ -129,7 +130,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
             ThisEvent.EventType = ES_INIT;
-            PostRobotMovementService(ThisEvent);
+            PostMotorEncoderService(ThisEvent);
             break;
 
         case ES_MOVE_BOT_DRIVE_FORWARDS:
@@ -315,7 +316,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
         case ES_MOTOR_ROTATION_COMPLETE:
             if (ThisEvent.EventParam & 0b10) {
                 printf("\r\nleft wheel rotation complete");
-                if ((lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_LEFT) || (lastEvent.EventType != ES_MOVE_BOT_GRADUAL_TURN_LEFT)) {
+                if ((lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_LEFT) || (lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_RIGHT)) {
                     SetCalibratedLeftMotorSpeed(0);
                     SetCalibratedRightMotorSpeed(0);
                     lastEvent.EventType = ES_MOTOR_ROTATION_COMPLETE;
@@ -325,7 +326,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             }
             if (ThisEvent.EventParam & 0b01) {
                 printf("\r\nright wheel rotation complete");
-                if ((lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_LEFT) || (lastEvent.EventType != ES_MOVE_BOT_GRADUAL_TURN_LEFT)) {
+                if ((lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_LEFT) || (lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_RIGHT)) {
                     SetCalibratedLeftMotorSpeed(0);
                     SetCalibratedRightMotorSpeed(0);
                     lastEvent.EventType = ES_MOTOR_ROTATION_COMPLETE;

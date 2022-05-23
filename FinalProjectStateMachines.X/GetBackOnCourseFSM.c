@@ -151,6 +151,7 @@ ES_Event RunGetBackOnCourseFSM(ES_Event ThisEvent) {
         case CheckForTapeEvent: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
+                    printf("\r\nTry to get back on course");
                     StopMoving();
                     PollTapeSensors(); // ensures a tape sensor event will occur
                     break;

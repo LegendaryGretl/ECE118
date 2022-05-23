@@ -152,6 +152,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED: // avoid tape and return to field
                     if (ThisEvent.EventParam & BOTTOM_TAPE_SENSORS) {
+                        printf("\r\nTape detected");
                         // make sure that tape sensors are under the bot
                         StopMoving();
                         nextState = GetBackOnCourse;
@@ -160,6 +161,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
+                    printf("\r\nBeacon detected");
 #ifdef TEST_ONLY_DETECT_BEACON
                     break;
 #endif
@@ -168,6 +170,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     return ThisEvent;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // beacon not detected during 360 turn
+                    printf("\r\nrotation complete");
                     StopMoving();
                     nextState = RandomWalk;
                     makeTransition = TRUE;
@@ -248,6 +251,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
 // wrapper functions for using robot movement functions
 
 void TankTurnLeft(int degrees) {
+    printf("\r\nstarted tank turn");
     ES_Event event;
     event.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
     event.EventParam = degrees;

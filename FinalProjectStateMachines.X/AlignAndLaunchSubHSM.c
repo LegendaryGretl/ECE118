@@ -32,6 +32,7 @@
 #include "BOARD.h"
 #include "TopLevelHSM.h"
 #include "AlignAndLaunchSubHSM.h"
+#include "HoleAlignmentFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -121,7 +122,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                 // this is where you would put any actions associated with the
                 // transition from the initial pseudo-state into the actual
                 // initial state
-
+                InitHoleAlignmentFSM();
                 // now put the machine into the actual initial state
                 nextState = AlignWithHole;
                 makeTransition = TRUE;
@@ -130,7 +131,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             break;
 
         case AlignWithHole: // align shooter with correct hole
-            ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
+            ThisEvent = RunHoleAlignmentFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_ALIGNED_WITH_CORRECT_HOLE:
                     nextState = LaunchBall;

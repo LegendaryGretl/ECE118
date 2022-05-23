@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/DetectBeaconSubHSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/motors.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/SensorEventChecker.h</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/ES_Configure.h</file>
-            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/AlignAndLaunchSubHSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/SensorEventChecker.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/WallFollowFSM.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/pins.h</file>
-            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/HoleAlignmentFSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/NavigateToTowerSubHSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/TopLevelHSM.c</file>
         </group>
     </open-files>
 </project-private>

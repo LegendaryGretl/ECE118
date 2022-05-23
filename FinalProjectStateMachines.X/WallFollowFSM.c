@@ -123,6 +123,7 @@ uint8_t InitWallFollowFSM(void) {
 ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     WallFollowFSMState_t nextState; // <- change type to correct enum
+    int i;
 
     ES_Tattle(); // trace call stack
 
@@ -144,21 +145,30 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
         case CheckForBumperEvent: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
                 case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_FFL) || (ThisEvent.EventParam & BUMPER_FSL)) {
-                        TankTurnLeft(30);
-                    } else if (ThisEvent.EventParam & BUMPER_FSR) {
+                    if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
                         nextState = WallFollow;
                         makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_FFR) {
+                        break;
+                    } else if ((ThisEvent.EventParam & BUMPER_FFL_MASK) || (ThisEvent.EventParam & BUMPER_FSL_MASK)) {
+                        TankTurnLeft(30);
+                        break;
+                    } else if (ThisEvent.EventParam & BUMPER_FFR_MASK) {
                         TankTurnLeft(20);
+                        break;
                     } else if (ThisEvent.EventParam & BUMPER_AFL_MASK) {
                         TankTurnRight(180);
+                        break;
                     } else if (ThisEvent.EventParam & BUMPER_AFR_MASK) {
                         TankTurnRight(180);
+                        break;
                     } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
                         TankTurnRight(180);
+                        break;
                     } else if (ThisEvent.EventParam & BUMPER_ASL_MASK) {
                         TankTurnRight(180);
+                        break;
+                    } else {
+                        break;
                     }
                     break;
                 case ES_BUMPER_RELEASED:

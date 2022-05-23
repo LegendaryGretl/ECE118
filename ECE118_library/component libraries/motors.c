@@ -12,8 +12,8 @@
 
 // #DEFINE CONSTANTS   
 // formula for max speed : (100 * (5000 - ticks left over on slower motor)) / 5000
-#define LEFT_MOTOR_MAX_SPEED 100
-#define RIGHT_MOTOR_MAX_SPEED 97//(100 * (5000 - 230)) / 5000
+#define LEFT_MOTOR_MAX_SPEED 99
+#define RIGHT_MOTOR_MAX_SPEED 100//(100 * (5000 - 230)) / 5000
 
 /**
  * @Function Motors_Init(void)

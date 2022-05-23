@@ -27,6 +27,8 @@
  * MODULE #INCLUDE                                                             *
  ******************************************************************************/
 
+#include <stdio.h>
+
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "BOARD.h"
@@ -159,6 +161,13 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                         TankTurnRight(180);
                     }
                     break;
+                case ES_BUMPER_RELEASED:
+                    CurrentState = CheckForBumperEvent;
+                    return ThisEvent;
+                    break;
+                case ES_TAPE_DETECTED: // it's not a dead bot, it's empty space
+                    ThisEvent.EventType = ES_NO_EVENT;
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -168,7 +177,8 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
         case WallFollow:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    GradualTurnRight(1);
+                    printf("\r\nStarted wall following");
+                    GradualTurnRight(5);
                     break;
                 case ES_BUMPER_RELEASED:
                 case ES_BUMPER_HIT:
@@ -217,6 +227,9 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                         break;
                     }
+                    break;
+                case ES_TAPE_DETECTED: // it's not a dead bot, it's empty space
+                    ThisEvent.EventType = ES_NO_EVENT;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level

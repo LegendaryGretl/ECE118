@@ -27,6 +27,8 @@
  * MODULE #INCLUDE                                                             *
  ******************************************************************************/
 
+#include <stdio.h>
+
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "BOARD.h"
@@ -35,6 +37,7 @@
 #include "NavigateToTowerSubHSM.h"
 #include "pins.h"
 #include "WallFollowFSM.h"
+#include "SensorEventChecker.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -156,11 +159,12 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     makeTransition = TRUE;
                     break;
                 case ES_BUMPER_HIT:
+                    printf("\r\nBumper Hit while navigating");
                     // stop robot
                     StopMoving();
+                    RunWallFollowFSM(ThisEvent);
                     nextState = WallFollow;
                     makeTransition = TRUE;
-                    RunWallFollowFSM(ThisEvent); // use bumper event to start state machine
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -189,10 +193,10 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     if (wiggle_direction == 1) {
                         wiggle_amount += 5;
                         // tank turn left 2 * wiggle amount
-                        TankTurnLeft(2*wiggle_amount);
+                        TankTurnLeft(2 * wiggle_amount);
                     } else {
                         // tank turn right 2 * wiggle amount
-                        TankTurnRight(2*wiggle_amount);
+                        TankTurnRight(2 * wiggle_amount);
                     }
                     break;
                 case ES_BUMPER_HIT: // investigate bumper collision
@@ -200,6 +204,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     StopMoving();
                     wiggle_direction = 1;
                     wiggle_amount = 0;
+                    RunWallFollowFSM(ThisEvent);
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
@@ -217,14 +222,21 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                         CurrentState = NavigateToBeacon;
                         return ThisEvent;
                         break;
-                    } else{
+                    } else {
                         ThisEvent.EventType = ES_NO_EVENT;
                     }
                     break;
-                case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
-                    StopMoving();
-                    nextState = AvoidDeadBot;
+                case ES_BUMPER_RELEASED: // look for the tower again
+                    printf("\r\nTower lost");
+                    nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
+                    break;
+                case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
+                    if (ThisEvent.EventParam & SIDE_TAPE_SENSORS) {
+                        StopMoving();
+                        nextState = AvoidDeadBot;
+                        makeTransition = TRUE;
+                    }
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -259,7 +271,6 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
     ES_Tail(); // trace call stack end
     return ThisEvent;
 }
-
 
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *

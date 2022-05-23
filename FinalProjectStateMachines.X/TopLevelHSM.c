@@ -193,6 +193,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 #endif
                     makeTransition = TRUE;
                     nextState = NavigateToTower;
+                    InitNavigateToTowerSubHSM();
                     break;
                 default:
                     break;
@@ -205,6 +206,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                 case ES_TRACK_WIRE_DETECTED:
                     makeTransition = TRUE;
                     nextState = AlignAndLaunch;
+                    InitAlignAndLaunchSubHSM();
                     break;
                 default:
                     break;

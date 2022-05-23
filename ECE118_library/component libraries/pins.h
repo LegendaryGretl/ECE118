@@ -86,8 +86,8 @@
 #define BUMPER_FSL PORTX11_BIT // pin Z09 is probably dead
 #define BUMPER_FSL_TRIS PORTX11_TRIS
 
-#define BUMPER_FFL PORTX12_BIT // pin Z10 is dead
-#define BUMPER_FFL_TRIS PORTX12_TRIS
+#define BUMPER_FFL PORTY11_BIT // pin Z10 is dead, pin x12 is dead
+#define BUMPER_FFL_TRIS PORTY11_TRIS
 
 #define BUMPER_FFR PORTX05_BIT
 #define BUMPER_FFR_TRIS PORTX05_TRIS

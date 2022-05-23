@@ -34,10 +34,10 @@
 #define STOP_TIME 250
 #define WHEEL_ROTATION_FOR_360_BOT_TURN (1525 - 310) // 1165 = ideal ticks for left tank turn @ 85 speed
 #define TICKS_PER_WHEEL_ROTATION 408
-#define TANK_TURN_SPEED 85
+#define TANK_TURN_SPEED 90
 #define DEFAULT_TRAVEL_DIST 3
 #define GRADUAL_TURN_RATIO 80 // the ratio is calulated by dividing this number by 100
-#define BOT_MOVEMENT_SPEED 85
+#define BOT_MOVEMENT_SPEED 100
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *

@@ -147,6 +147,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
         case LookForBeacon: // make a 360 turn to look for beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // start a 360 degree turn
+                    printf("\r\n360 turn for beacon");
                     TankTurnLeft(360);
                     break;
                 case ES_TAPE_DETECTED: // avoid tape and return to field
@@ -155,11 +156,13 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                         StopMoving();
                         nextState = GetBackOnCourse;
                         makeTransition = TRUE;
-                        printf("\r\nTape detected"); 
+                        printf("\r\nTape detected");
                     }
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
+#ifdef TEST_ONLY_DETECT_BEACON
                     break;
+#endif
                     StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
@@ -181,7 +184,9 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
                     DriveForwards(3);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
+#ifdef TEST_ONLY_DETECT_BEACON
                     break;
+#endif
                     StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;

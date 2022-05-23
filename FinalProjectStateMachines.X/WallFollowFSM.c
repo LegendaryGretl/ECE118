@@ -144,11 +144,11 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                 case ES_BUMPER_HIT:
                     if ((ThisEvent.EventParam & BUMPER_FFL) || (ThisEvent.EventParam & BUMPER_FSL)) {
                         TankTurnLeft(30);
-                    } else if (ThisEvent.EventParam & BUMPER_FFR) {
-                        TankTurnLeft(20);
                     } else if (ThisEvent.EventParam & BUMPER_FSR) {
                         nextState = WallFollow;
                         makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & BUMPER_FFR) {
+                        TankTurnLeft(20);
                     } else if (ThisEvent.EventParam & BUMPER_AFL_MASK) {
                         TankTurnRight(180);
                     } else if (ThisEvent.EventParam & BUMPER_AFR_MASK) {

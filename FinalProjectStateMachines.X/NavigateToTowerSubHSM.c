@@ -52,11 +52,11 @@ typedef enum {
 } NavigateToTowerSubHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"NavigateToBeacon",
-	"ReorientTowardBeacon",
-	"WallFollow",
-	"AvoidDeadBot",
+    "InitPSubState",
+    "NavigateToBeacon",
+    "ReorientTowardBeacon",
+    "WallFollow",
+    "AvoidDeadBot",
 };
 
 
@@ -219,15 +219,10 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
         case WallFollow: // follow along wall of tower until track wire is detected
             ThisEvent = RunTowerEncirclementFSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                    //                case ES_TRACK_WIRE_DETECTED: // check for both detectors, the exit to align sub hsm
-                    //                    if (ThisEvent.EventParam == 0b11) {
-                    //                        CurrentState = NavigateToBeacon;
-                    //                        return ThisEvent;
-                    //                        break;
-                    //                    } else {
-                    //                        ThisEvent.EventType = ES_NO_EVENT;
-                    //                    }
-                    //                    break;
+                case ES_CORRECT_WALL_DETECTED: // check that correct wall has been detected
+                    CurrentState = NavigateToBeacon;
+                    return ThisEvent;
+                    break;
                 case ES_TOWER_LOST: // look for the tower again
                     printf("\r\nTower lost");
                     nextState = ReorientTowardBeacon;

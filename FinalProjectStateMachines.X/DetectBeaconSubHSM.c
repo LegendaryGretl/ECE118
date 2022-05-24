@@ -172,7 +172,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // drive forward for some amount of time
                     printf("\r\nDriving forwards");
-                    DriveForwards(5);
+                    DriveForwards(3);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation
                     StopMoving();

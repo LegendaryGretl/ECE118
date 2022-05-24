@@ -151,7 +151,7 @@
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
         <property key="preprocessor-macros"
-                  value="GENERAL_TESTING;ANALOG_TAPE_SENSOR_TEST"/>
+                  value="GENERAL_TESTING;TEST_SENSOR_INTEGRATION"/>
         <property key="strict-ansi" value="false"/>
         <property key="support-ansi" value="false"/>
         <property key="tentative-definitions" value="-fno-common"/>

@@ -169,12 +169,13 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             // transition from the initial pseudo-state into the actual
             // initial state
             if (ThisEvent.EventType == ES_INIT) {
-                // give time for all the sensors to settle
-                ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 500);
-            } else if (ThisEvent.EventType == ES_TIMEOUT) {
+                //                // give time for all the sensors to settle
+                //                ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 10);
+                //            } else if (ThisEvent.EventType == ES_TIMEOUT) {
                 // now put the machine into the actual initial state
                 InitDetectBeaconSubHSM();
-                //InitNavigateToTowerSubHSM();
+                // these sub state machines will be inited when needed
+                //InitNavigateToTowerSubHSM(); 
                 //InitAlignAndLaunchSubHSM();
                 nextState = DetectBeacon;
                 makeTransition = TRUE;
@@ -203,11 +204,15 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case NavigateToTower: // get bot on the correct face of a tower
             ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                    //                case ES_TRACK_WIRE_DETECTED:
-                    //                    makeTransition = TRUE;
-                    //                    nextState = AlignAndLaunch;
-                    //                    InitAlignAndLaunchSubHSM();
-                    //                    break;
+                case ES_CORRECT_WALL_DETECTED:
+#ifdef TEST_ONLY_TOWER_ENCIRCLE
+                    StopMoving();
+                    break;
+#endif
+                    makeTransition = TRUE;
+                    nextState = AlignAndLaunch;
+                    InitAlignAndLaunchSubHSM();
+                    break;
                 default:
                     break;
             }
@@ -314,12 +319,18 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
 #endif 
 #ifdef ANALOG_TAPE_SENSOR_TEST
             switch (ThisEvent.EventType) {
-                case ES_INIT:
+                case ES_ENTRY:
+                    printf("\r\nAnalog Tape Sensor Test, compiled on %s %s", __DATE__, __TIME__);
+                    PollSideTapeSensors(TAPE_SENSOR_SL_MASK);
+                    PollSideTapeSensors(TAPE_SENSOR_SR_MASK);
+                    PollSideTapeSensors(TAPE_SENSOR_TC_MASK);
+                    ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 750);
+                    break;
                 case ES_TIMEOUT:
                     PollSideTapeSensors(TAPE_SENSOR_SL_MASK);
                     PollSideTapeSensors(TAPE_SENSOR_SR_MASK);
                     PollSideTapeSensors(TAPE_SENSOR_TC_MASK);
-                    ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 500);
+                    ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 750);
                     break;
                 case ES_TAPE_SIDE_LEFT:
                     printf("\r\nTape side left: %d", ThisEvent.EventParam);

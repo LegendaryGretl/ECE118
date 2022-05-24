@@ -312,8 +312,11 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case AlignWithGoal:
+        case AlignWithGoal: // exit this state machine and transition to goal alignment
             StopMoving();
+            ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
+            CurrentState = ObjectFound;
+            return ThisEvent;
             break;
 
         default: // all unhandled states fall into here

@@ -45,6 +45,10 @@
 #define TRACK_WIRE_DETECTED_LOGIC_LOW 1300 
 #define BEACON_DETECTED_LOGIC_HIGH 2000
 
+#define TC_DETECTS_NOTHING 935
+#define TC_1_INCH_AWAY 500
+#define TC_2_INCH_AWAY 830
+
 /*******************************************************************************
  * EVENTCHECKER_TEST SPECIFIC CODE                                                             *
  ******************************************************************************/
@@ -87,6 +91,7 @@ static ES_Event storedEvent;
 uint8_t CheckTrackWire(void) {
     static ES_EventTyp_t lastEvent = ES_NO_TRACK_WIRE_DETECTED;
     static uint8_t lastParam = 0;
+    static int counter = -1;
     ES_EventTyp_t curEvent = ES_NO_TRACK_WIRE_DETECTED;
     uint8_t curParam = 0;
     ES_Event thisEvent;
@@ -107,13 +112,21 @@ uint8_t CheckTrackWire(void) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b01;
     }
+    
+    if (curParam != lastParam){
+        counter = 0;
+        lastParam = curParam;
+    } else if (counter > -1){
+        counter++;
+    }
 
-    if ((curEvent != lastEvent) || (curParam != lastParam)) { // check for change from last time
+    if (counter > 100) { // check for change from last time
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = curParam;
         returnVal = TRUE;
         lastEvent = curEvent; // update history
         lastParam = curParam;
+        counter = -1;
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
         PostTopLevelHSM(thisEvent);
 #else

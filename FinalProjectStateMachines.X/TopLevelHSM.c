@@ -318,14 +318,25 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             //                ThisEvent.EventParam = 1;
             //                PostRobotMovementService(ThisEvent);
             //            }
+            //            if (ThisEvent.EventType == ES_ENTRY) {
+            //                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+            //                ThisEvent.EventParam = 360;
+            //                PostRobotMovementService(ThisEvent);
+            //            }
+            //            if ((ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) && (marker == 0)) {
+            //                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+            //                ThisEvent.EventParam = 360;
+            //                PostRobotMovementService(ThisEvent);
+            //                marker++;
+            //            }
             if (ThisEvent.EventType == ES_ENTRY) {
-                ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
-                ThisEvent.EventParam = 360;
+                ThisEvent.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS_PRECISE;
+                ThisEvent.EventParam = 2;
                 PostRobotMovementService(ThisEvent);
             }
             if ((ThisEvent.EventType == ES_MOTOR_ROTATION_COMPLETE) && (marker == 0)) {
                 ThisEvent.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
-                ThisEvent.EventParam = 360;
+                ThisEvent.EventParam = 90;
                 PostRobotMovementService(ThisEvent);
                 marker++;
             }

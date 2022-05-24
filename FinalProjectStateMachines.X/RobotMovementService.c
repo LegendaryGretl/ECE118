@@ -39,6 +39,7 @@
 #define DEFAULT_TRAVEL_DIST 3
 #define GRADUAL_TURN_RATIO 80 // the ratio is calulated by dividing this number by 100
 #define BOT_MOVEMENT_SPEED 100
+#define DIST_TO_DEGREES(dist) ((360 * dist)/8)
 
 /*******************************************************************************
  * PRIVATE FUNCTION PROTOTYPES                                                 *
@@ -138,12 +139,26 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
             lastEvent = ThisEvent;
-            ReturnEvent.EventType = ES_INIT;
-            PostMotorEncoderService(ReturnEvent);
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
+        case ES_MOVE_BOT_DRIVE_FORWARDS_PRECISE:
+            // Stop the bot for 1/2 second, then drive forwards
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
             ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
             break;
 
         case ES_MOVE_BOT_DRIVE_BACKWARDS:
+            // Stop the bot for 1/2 second, then drive backwards
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
+        case ES_MOVE_BOT_DRIVE_BACKWARDS_PRECISE:
             // Stop the bot for 1/2 second, then drive backwards
             SetCalibratedLeftMotorSpeed(0);
             SetCalibratedRightMotorSpeed(0);
@@ -224,6 +239,21 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;
+                case ES_MOVE_BOT_DRIVE_FORWARDS_PRECISE:
+                    SetCalibratedLeftMotorSpeed(motor_speed);
+                    SetCalibratedRightMotorSpeed(motor_speed);
+                    if (ThisEvent.EventParam > 0) {
+                        rotation_ticks = DIST_TO_DEGREES(ThisEvent.EventParam); // convert from inches to degrees
+                    } else {
+                        rotation_ticks = 360 * DEFAULT_TRAVEL_DIST;
+                    }
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
                 case ES_MOVE_BOT_DRIVE_BACKWARDS:
                     SetCalibratedLeftMotorSpeed(-motor_speed);
                     SetCalibratedRightMotorSpeed(-motor_speed);
@@ -236,6 +266,21 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
+                case ES_MOVE_BOT_DRIVE_BACKWARDS_PRECISE:
+                    SetCalibratedLeftMotorSpeed(-motor_speed);
+                    SetCalibratedRightMotorSpeed(-motor_speed);
+                    if (ThisEvent.EventParam > 0) {
+                        rotation_ticks = DIST_TO_DEGREES(ThisEvent.EventParam);
+                    } else {
+                        rotation_ticks = 360 * DEFAULT_TRAVEL_DIST;
+                    }
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
+                    ReturnEvent.EventParam = rotation_ticks;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_DEGREES;
                     ReturnEvent.EventParam = rotation_ticks;
                     PostMotorEncoderService(ReturnEvent);
                     break;

@@ -38,6 +38,7 @@
 #include "pins.h"
 #include "WallFollowFSM.h"
 #include "SensorEventChecker.h"
+#include "TowerEncirclementFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -138,7 +139,8 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 // this is where you would put any actions associated with the
                 // transition from the initial pseudo-state into the actual
                 // initial state
-                InitWallFollowFSM();
+                //InitWallFollowFSM();
+                InitTowerEncirclementFSM();
 
                 // now put the machine into the actual initial state
                 nextState = NavigateToBeacon;
@@ -162,7 +164,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     printf("\r\nBumper Hit while navigating");
                     // stop robot
                     StopMoving();
-                    RunWallFollowFSM(ThisEvent);
+                    RunTowerEncirclementFSM(ThisEvent);
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
@@ -204,7 +206,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     StopMoving();
                     wiggle_direction = 1;
                     wiggle_amount = 0;
-                    RunWallFollowFSM(ThisEvent);
+                    RunTowerEncirclementFSM(ThisEvent);
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
@@ -215,34 +217,29 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
             break;
 
         case WallFollow: // follow along wall of tower until track wire is detected
-            ThisEvent = RunWallFollowFSM(ThisEvent);
+            ThisEvent = RunTowerEncirclementFSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_TRACK_WIRE_DETECTED: // check for both detectors, the exit to align sub hsm
-                    if (ThisEvent.EventParam == 0b11) {
-                        CurrentState = NavigateToBeacon;
-                        return ThisEvent;
-                        break;
-                    } else {
-                        ThisEvent.EventType = ES_NO_EVENT;
-                    }
-                    break;
-                case ES_BUMPER_RELEASED: // look for the tower again
-                    printf("\r\nTower lost");
-                    nextState = ReorientTowardBeacon;
-                    makeTransition = TRUE;
-                    break;
+                    //                case ES_TRACK_WIRE_DETECTED: // check for both detectors, the exit to align sub hsm
+                    //                    if (ThisEvent.EventParam == 0b11) {
+                    //                        CurrentState = NavigateToBeacon;
+                    //                        return ThisEvent;
+                    //                        break;
+                    //                    } else {
+                    //                        ThisEvent.EventType = ES_NO_EVENT;
+                    //                    }
+                    //                    break;
                 case ES_TOWER_LOST: // look for the tower again
                     printf("\r\nTower lost");
                     nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;
-                case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
-                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
-                        StopMoving();
-                        nextState = AvoidDeadBot;
-                        makeTransition = TRUE;
-                    }
-                    break;
+                    //                case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
+                    //                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
+                    //                        StopMoving();
+                    //                        nextState = AvoidDeadBot;
+                    //                        makeTransition = TRUE;
+                    //                    }
+                    //                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;

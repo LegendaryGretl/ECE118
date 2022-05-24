@@ -148,7 +148,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // start a 360 degree turn
                     printf("\r\n360 turn for beacon");
-                    TankTurnLeft(360);
+                    TankTurnLeft(365);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
                     printf("\r\nBeacon detected");
@@ -237,7 +237,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
 // wrapper functions for using robot movement functions
 
 void TankTurnLeft(int degrees) {
-    printf("\r\nstarted tank turn");
+    //printf("\r\nstarted tank turn");
     ES_Event event;
     event.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
     event.EventParam = degrees;

@@ -206,6 +206,14 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
             ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
             break;
 
+        case ES_MOVE_BOT_GRADUAL_PIVOT_TURN_RIGHT:
+            // Stop the bot for 1/2 second, then start turn
+            SetCalibratedLeftMotorSpeed(0);
+            SetCalibratedRightMotorSpeed(0);
+            lastEvent = ThisEvent;
+            ES_Timer_InitTimer(ROBOT_MOVEMENT_TIMER, STOP_TIME);
+            break;
+
         case ES_START_MOTOR_CALIBRATION:
             PostMotorEncoderService(ThisEvent);
             break;
@@ -347,6 +355,21 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                         SetCalibratedLeftMotorSpeed(-BOT_MOVEMENT_SPEED);
                     }
                     SetCalibratedRightMotorSpeed(0);
+                    rotation_ticks = 10;
+                    ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = rotation_ticks * 360;
+                    PostMotorEncoderService(ReturnEvent);
+                    ReturnEvent.EventType = ES_TURN_RIGHT_MOTOR_N_ROTATIONS;
+                    ReturnEvent.EventParam = 0;
+                    PostMotorEncoderService(ReturnEvent);
+                    break;
+                case ES_MOVE_BOT_GRADUAL_PIVOT_TURN_RIGHT:
+                    if (lastEvent.EventParam) {
+                        SetCalibratedLeftMotorSpeed(BOT_MOVEMENT_SPEED);
+                    } else {
+                        SetCalibratedLeftMotorSpeed(-BOT_MOVEMENT_SPEED);
+                    }
+                    SetCalibratedRightMotorSpeed(65);
                     rotation_ticks = 10;
                     ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
                     ReturnEvent.EventParam = rotation_ticks * 360;

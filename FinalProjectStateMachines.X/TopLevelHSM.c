@@ -203,11 +203,11 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case NavigateToTower: // get bot on the correct face of a tower
             ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_TRACK_WIRE_DETECTED:
-                    makeTransition = TRUE;
-                    nextState = AlignAndLaunch;
-                    InitAlignAndLaunchSubHSM();
-                    break;
+//                case ES_TRACK_WIRE_DETECTED:
+//                    makeTransition = TRUE;
+//                    nextState = AlignAndLaunch;
+//                    InitAlignAndLaunchSubHSM();
+//                    break;
                 default:
                     break;
             }

@@ -21,7 +21,7 @@ build/default/production/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c \
  ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/pwm.h \
  WallFollowFSM.h \
  ../ECE118_library/component\ libraries/SensorEventChecker.h \
- ../ECE118_library/include/AD.h
+ ../ECE118_library/include/AD.h TowerEncirclementFSM.h
 
 ES_Configure.h:
 
@@ -84,3 +84,5 @@ WallFollowFSM.h:
 ../ECE118_library/component\ libraries/SensorEventChecker.h:
 
 ../ECE118_library/include/AD.h:
+
+TowerEncirclementFSM.h:

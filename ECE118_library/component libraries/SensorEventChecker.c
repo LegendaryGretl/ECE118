@@ -182,8 +182,8 @@ uint8_t CheckTapeSensors(void) {
     uint8_t returnVal = FALSE;
 
     int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_FL, TAPE_SENSOR_FC,
-        TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SC,
-        TAPE_SENSOR_SR};
+        TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SR,
+        TAPE_SENSOR_TC};
     unsigned int curPollTime = TIMERS_GetTime();
 #ifdef TEST_SENSOR_INTEGRATION
     curPollTime = 0;
@@ -249,8 +249,8 @@ uint8_t PollTapeSensors(void) {
     uint8_t returnVal = FALSE;
 
     int tape_sensors[NUMBER_OF_TAPE_SENSORS] = {TAPE_SENSOR_FL, TAPE_SENSOR_FC,
-        TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_SC,
-        TAPE_SENSOR_SR};
+        TAPE_SENSOR_FR, TAPE_SENSOR_BL, TAPE_SENSOR_BR, TAPE_SENSOR_SL, TAPE_SENSOR_TC,
+        TAPE_SENSOR_TC};
 
     marker = 0b01;
 

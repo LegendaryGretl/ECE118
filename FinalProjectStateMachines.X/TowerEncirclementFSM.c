@@ -32,6 +32,7 @@
 #include "BOARD.h"
 #include "TopLevelHSM.h"
 #include "TowerEncirclementFSM.h"
+#include "SensorEventChecker.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -39,6 +40,7 @@
 typedef enum {
     InitPSubState,
     ObjectFound,
+    AlignWithTower,
     DriveForwards,
     AlignWithGoal,
     PivotAroundCorner,
@@ -46,11 +48,11 @@ typedef enum {
 } TowerEncirclementFSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"ObjectFound",
-	"DriveForwards",
-	"AlignWithGoal",
-	"PivotAroundCorner",
+    "InitPSubState",
+    "ObjectFound",
+    "DriveForwards",
+    "AlignWithGoal",
+    "PivotAroundCorner",
 };
 
 
@@ -60,6 +62,12 @@ static const char *StateNames[] = {
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
    relevant to the behavior of this state machine */
+static void DriveForwardsPrecise(int distance);
+static void DriveBackwardsPrecise(int distance);
+static void StopMoving(void);
+static void TankTurnLeft(int degrees);
+static void TankTurnRight(int degrees);
+static void PivotTurnRight(int direction);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -135,7 +143,88 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
         case ObjectFound: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    
+                    DriveBackwardsPrecise(2);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = AlignWithTower;
+                    makeTransition = TRUE;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case AlignWithTower:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnLeft(360);
+                    break;
+                case ES_NO_TAPE_DETECTED:
+                case ES_TAPE_DETECTED:
+                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) != SIDE_TAPE_SENSORS) {
+                        StopMoving();
+                        nextState = DriveForwards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case DriveForwards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwardsPrecise(17);
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        StopMoving();
+                        nextState = AlignWithGoal;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                        StopMoving();
+                        nextState = PivotAroundCorner;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case PivotAroundCorner:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    PivotTurnRight(1);
+                    break;
+                case ES_BUMPER_HIT:
+                    if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case LeftAdjustmentTurn:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnLeft(5);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = DriveForwards;
+                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -158,8 +247,47 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
     return ThisEvent;
 }
 
-
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
 
+void DriveForwardsPrecise(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_FORWARDS_PRECISE;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void DriveBackwardsPrecise(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS_PRECISE;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void StopMoving(void) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_STOP;
+    PostRobotMovementService(event);
+}
+
+void TankTurnLeft(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_LEFT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void TankTurnRight(int degrees) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_TANK_TURN_RIGHT;
+    event.EventParam = degrees;
+    PostRobotMovementService(event);
+}
+
+void PivotTurnRight(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_PIVOT_TURN_RIGHT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}

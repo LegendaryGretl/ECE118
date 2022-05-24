@@ -43,14 +43,18 @@
 typedef enum {
     InitPSubState,
     CheckForBumperEvent,
-    WallFollow,
+    SlightTurnFromTower,
+    DriveForward,
+    TowerTap,
     TurnAroundCorner,
 } WallFollowFSMState_t;
 
 static const char *StateNames[] = {
 	"InitPSubState",
 	"CheckForBumperEvent",
-	"WallFollow",
+	"SlightTurnFromTower",
+	"DriveForward",
+	"TowerTap",
 	"TurnAroundCorner",
 };
 
@@ -123,6 +127,7 @@ uint8_t InitWallFollowFSM(void) {
 ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     WallFollowFSMState_t nextState; // <- change type to correct enum
+    static int counter = 0;
     int i;
 
     ES_Tattle(); // trace call stack
@@ -146,23 +151,23 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
-                        nextState = WallFollow;
+                        nextState = SlightTurnFromTower;
                         makeTransition = TRUE;
                         break;
                     } else if ((ThisEvent.EventParam & BUMPER_FFL_MASK) || (ThisEvent.EventParam & BUMPER_FSL_MASK)) {
-                        TankTurnLeft(30);
+                        TankTurnLeft(180);
                         break;
                     } else if (ThisEvent.EventParam & BUMPER_FFR_MASK) {
-                        TankTurnLeft(20);
+                        TankTurnLeft(80);
                         break;
                     } else if (ThisEvent.EventParam & BUMPER_AFL_MASK) {
                         TankTurnRight(180);
                         break;
                     } else if (ThisEvent.EventParam & BUMPER_AFR_MASK) {
-                        TankTurnRight(180);
+                        TankTurnRight(90);
                         break;
                     } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
-                        TankTurnRight(180);
+                        TankTurnRight(30);
                         break;
                     } else if (ThisEvent.EventParam & BUMPER_ASL_MASK) {
                         TankTurnRight(180);
@@ -171,12 +176,16 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                         break;
                     }
                     break;
-                case ES_BUMPER_RELEASED:
-                    CurrentState = CheckForBumperEvent;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = CheckForBumperEvent;
+                    ThisEvent.EventType = ES_TOWER_LOST;
                     return ThisEvent;
                     break;
                 case ES_TAPE_DETECTED: // it's not a dead bot, it's empty space
-                    ThisEvent.EventType = ES_NO_EVENT;
+                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
+                        nextState = CheckForBumperEvent;
+                        return ThisEvent;
+                    }
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -184,19 +193,92 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case WallFollow:
+        case SlightTurnFromTower:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    printf("\r\nStarted wall following");
-                    GradualTurnRight(5);
+                    TankTurnLeft(15);
                     break;
-                case ES_BUMPER_RELEASED:
-                case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) {
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = DriveForward;
+                    makeTransition = TRUE;
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
                         StopMoving();
+                        CurrentState = CheckForBumperEvent;
+                        return ThisEvent;
+                    } else if (ThisEvent.EventParam & 0b10) {
+                        // possibly add a counter clockwise wall follow fsm?
+                        // if not implemented, just go around the entire tower again
+                        break;
+                    } else if (ThisEvent.EventParam & 0b01) {
+                        // continue the clockwise tower follow
+                        break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case DriveForward:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwards(1);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = TowerTap;
+                    makeTransition = TRUE;
+                    break;
+                case ES_TAPE_DETECTED: // check for dead bot
+                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
+                        CurrentState = CheckForBumperEvent;
+                        return ThisEvent;
+                    }
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        StopMoving();
+                        CurrentState = CheckForBumperEvent;
+                        return ThisEvent;
+                    } else if (ThisEvent.EventParam & 0b10) {
+                        // possibly add a counter clockwise wall follow fsm?
+                        // if not implemented, just go around the entire tower again
+                        break;
+                    } else if (ThisEvent.EventParam & 0b01) {
+                        // continue the clockwise tower follow
+                        break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case TowerTap:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    counter = 0;
+                    TankTurnRight(15);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    if (counter >= 24) {
+                        nextState = CheckForBumperEvent;
+                        ThisEvent.EventType = ES_TOWER_LOST;
+                        return ThisEvent;
+                    }
+                    TankTurnRight(15);
+                    counter++;
+                    break;
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) && ((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0)) {
                         nextState = TurnAroundCorner;
                         makeTransition = TRUE;
-                        break;
+                    } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                        nextState = SlightTurnFromTower;
+                        makeTransition = TRUE;
                     }
                     break;
                 case ES_TAPE_DETECTED: // check for dead bot
@@ -219,8 +301,7 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                         break;
                     }
                     break;
-                case ES_NO_EVENT:
-                default: // all unhandled events pass the event back up to the next level
+                default:
                     break;
             }
             break;
@@ -233,7 +314,7 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                     break;
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
-                        nextState = WallFollow;
+                        nextState = SlightTurnFromTower;
                         makeTransition = TRUE;
                         break;
                     }
@@ -246,33 +327,6 @@ ES_Event RunWallFollowFSM(ES_Event ThisEvent) {
                     break;
             }
             break;
-
-            //        case AlignWithWall:
-            //            switch (ThisEvent.EventType) {
-            //                case ES_ENTRY:
-            //                    TankTurnLeft();
-            //                    break;
-            //                case ES_TAPE_DETECTED:
-            //                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
-            //                        CurrentState = CheckBumpers;
-            //                        return ThisEvent;
-            //                    }
-            //                    break;
-            //                case ES_TRACK_WIRE_DETECTED:
-            //                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
-            //                        CurrentState = CheckBumpers;
-            //                        return ThisEvent;
-            //                    } else if (ThisEvent.EventParam & 0b10) {
-            //                        // possibly add a counter clockwise wall follow fsm?
-            //                        // if not implemented, just go around the entire tower again
-            //                        break;
-            //                    } else if (ThisEvent.EventParam & 0b01) {
-            //                        // continue the clockwise tower follow
-            //                        break;
-            //                    }
-            //                    break;
-            //            }
-            //            break;
 
         default: // all unhandled states fall into here
             break;

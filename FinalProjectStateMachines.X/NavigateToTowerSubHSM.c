@@ -231,8 +231,13 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;
+                case ES_TOWER_LOST: // look for the tower again
+                    printf("\r\nTower lost");
+                    nextState = ReorientTowardBeacon;
+                    makeTransition = TRUE;
+                    break;
                 case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
-                    if (ThisEvent.EventParam & SIDE_TAPE_SENSORS) {
+                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
                         StopMoving();
                         nextState = AvoidDeadBot;
                         makeTransition = TRUE;

@@ -69,7 +69,8 @@ typedef enum {
     // State Machine Events ****************************************************
     ES_BACK_ON_COURSE, // the bot has avoided the tape
     ES_DEAD_BOT_AVOIDED, // the bot has successfully gone around the dead bot
-    ES_ALIGNED_WITH_CORRECT_HOLE, // the bot is ready to launch a ping pong ball            
+    ES_ALIGNED_WITH_CORRECT_HOLE, // the bot is ready to launch a ping pong ball   
+    ES_TOWER_LOST, // the bot has lost contact with the tower it was following
     // Motor Calibration Events ************************************************
     ES_START_MOTOR_CALIBRATION, // calibrate motors so max speed of faster one matches that of slower one
     ES_MOTOR_CALIBRATION_LEFT_SLOWER, // param: # of ticks left over on slower motor
@@ -120,6 +121,7 @@ static const char *EventNames[] = {
 	"ES_BACK_ON_COURSE",
 	"ES_DEAD_BOT_AVOIDED",
 	"ES_ALIGNED_WITH_CORRECT_HOLE",
+	"ES_TOWER_LOST",
 	"ES_START_MOTOR_CALIBRATION",
 	"ES_MOTOR_CALIBRATION_LEFT_SLOWER",
 	"ES_MOTOR_CALIBRATION_RIGHT_SLOWER",

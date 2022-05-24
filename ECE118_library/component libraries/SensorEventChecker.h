@@ -106,6 +106,17 @@ uint8_t CheckTapeSensors(void);
 uint8_t PollTapeSensors(void);
 
 /**
+ * @Function PollSideTapeSensors(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function returns the adc value of the corresponding side tape sensor
+ * @note works similarly to the other poll function, except only for the side 
+ *       tape sensors, and the param of the returned event is a value b/w
+ *       0 - 1023 corresponding to analog output
+ */
+uint8_t PollSideTapeSensors(int mask);
+
+/**
  * @Function CheckMotorEncoder(void)
  * @param none
  * @return TRUE or FALSE

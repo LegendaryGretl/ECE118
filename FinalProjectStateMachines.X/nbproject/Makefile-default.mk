@@ -123,354 +123,354 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/_ext/627994287/AD.o: ../ECE118_library/src/AD.c  .generated_files/flags/default/3d739acdebe0fd5f2a11c2a85d0b2b8c5295b8ea .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/AD.o: ../ECE118_library/src/AD.c  .generated_files/flags/default/4bf6eec9d15f94ec08cda5ef9b21257556a1ba8b .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/AD.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/AD.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/AD.o.d" -o ${OBJECTDIR}/_ext/627994287/AD.o ../ECE118_library/src/AD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/AD.o.d" -o ${OBJECTDIR}/_ext/627994287/AD.o ../ECE118_library/src/AD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/BOARD.o: ../ECE118_library/src/BOARD.c  .generated_files/flags/default/f715af225da5f990c5decc2b848c2b3272b81902 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/BOARD.o: ../ECE118_library/src/BOARD.c  .generated_files/flags/default/1fa340a0acba0524829a3ea4170ef481fc300103 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/BOARD.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/BOARD.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/BOARD.o.d" -o ${OBJECTDIR}/_ext/627994287/BOARD.o ../ECE118_library/src/BOARD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/BOARD.o.d" -o ${OBJECTDIR}/_ext/627994287/BOARD.o ../ECE118_library/src/BOARD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o: ../ECE118_library/src/ES_CheckEvents.c  .generated_files/flags/default/e9f44760e99ce70b483865b637d771f2fb0238c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o: ../ECE118_library/src/ES_CheckEvents.c  .generated_files/flags/default/d212e85339551a3de27b3acc91e3fff43ee6aa06 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o ../ECE118_library/src/ES_CheckEvents.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o ../ECE118_library/src/ES_CheckEvents.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_Framework.o: ../ECE118_library/src/ES_Framework.c  .generated_files/flags/default/cbd88bb4dab5c8e610dba12227349229d9dc2cdb .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_Framework.o: ../ECE118_library/src/ES_Framework.c  .generated_files/flags/default/4375e5e33c51029b65b04d2fbb7b02ebdd4e8f15 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Framework.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Framework.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Framework.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Framework.o ../ECE118_library/src/ES_Framework.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Framework.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Framework.o ../ECE118_library/src/ES_Framework.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o: ../ECE118_library/src/ES_KeyboardInput.c  .generated_files/flags/default/8c7ab8df174d4da3318e1921ed8b99b98f58ea4c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o: ../ECE118_library/src/ES_KeyboardInput.c  .generated_files/flags/default/e73edff17aa94ad29a36be3363c509dd24de7e04 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o ../ECE118_library/src/ES_KeyboardInput.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o ../ECE118_library/src/ES_KeyboardInput.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_PostList.o: ../ECE118_library/src/ES_PostList.c  .generated_files/flags/default/192bfa2ff8c458307c7513a4ea635213c5bc5806 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_PostList.o: ../ECE118_library/src/ES_PostList.c  .generated_files/flags/default/ee3028b430bab2d4cca7c94a020e132bb708b2d0 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_PostList.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_PostList.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_PostList.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_PostList.o ../ECE118_library/src/ES_PostList.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_PostList.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_PostList.o ../ECE118_library/src/ES_PostList.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_Queue.o: ../ECE118_library/src/ES_Queue.c  .generated_files/flags/default/9a79bd4b5cb9da5b9ea0356a75a193a3d76c5865 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_Queue.o: ../ECE118_library/src/ES_Queue.c  .generated_files/flags/default/1219f6e615f2d99c82c0e64d459feb56e82fedfa .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Queue.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Queue.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Queue.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Queue.o ../ECE118_library/src/ES_Queue.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Queue.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Queue.o ../ECE118_library/src/ES_Queue.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_TattleTale.o: ../ECE118_library/src/ES_TattleTale.c  .generated_files/flags/default/c99fc86a851823b028100b62603e72ce7f40d5f5 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_TattleTale.o: ../ECE118_library/src/ES_TattleTale.c  .generated_files/flags/default/f6fba21b5d5fb8f9619a81ce96c7bab9ebe8cfd1 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_TattleTale.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o ../ECE118_library/src/ES_TattleTale.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_TattleTale.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o ../ECE118_library/src/ES_TattleTale.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_Timers.o: ../ECE118_library/src/ES_Timers.c  .generated_files/flags/default/f946020eea02ebaa27126207ef493fa1c0aefb14 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_Timers.o: ../ECE118_library/src/ES_Timers.c  .generated_files/flags/default/b2b130bde6e31412dbf9b1ca6756adcee8425e32 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Timers.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Timers.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Timers.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Timers.o ../ECE118_library/src/ES_Timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Timers.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Timers.o ../ECE118_library/src/ES_Timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/IO_Ports.o: ../ECE118_library/src/IO_Ports.c  .generated_files/flags/default/6c0c679f61e9aa42a4f9f071c900b4ffd69496cb .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/IO_Ports.o: ../ECE118_library/src/IO_Ports.c  .generated_files/flags/default/8aabac17515a7d9decdd1ab0d3aeca906d41e81c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/IO_Ports.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/IO_Ports.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/IO_Ports.o.d" -o ${OBJECTDIR}/_ext/627994287/IO_Ports.o ../ECE118_library/src/IO_Ports.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/IO_Ports.o.d" -o ${OBJECTDIR}/_ext/627994287/IO_Ports.o ../ECE118_library/src/IO_Ports.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/LED.o: ../ECE118_library/src/LED.c  .generated_files/flags/default/f3817bec9d3502e304181b2546e1229924f8520b .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/LED.o: ../ECE118_library/src/LED.c  .generated_files/flags/default/da3ce562df428df1a72edd712de6a9b7bd1f37a1 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/LED.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/LED.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/LED.o.d" -o ${OBJECTDIR}/_ext/627994287/LED.o ../ECE118_library/src/LED.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/LED.o.d" -o ${OBJECTDIR}/_ext/627994287/LED.o ../ECE118_library/src/LED.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/RC_Servo.o: ../ECE118_library/src/RC_Servo.c  .generated_files/flags/default/56462f2d1ffc17fa37780ea59e2713e12ea3166c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/RC_Servo.o: ../ECE118_library/src/RC_Servo.c  .generated_files/flags/default/2575df78204943030ef642d0bb975483f7dae92f .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/RC_Servo.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/RC_Servo.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/RC_Servo.o.d" -o ${OBJECTDIR}/_ext/627994287/RC_Servo.o ../ECE118_library/src/RC_Servo.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/RC_Servo.o.d" -o ${OBJECTDIR}/_ext/627994287/RC_Servo.o ../ECE118_library/src/RC_Servo.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/pwm.o: ../ECE118_library/src/pwm.c  .generated_files/flags/default/35e4d85e61c9fb63c4dad740ec8d08fba41e81e8 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/pwm.o: ../ECE118_library/src/pwm.c  .generated_files/flags/default/f78feb2ba89fca9515d3a921d0774b79b685953 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/pwm.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/pwm.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/pwm.o.d" -o ${OBJECTDIR}/_ext/627994287/pwm.o ../ECE118_library/src/pwm.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/pwm.o.d" -o ${OBJECTDIR}/_ext/627994287/pwm.o ../ECE118_library/src/pwm.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/serial.o: ../ECE118_library/src/serial.c  .generated_files/flags/default/afc53d6731d4884dd1af2a333181da5b3998c2a7 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/serial.o: ../ECE118_library/src/serial.c  .generated_files/flags/default/ed9365651940efd64d470f87cd09b8d80db1ab63 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/serial.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/serial.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/serial.o.d" -o ${OBJECTDIR}/_ext/627994287/serial.o ../ECE118_library/src/serial.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/serial.o.d" -o ${OBJECTDIR}/_ext/627994287/serial.o ../ECE118_library/src/serial.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/timers.o: ../ECE118_library/src/timers.c  .generated_files/flags/default/7e03029da6c512eb6c4d883e92e36587f02ba23d .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/timers.o: ../ECE118_library/src/timers.c  .generated_files/flags/default/98f45c1068d4b7c0f357392808a2168e68736a4c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/timers.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/timers.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/timers.o.d" -o ${OBJECTDIR}/_ext/627994287/timers.o ../ECE118_library/src/timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/timers.o.d" -o ${OBJECTDIR}/_ext/627994287/timers.o ../ECE118_library/src/timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/motors.o: ../ECE118_library/component\ libraries/motors.c  .generated_files/flags/default/e8b1094098e2cf367ad6ef90f14039ca556e58ff .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/motors.o: ../ECE118_library/component\ libraries/motors.c  .generated_files/flags/default/d590a79f649b92a550b500f12f247cda11584499 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/motors.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/motors.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/motors.o.d" -o ${OBJECTDIR}/_ext/1612843869/motors.o "../ECE118_library/component libraries/motors.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/motors.o.d" -o ${OBJECTDIR}/_ext/1612843869/motors.o "../ECE118_library/component libraries/motors.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o: ../ECE118_library/component\ libraries/MotorEncoderService.c  .generated_files/flags/default/981c51e3e926fab6d009ef4f65793c2f3defe97 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o: ../ECE118_library/component\ libraries/MotorEncoderService.c  .generated_files/flags/default/73d39ae2269d0560c29dfaa6d4cf868dd587ca96 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o.d" -o ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o "../ECE118_library/component libraries/MotorEncoderService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o.d" -o ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o "../ECE118_library/component libraries/MotorEncoderService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/RCServoService.o: ../ECE118_library/component\ libraries/RCServoService.c  .generated_files/flags/default/427e820257d9b3455de9d2e69cef0a6f10ec75c8 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/RCServoService.o: ../ECE118_library/component\ libraries/RCServoService.c  .generated_files/flags/default/bbbd5f1bb857df1f4d808ab5619192e50d6057ea .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/RCServoService.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/RCServoService.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/RCServoService.o.d" -o ${OBJECTDIR}/_ext/1612843869/RCServoService.o "../ECE118_library/component libraries/RCServoService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/RCServoService.o.d" -o ${OBJECTDIR}/_ext/1612843869/RCServoService.o "../ECE118_library/component libraries/RCServoService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o: ../ECE118_library/component\ libraries/SensorEventChecker.c  .generated_files/flags/default/3310b74ffd190cbf595ef0a4aa709a08490c03ac .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o: ../ECE118_library/component\ libraries/SensorEventChecker.c  .generated_files/flags/default/82acc14f64620dcc34f8373935529ac5c10e9c0c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o.d" -o ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o "../ECE118_library/component libraries/SensorEventChecker.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o.d" -o ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o "../ECE118_library/component libraries/SensorEventChecker.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/ES_Main.o: ES_Main.c  .generated_files/flags/default/a1d88ac7524a90ca32bbccc0b7f78ac4bffe2bfa .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/ES_Main.o: ES_Main.c  .generated_files/flags/default/583443124d63bf6468ddfe0ef4049c18bff6ef7d .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ES_Main.o.d 
 	@${RM} ${OBJECTDIR}/ES_Main.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/ES_Main.o.d" -o ${OBJECTDIR}/ES_Main.o ES_Main.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/ES_Main.o.d" -o ${OBJECTDIR}/ES_Main.o ES_Main.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/TopLevelHSM.o: TopLevelHSM.c  .generated_files/flags/default/e1d8a200e9c3821b69791649363b1ef8771a369e .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/TopLevelHSM.o: TopLevelHSM.c  .generated_files/flags/default/282b9f67a9c8aceab850abdfbd53d06cb1eadfb2 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/TopLevelHSM.o.d 
 	@${RM} ${OBJECTDIR}/TopLevelHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TopLevelHSM.o.d" -o ${OBJECTDIR}/TopLevelHSM.o TopLevelHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TopLevelHSM.o.d" -o ${OBJECTDIR}/TopLevelHSM.o TopLevelHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/DetectBeaconSubHSM.o: DetectBeaconSubHSM.c  .generated_files/flags/default/3bd56c5104447d06dfd750032478a369213a0e5a .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/DetectBeaconSubHSM.o: DetectBeaconSubHSM.c  .generated_files/flags/default/87f992ee508cd809143a1b7e0158ab03a51b2d7 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/DetectBeaconSubHSM.o.d 
 	@${RM} ${OBJECTDIR}/DetectBeaconSubHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/DetectBeaconSubHSM.o.d" -o ${OBJECTDIR}/DetectBeaconSubHSM.o DetectBeaconSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/DetectBeaconSubHSM.o.d" -o ${OBJECTDIR}/DetectBeaconSubHSM.o DetectBeaconSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c  .generated_files/flags/default/dc75ee45d0db00d4f246fe0c26d7d99930f5e000 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c  .generated_files/flags/default/2d4a3fa3a326ce95a720dab0ff9ae6167a0d5465 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/NavigateToTowerSubHSM.o.d 
 	@${RM} ${OBJECTDIR}/NavigateToTowerSubHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/NavigateToTowerSubHSM.o.d" -o ${OBJECTDIR}/NavigateToTowerSubHSM.o NavigateToTowerSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/NavigateToTowerSubHSM.o.d" -o ${OBJECTDIR}/NavigateToTowerSubHSM.o NavigateToTowerSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/AlignAndLaunchSubHSM.o: AlignAndLaunchSubHSM.c  .generated_files/flags/default/f533469c2b450736f83f28c8950205af1ef70f21 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/AlignAndLaunchSubHSM.o: AlignAndLaunchSubHSM.c  .generated_files/flags/default/6530186d5589dec6873f771e0858909d3eccd5f4 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/AlignAndLaunchSubHSM.o.d 
 	@${RM} ${OBJECTDIR}/AlignAndLaunchSubHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/AlignAndLaunchSubHSM.o.d" -o ${OBJECTDIR}/AlignAndLaunchSubHSM.o AlignAndLaunchSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/AlignAndLaunchSubHSM.o.d" -o ${OBJECTDIR}/AlignAndLaunchSubHSM.o AlignAndLaunchSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/RobotMovementService.o: RobotMovementService.c  .generated_files/flags/default/46f9d3246dc9fa2325b9820d6e82ff04d1253f7d .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/RobotMovementService.o: RobotMovementService.c  .generated_files/flags/default/b70399c2bc825bceac7cc485f8907d8aefa88809 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/RobotMovementService.o.d 
 	@${RM} ${OBJECTDIR}/RobotMovementService.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/RobotMovementService.o.d" -o ${OBJECTDIR}/RobotMovementService.o RobotMovementService.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/RobotMovementService.o.d" -o ${OBJECTDIR}/RobotMovementService.o RobotMovementService.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/GetBackOnCourseFSM.o: GetBackOnCourseFSM.c  .generated_files/flags/default/8ebaa6bd31c9b87c5a22cc4a4529596a81101a3e .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/GetBackOnCourseFSM.o: GetBackOnCourseFSM.c  .generated_files/flags/default/cab25887fe7b2b66fcf762b3e02785e1c58804eb .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/GetBackOnCourseFSM.o.d 
 	@${RM} ${OBJECTDIR}/GetBackOnCourseFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/GetBackOnCourseFSM.o.d" -o ${OBJECTDIR}/GetBackOnCourseFSM.o GetBackOnCourseFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/GetBackOnCourseFSM.o.d" -o ${OBJECTDIR}/GetBackOnCourseFSM.o GetBackOnCourseFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/WallFollowFSM.o: WallFollowFSM.c  .generated_files/flags/default/22e708dec262d4441c057d21db28d719a027a3bc .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/WallFollowFSM.o: WallFollowFSM.c  .generated_files/flags/default/2fd8f88d6b6886bc2a36fc7fc09bcf99c23df2d5 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/WallFollowFSM.o.d 
 	@${RM} ${OBJECTDIR}/WallFollowFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/WallFollowFSM.o.d" -o ${OBJECTDIR}/WallFollowFSM.o WallFollowFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/WallFollowFSM.o.d" -o ${OBJECTDIR}/WallFollowFSM.o WallFollowFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/HoleAlignmentFSM.o: HoleAlignmentFSM.c  .generated_files/flags/default/d2aa2b9e3e77e02d4433d0a75eee7bf4a5445eb5 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/HoleAlignmentFSM.o: HoleAlignmentFSM.c  .generated_files/flags/default/87849b0236a1d5f60252767648bd7248cc3c037 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/HoleAlignmentFSM.o.d 
 	@${RM} ${OBJECTDIR}/HoleAlignmentFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/HoleAlignmentFSM.o.d" -o ${OBJECTDIR}/HoleAlignmentFSM.o HoleAlignmentFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/HoleAlignmentFSM.o.d" -o ${OBJECTDIR}/HoleAlignmentFSM.o HoleAlignmentFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/TowerEncirclementFSM.o: TowerEncirclementFSM.c  .generated_files/flags/default/41aa858082a9e706b575537ee5b82a99d0299cd4 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/TowerEncirclementFSM.o: TowerEncirclementFSM.c  .generated_files/flags/default/36a112dac107dea6c52d4accafd4f0f511c66598 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/TowerEncirclementFSM.o.d 
 	@${RM} ${OBJECTDIR}/TowerEncirclementFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TowerEncirclementFSM.o.d" -o ${OBJECTDIR}/TowerEncirclementFSM.o TowerEncirclementFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TowerEncirclementFSM.o.d" -o ${OBJECTDIR}/TowerEncirclementFSM.o TowerEncirclementFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
 else
-${OBJECTDIR}/_ext/627994287/AD.o: ../ECE118_library/src/AD.c  .generated_files/flags/default/d05b95cc9492493c91741d3d689018d8729d0a80 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/AD.o: ../ECE118_library/src/AD.c  .generated_files/flags/default/83c2dc909fd4b1ab61722980234f618f8ad2e3af .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/AD.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/AD.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/AD.o.d" -o ${OBJECTDIR}/_ext/627994287/AD.o ../ECE118_library/src/AD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/AD.o.d" -o ${OBJECTDIR}/_ext/627994287/AD.o ../ECE118_library/src/AD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/BOARD.o: ../ECE118_library/src/BOARD.c  .generated_files/flags/default/ef1e5447b8b30b8565a37dea4742f18a5250aeae .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/BOARD.o: ../ECE118_library/src/BOARD.c  .generated_files/flags/default/2ee9cf6ffddc294d3bf2714c0a544c0300cb3d75 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/BOARD.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/BOARD.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/BOARD.o.d" -o ${OBJECTDIR}/_ext/627994287/BOARD.o ../ECE118_library/src/BOARD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/BOARD.o.d" -o ${OBJECTDIR}/_ext/627994287/BOARD.o ../ECE118_library/src/BOARD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o: ../ECE118_library/src/ES_CheckEvents.c  .generated_files/flags/default/ffe56b540e5d89ffa3b0f9b2da19b349e547c81 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o: ../ECE118_library/src/ES_CheckEvents.c  .generated_files/flags/default/a3f5c2a8b66b232a01ceddaf4df0ff8fe8463851 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o ../ECE118_library/src/ES_CheckEvents.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_CheckEvents.o ../ECE118_library/src/ES_CheckEvents.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_Framework.o: ../ECE118_library/src/ES_Framework.c  .generated_files/flags/default/71dde5c29c0f5043bdfa69885b15deec1cfd186f .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_Framework.o: ../ECE118_library/src/ES_Framework.c  .generated_files/flags/default/561b67689b5d542a8a3f61d82e3974a22c4062c7 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Framework.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Framework.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Framework.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Framework.o ../ECE118_library/src/ES_Framework.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Framework.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Framework.o ../ECE118_library/src/ES_Framework.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o: ../ECE118_library/src/ES_KeyboardInput.c  .generated_files/flags/default/72d48b08aaddb3f37a1cd7859b851eafa0becb98 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o: ../ECE118_library/src/ES_KeyboardInput.c  .generated_files/flags/default/98909ef6f026ecd1114db112a50301a058acc9a7 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o ../ECE118_library/src/ES_KeyboardInput.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_KeyboardInput.o ../ECE118_library/src/ES_KeyboardInput.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_PostList.o: ../ECE118_library/src/ES_PostList.c  .generated_files/flags/default/ccf2f5674f01461f6a33a4f9e986d298222b0af4 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_PostList.o: ../ECE118_library/src/ES_PostList.c  .generated_files/flags/default/3870b7d689b8127be0ca50f565b3ee0c9ac98823 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_PostList.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_PostList.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_PostList.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_PostList.o ../ECE118_library/src/ES_PostList.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_PostList.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_PostList.o ../ECE118_library/src/ES_PostList.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_Queue.o: ../ECE118_library/src/ES_Queue.c  .generated_files/flags/default/32dd434715fd917ab8145a9cbab9c30861e832c7 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_Queue.o: ../ECE118_library/src/ES_Queue.c  .generated_files/flags/default/1880be491c4e4c8920430e85fe558d588418bf4 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Queue.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Queue.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Queue.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Queue.o ../ECE118_library/src/ES_Queue.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Queue.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Queue.o ../ECE118_library/src/ES_Queue.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_TattleTale.o: ../ECE118_library/src/ES_TattleTale.c  .generated_files/flags/default/fad2495980707b39af789e09d4b46502da209f6e .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_TattleTale.o: ../ECE118_library/src/ES_TattleTale.c  .generated_files/flags/default/741d2e285f70e5ec45eadf1a0460ac04684a761f .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_TattleTale.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o ../ECE118_library/src/ES_TattleTale.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_TattleTale.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_TattleTale.o ../ECE118_library/src/ES_TattleTale.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/ES_Timers.o: ../ECE118_library/src/ES_Timers.c  .generated_files/flags/default/a6047ec8a9eeb77f0deec54479ecaacfc70b9d75 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/ES_Timers.o: ../ECE118_library/src/ES_Timers.c  .generated_files/flags/default/e806f2c69a4c79af380baeff66653296cbe7a74 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Timers.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/ES_Timers.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Timers.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Timers.o ../ECE118_library/src/ES_Timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/ES_Timers.o.d" -o ${OBJECTDIR}/_ext/627994287/ES_Timers.o ../ECE118_library/src/ES_Timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/IO_Ports.o: ../ECE118_library/src/IO_Ports.c  .generated_files/flags/default/f122a579fa9fceb430adc3614b69743faf817564 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/IO_Ports.o: ../ECE118_library/src/IO_Ports.c  .generated_files/flags/default/89dc00f8d03deb7bd2522edc6d364e909e5f6cf8 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/IO_Ports.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/IO_Ports.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/IO_Ports.o.d" -o ${OBJECTDIR}/_ext/627994287/IO_Ports.o ../ECE118_library/src/IO_Ports.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/IO_Ports.o.d" -o ${OBJECTDIR}/_ext/627994287/IO_Ports.o ../ECE118_library/src/IO_Ports.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/LED.o: ../ECE118_library/src/LED.c  .generated_files/flags/default/8da5bf5754384b0672bcc531b5ce626057ca2471 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/LED.o: ../ECE118_library/src/LED.c  .generated_files/flags/default/d1b16801646a10f822453b838f64eca6a1a60df5 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/LED.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/LED.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/LED.o.d" -o ${OBJECTDIR}/_ext/627994287/LED.o ../ECE118_library/src/LED.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/LED.o.d" -o ${OBJECTDIR}/_ext/627994287/LED.o ../ECE118_library/src/LED.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/RC_Servo.o: ../ECE118_library/src/RC_Servo.c  .generated_files/flags/default/bf197862daadd8fa04d733bc957ac5cfaa9a2209 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/RC_Servo.o: ../ECE118_library/src/RC_Servo.c  .generated_files/flags/default/447aeff1dbed8e3f0facdfc4dd647c24eb03f9f2 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/RC_Servo.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/RC_Servo.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/RC_Servo.o.d" -o ${OBJECTDIR}/_ext/627994287/RC_Servo.o ../ECE118_library/src/RC_Servo.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/RC_Servo.o.d" -o ${OBJECTDIR}/_ext/627994287/RC_Servo.o ../ECE118_library/src/RC_Servo.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/pwm.o: ../ECE118_library/src/pwm.c  .generated_files/flags/default/9918e7e9b0e197859e7dc6be9a7ac5fca3e7e855 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/pwm.o: ../ECE118_library/src/pwm.c  .generated_files/flags/default/12cf9bf305edcdabf20b6e664b8ea6ba8868b0ee .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/pwm.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/pwm.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/pwm.o.d" -o ${OBJECTDIR}/_ext/627994287/pwm.o ../ECE118_library/src/pwm.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/pwm.o.d" -o ${OBJECTDIR}/_ext/627994287/pwm.o ../ECE118_library/src/pwm.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/serial.o: ../ECE118_library/src/serial.c  .generated_files/flags/default/19612710b80e31f14cffe0f44e41faa625f97327 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/serial.o: ../ECE118_library/src/serial.c  .generated_files/flags/default/d672c94117ee2e61005261c1b02d6584f258b786 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/serial.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/serial.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/serial.o.d" -o ${OBJECTDIR}/_ext/627994287/serial.o ../ECE118_library/src/serial.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/serial.o.d" -o ${OBJECTDIR}/_ext/627994287/serial.o ../ECE118_library/src/serial.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/627994287/timers.o: ../ECE118_library/src/timers.c  .generated_files/flags/default/b9c86de5ae768ea5c9f9292d2b0da9a912855da4 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/627994287/timers.o: ../ECE118_library/src/timers.c  .generated_files/flags/default/affe16dc4a1b6710066c09687dd31b5e2b7dd73c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/627994287" 
 	@${RM} ${OBJECTDIR}/_ext/627994287/timers.o.d 
 	@${RM} ${OBJECTDIR}/_ext/627994287/timers.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/timers.o.d" -o ${OBJECTDIR}/_ext/627994287/timers.o ../ECE118_library/src/timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/627994287/timers.o.d" -o ${OBJECTDIR}/_ext/627994287/timers.o ../ECE118_library/src/timers.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/motors.o: ../ECE118_library/component\ libraries/motors.c  .generated_files/flags/default/c3956e19271e8074f3d678e4cfe2ae470a7f3c0c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/motors.o: ../ECE118_library/component\ libraries/motors.c  .generated_files/flags/default/5b5c56961111ed469070001999eac3ae3069ab6c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/motors.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/motors.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/motors.o.d" -o ${OBJECTDIR}/_ext/1612843869/motors.o "../ECE118_library/component libraries/motors.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/motors.o.d" -o ${OBJECTDIR}/_ext/1612843869/motors.o "../ECE118_library/component libraries/motors.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o: ../ECE118_library/component\ libraries/MotorEncoderService.c  .generated_files/flags/default/b2dd5bad871f26bdf17231291039be624f22d57c .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o: ../ECE118_library/component\ libraries/MotorEncoderService.c  .generated_files/flags/default/9fcacbff982f059cb11bdd6280f0618a3c3df672 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o.d" -o ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o "../ECE118_library/component libraries/MotorEncoderService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o.d" -o ${OBJECTDIR}/_ext/1612843869/MotorEncoderService.o "../ECE118_library/component libraries/MotorEncoderService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/RCServoService.o: ../ECE118_library/component\ libraries/RCServoService.c  .generated_files/flags/default/8f4fec6533db8b4a80d183d2d7f51294be6c397b .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/RCServoService.o: ../ECE118_library/component\ libraries/RCServoService.c  .generated_files/flags/default/bbc56655c81be2cc3c5f1a55c52a723e53c4fe80 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/RCServoService.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/RCServoService.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/RCServoService.o.d" -o ${OBJECTDIR}/_ext/1612843869/RCServoService.o "../ECE118_library/component libraries/RCServoService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/RCServoService.o.d" -o ${OBJECTDIR}/_ext/1612843869/RCServoService.o "../ECE118_library/component libraries/RCServoService.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o: ../ECE118_library/component\ libraries/SensorEventChecker.c  .generated_files/flags/default/e2cdbd708edc4e2b24b158e1cf6cc956900783e5 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o: ../ECE118_library/component\ libraries/SensorEventChecker.c  .generated_files/flags/default/7f12a5b677433e92d6508895784f3b8b47f00478 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}/_ext/1612843869" 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o.d 
 	@${RM} ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o.d" -o ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o "../ECE118_library/component libraries/SensorEventChecker.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o.d" -o ${OBJECTDIR}/_ext/1612843869/SensorEventChecker.o "../ECE118_library/component libraries/SensorEventChecker.c"    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/ES_Main.o: ES_Main.c  .generated_files/flags/default/889822937bc88e1628799d265c351a40691083f1 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/ES_Main.o: ES_Main.c  .generated_files/flags/default/5ac63361575c8700768404e9cc3b4db9649cbd8d .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ES_Main.o.d 
 	@${RM} ${OBJECTDIR}/ES_Main.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/ES_Main.o.d" -o ${OBJECTDIR}/ES_Main.o ES_Main.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/ES_Main.o.d" -o ${OBJECTDIR}/ES_Main.o ES_Main.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/TopLevelHSM.o: TopLevelHSM.c  .generated_files/flags/default/b30eeb98038935d3d6a2568d88066fead26ee119 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/TopLevelHSM.o: TopLevelHSM.c  .generated_files/flags/default/b7abcc2b1a47ef20a1adf25613f57fcf36da8188 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/TopLevelHSM.o.d 
 	@${RM} ${OBJECTDIR}/TopLevelHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TopLevelHSM.o.d" -o ${OBJECTDIR}/TopLevelHSM.o TopLevelHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TopLevelHSM.o.d" -o ${OBJECTDIR}/TopLevelHSM.o TopLevelHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/DetectBeaconSubHSM.o: DetectBeaconSubHSM.c  .generated_files/flags/default/155e90edeac429b7f61beeabcde59e39da4e2ae0 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/DetectBeaconSubHSM.o: DetectBeaconSubHSM.c  .generated_files/flags/default/7c451c9e15f6b58dab642f3e3c52384784ccc24a .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/DetectBeaconSubHSM.o.d 
 	@${RM} ${OBJECTDIR}/DetectBeaconSubHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/DetectBeaconSubHSM.o.d" -o ${OBJECTDIR}/DetectBeaconSubHSM.o DetectBeaconSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/DetectBeaconSubHSM.o.d" -o ${OBJECTDIR}/DetectBeaconSubHSM.o DetectBeaconSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c  .generated_files/flags/default/9adb137cd30333c9d859940218e47852779bd5ac .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c  .generated_files/flags/default/877a1a176fb487d3e28d475d6dd2b0c547ff5b91 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/NavigateToTowerSubHSM.o.d 
 	@${RM} ${OBJECTDIR}/NavigateToTowerSubHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/NavigateToTowerSubHSM.o.d" -o ${OBJECTDIR}/NavigateToTowerSubHSM.o NavigateToTowerSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/NavigateToTowerSubHSM.o.d" -o ${OBJECTDIR}/NavigateToTowerSubHSM.o NavigateToTowerSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/AlignAndLaunchSubHSM.o: AlignAndLaunchSubHSM.c  .generated_files/flags/default/a2f1ced805e9c69a7b772ac0db50c22d687d25c3 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/AlignAndLaunchSubHSM.o: AlignAndLaunchSubHSM.c  .generated_files/flags/default/4abfbdbd4a814045f9bfdf9395f72a0571df3c96 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/AlignAndLaunchSubHSM.o.d 
 	@${RM} ${OBJECTDIR}/AlignAndLaunchSubHSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/AlignAndLaunchSubHSM.o.d" -o ${OBJECTDIR}/AlignAndLaunchSubHSM.o AlignAndLaunchSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/AlignAndLaunchSubHSM.o.d" -o ${OBJECTDIR}/AlignAndLaunchSubHSM.o AlignAndLaunchSubHSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/RobotMovementService.o: RobotMovementService.c  .generated_files/flags/default/e62c0a9eb51179104c78c683585885b1b2e779a .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/RobotMovementService.o: RobotMovementService.c  .generated_files/flags/default/876cb8cbb5c7e6a5d923eaf8cb66ca709b5bdddc .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/RobotMovementService.o.d 
 	@${RM} ${OBJECTDIR}/RobotMovementService.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/RobotMovementService.o.d" -o ${OBJECTDIR}/RobotMovementService.o RobotMovementService.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/RobotMovementService.o.d" -o ${OBJECTDIR}/RobotMovementService.o RobotMovementService.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/GetBackOnCourseFSM.o: GetBackOnCourseFSM.c  .generated_files/flags/default/29708e196225fceadec8cd9df7728563e0789bde .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/GetBackOnCourseFSM.o: GetBackOnCourseFSM.c  .generated_files/flags/default/72c2200f379791519d888c55f35212ff54923215 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/GetBackOnCourseFSM.o.d 
 	@${RM} ${OBJECTDIR}/GetBackOnCourseFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/GetBackOnCourseFSM.o.d" -o ${OBJECTDIR}/GetBackOnCourseFSM.o GetBackOnCourseFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/GetBackOnCourseFSM.o.d" -o ${OBJECTDIR}/GetBackOnCourseFSM.o GetBackOnCourseFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/WallFollowFSM.o: WallFollowFSM.c  .generated_files/flags/default/ef4339c6cefa317728c4ccb7eef3445987a5b48 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/WallFollowFSM.o: WallFollowFSM.c  .generated_files/flags/default/e4be03e697ca45e9784a0ecfb626a04630134c04 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/WallFollowFSM.o.d 
 	@${RM} ${OBJECTDIR}/WallFollowFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/WallFollowFSM.o.d" -o ${OBJECTDIR}/WallFollowFSM.o WallFollowFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/WallFollowFSM.o.d" -o ${OBJECTDIR}/WallFollowFSM.o WallFollowFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/HoleAlignmentFSM.o: HoleAlignmentFSM.c  .generated_files/flags/default/aa6cfe6dcc1a197807b70c8ab17c685d888ca8af .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/HoleAlignmentFSM.o: HoleAlignmentFSM.c  .generated_files/flags/default/1d9f13b4bd78d75a5175ba64ed1e206207342750 .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/HoleAlignmentFSM.o.d 
 	@${RM} ${OBJECTDIR}/HoleAlignmentFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/HoleAlignmentFSM.o.d" -o ${OBJECTDIR}/HoleAlignmentFSM.o HoleAlignmentFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/HoleAlignmentFSM.o.d" -o ${OBJECTDIR}/HoleAlignmentFSM.o HoleAlignmentFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/TowerEncirclementFSM.o: TowerEncirclementFSM.c  .generated_files/flags/default/5a8008e39217bcca065b6c4f7a0fbcce9d27f0eb .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
+${OBJECTDIR}/TowerEncirclementFSM.o: TowerEncirclementFSM.c  .generated_files/flags/default/bff527710f1f617a42c62a35b069488c10c8645f .generated_files/flags/default/25cf332145e109ecc94cb8c88ed46e464b66686
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/TowerEncirclementFSM.o.d 
 	@${RM} ${OBJECTDIR}/TowerEncirclementFSM.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TowerEncirclementFSM.o.d" -o ${OBJECTDIR}/TowerEncirclementFSM.o TowerEncirclementFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -fno-common -DGENERAL_TESTING -DANALOG_TAPE_SENSOR_TEST -I"." -I"../ECE118_library/component libraries" -I"../ECE118_library/include" -I"../ECE118_library/src" -MP -MMD -MF "${OBJECTDIR}/TowerEncirclementFSM.o.d" -o ${OBJECTDIR}/TowerEncirclementFSM.o TowerEncirclementFSM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
 endif
 

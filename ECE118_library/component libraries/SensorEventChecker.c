@@ -276,6 +276,44 @@ uint8_t PollTapeSensors(void) {
 }
 
 /**
+ * @Function PollSideTapeSensors(void)
+ * @param none
+ * @return TRUE or FALSE
+ * @brief This function returns the adc value of the corresponding side tape sensor
+ * @note works similarly to the other poll function, except only for the side 
+ *       tape sensors, and the param of the returned event is a value b/w
+ *       0 - 1023 corresponding to analog output
+ */
+uint8_t PollSideTapeSensors(int mask) {
+    ES_EventTyp_t curEvent = ES_NO_EVENT;
+    uint16_t curParam = 0;
+    ES_Event thisEvent;
+    uint8_t returnVal = FALSE;
+
+    if (mask & TAPE_SENSOR_SL_MASK) { // side left
+        curEvent = ES_TAPE_SIDE_LEFT;
+        curParam = AD_ReadADPin(TAPE_SENSOR_SL_AD);
+    } else if (mask & TAPE_SENSOR_SR_MASK) { // side right
+        curEvent = ES_TAPE_SIDE_RIGHT;
+        curParam = AD_ReadADPin(TAPE_SENSOR_SR_AD);
+    } else if (mask & TAPE_SENSOR_TC_MASK) { // top center
+        curEvent = ES_TAPE_TOP_CENTER;
+        curParam = AD_ReadADPin(TAPE_SENSOR_TC_AD);
+    }
+
+    thisEvent.EventType = curEvent;
+    thisEvent.EventParam = curParam;
+    returnVal = TRUE;
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+    PostTopLevelHSM(thisEvent);
+#else
+    SaveEvent(thisEvent);
+#endif   
+
+    return (returnVal);
+}
+
+/**
  * @Function CheckMotorEncoder(void)
  * @param none
  * @return TRUE or FALSE

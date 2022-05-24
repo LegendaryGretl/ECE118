@@ -29,7 +29,9 @@ void main(void)
     AD_AddPins(TRACK_WIRE_SENSOR_LEFT);
     AD_AddPins(TRACK_WIRE_SENSOR_RIGHT);
     AD_AddPins(BEACON_DETECTOR);
-    
+    AD_AddPins(TAPE_SENSOR_SL_AD);
+    AD_AddPins(TAPE_SENSOR_SR_AD);
+    AD_AddPins(TAPE_SENSOR_TC_AD);
 
     // now initialize the Events and Services Framework and start it running
     ErrorType = ES_Initialize();

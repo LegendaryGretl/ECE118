@@ -49,6 +49,9 @@ typedef enum {
     // Sensor Events ***********************************************************
     ES_TAPE_DETECTED, // param shows pattern of tape sensor signals
     ES_NO_TAPE_DETECTED,
+    ES_TAPE_SIDE_LEFT, // param: analog output of given tape sensor
+    ES_TAPE_SIDE_RIGHT,
+    ES_TAPE_TOP_CENTER,
     ES_BEACON_DETECTED, // param is always 0
     ES_NO_BEACON_DETECTED,
     ES_TRACK_WIRE_DETECTED, // param shows which track wire is tripped
@@ -106,6 +109,9 @@ static const char *EventNames[] = {
 	"BATTERY_DISCONNECTED",
 	"ES_TAPE_DETECTED",
 	"ES_NO_TAPE_DETECTED",
+	"ES_TAPE_SIDE_LEFT",
+	"ES_TAPE_SIDE_RIGHT",
+	"ES_TAPE_TOP_CENTER",
 	"ES_BEACON_DETECTED",
 	"ES_NO_BEACON_DETECTED",
 	"ES_TRACK_WIRE_DETECTED",

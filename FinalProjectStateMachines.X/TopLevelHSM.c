@@ -67,11 +67,11 @@ typedef enum {
 } TopLevelHSMState_t;
 
 static const char *StateNames[] = {
-	"InitPState",
-	"DetectBeacon",
-	"NavigateToTower",
-	"AlignAndLaunch",
-	"TestCode",
+    "InitPState",
+    "DetectBeacon",
+    "NavigateToTower",
+    "AlignAndLaunch",
+    "TestCode",
 };
 
 
@@ -203,11 +203,11 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case NavigateToTower: // get bot on the correct face of a tower
             ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
-//                case ES_TRACK_WIRE_DETECTED:
-//                    makeTransition = TRUE;
-//                    nextState = AlignAndLaunch;
-//                    InitAlignAndLaunchSubHSM();
-//                    break;
+                    //                case ES_TRACK_WIRE_DETECTED:
+                    //                    makeTransition = TRUE;
+                    //                    nextState = AlignAndLaunch;
+                    //                    InitAlignAndLaunchSubHSM();
+                    //                    break;
                 default:
                     break;
             }
@@ -312,6 +312,29 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             }
             break;
 #endif 
+#ifdef ANALOG_TAPE_SENSOR_TEST
+            switch (ThisEvent.EventType) {
+                case ES_INIT:
+                case ES_TIMEOUT:
+                    PollSideTapeSensors(TAPE_SENSOR_SL_MASK);
+                    PollSideTapeSensors(TAPE_SENSOR_SR_MASK);
+                    PollSideTapeSensors(TAPE_SENSOR_TC_MASK);
+                    ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 500);
+                    break;
+                case ES_TAPE_SIDE_LEFT:
+                    printf("\r\nTape side left: %d", ThisEvent.EventParam);
+                    break;
+                case ES_TAPE_SIDE_RIGHT:
+                    printf("\r\nTape side right: %d", ThisEvent.EventParam);
+                    break;
+                case ES_TAPE_TOP_CENTER:
+                    printf("\r\nTape top center: %d", ThisEvent.EventParam);
+                    break;
+                default:
+                    break;
+            }
+            break;
+#endif
 #ifdef TEST_ROBOT_MOVEMENT_FUNCTIONS
             //            if (ThisEvent.EventType == ES_ENTRY) {
             //                ThisEvent.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;

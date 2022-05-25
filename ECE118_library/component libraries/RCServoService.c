@@ -121,7 +121,7 @@ ES_Event RunRCServoService(ES_Event ThisEvent) {
             // No hardware initialization or single time setups, those
             // go in the init function above.
             //
-            RC_SetPulseTime(RC_SERVO_PIN, MIN_RC_ANGLE);
+            RC_SetPulseTime(RC_SERVO_PIN, MAX_RC_ANGLE);
             // This section is used to reset service for some reason
             break;
 
@@ -130,7 +130,7 @@ ES_Event RunRCServoService(ES_Event ThisEvent) {
             break;
 
         case ES_RC_SERVO_STRIKE_START:
-            RC_SetPulseTime(RC_SERVO_PIN, MAX_RC_ANGLE);
+            RC_SetPulseTime(RC_SERVO_PIN, MIN_RC_ANGLE);
             ES_Timer_InitTimer(RC_SERVO_TIMER, MOVEMENT_TIME);
             break;
 
@@ -138,7 +138,7 @@ ES_Event RunRCServoService(ES_Event ThisEvent) {
             if (ThisEvent.EventParam != RC_SERVO_TIMER) {
                 break;
             }
-            RC_SetPulseTime(RC_SERVO_PIN, MIN_RC_ANGLE);
+            RC_SetPulseTime(RC_SERVO_PIN, MAX_RC_ANGLE);
             ReturnEvent.EventType = ES_RC_SERVO_STRIKE_COMPLETE;
             ReturnEvent.EventParam = 0;
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness

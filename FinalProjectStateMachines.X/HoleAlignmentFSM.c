@@ -48,12 +48,12 @@ typedef enum {
 } HoleAlignmentFSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"AlignWithWallForwards",
-	"AlignWithWallBackwards",
-	"AlignWithTapeFowards",
-	"AlignWithTapeBackwards",
-	"AdjustmentTurn",
+    "InitPSubState",
+    "AlignWithWallForwards",
+    "AlignWithWallBackwards",
+    "AlignWithTapeFowards",
+    "AlignWithTapeBackwards",
+    "AdjustmentTurn",
 };
 
 
@@ -165,11 +165,19 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         break;
                     }
                     break;
-                case ES_TAPE_DETECTED: // check to make sure the bot's gone past the tower
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
-                        DriveBackwardsPrecise(10);
+                case ES_NO_TRACK_WIRE_DETECTED:
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) != 0b11) {
+                        StopMoving();
+                        nextState = AlignWithWallBackwards;
+                        makeTransition = TRUE;
                     }
                     break;
+                    //                case ES_TAPE_DETECTED: // check to make sure the bot's gone past the tower
+                    //                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                    //                        DriveBackwardsPrecise(10);
+                    //                    }
+                    //                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithWallBackwards;
                     makeTransition = TRUE;
@@ -201,11 +209,19 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         break;
                     }
                     break;
-                case ES_TAPE_DETECTED:
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
-                        DriveForwardsPrecise(10);
+                case ES_NO_TRACK_WIRE_DETECTED:
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) != 0b11) {
+                        StopMoving();
+                        nextState = AlignWithWallBackwards;
+                        makeTransition = TRUE;
                     }
                     break;
+//                case ES_TAPE_DETECTED:
+//                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+//                        DriveForwardsPrecise(10);
+//                    }
+//                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithWallBackwards;
                     makeTransition = TRUE;
@@ -219,7 +235,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case AlignWithTapeFowards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveForwardsPrecise(15);
+                    DriveForwards(2);
                     break;
                 case ES_TAPE_DETECTED:
                     if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
@@ -242,7 +258,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case AlignWithTapeBackwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveBackwardsPrecise(15);
+                    DriveBackwards(2);
                     break;
                 case ES_TAPE_DETECTED:
                     if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&

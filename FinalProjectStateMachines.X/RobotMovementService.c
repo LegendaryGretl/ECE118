@@ -116,6 +116,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
     ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
     switch (ThisEvent.EventType) {
+#ifndef USE_KEYBOARD_INPUT
         case ES_INIT:
             // No hardware initialization or single time setups, those
             // go in the init function above.
@@ -380,6 +381,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     break;
             }
             break;
+#endif
 
         case ES_MOTOR_ROTATION_COMPLETE:
             if (ThisEvent.EventParam & 0b10) {

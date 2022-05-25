@@ -43,7 +43,6 @@ typedef enum {
     AlignWithTower,
     FinishAlign,
     DriveAlongWall,
-    AlignWithGoal,
     PivotAroundCorner,
     LeftAdjustmentTurn,
     RightAdjustmentTurn
@@ -55,7 +54,6 @@ static const char *StateNames[] = {
 	"AlignWithTower",
 	"FinishAlign",
 	"DriveAlongWall",
-	"AlignWithGoal",
 	"PivotAroundCorner",
 	"LeftAdjustmentTurn",
 };
@@ -212,8 +210,10 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                 case ES_TRACK_WIRE_DETECTED:
                     if ((ThisEvent.EventParam & 0b11) == 0b11) {
                         StopMoving();
-                        nextState = AlignWithGoal;
-                        makeTransition = TRUE;
+                        ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
+                        CurrentState = ObjectFound;
+                        return ThisEvent;
+                        break;
                     }
                     break;
                 case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
@@ -310,13 +310,6 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                 default: // all unhandled events pass the event back up to the next level
                     break;
             }
-            break;
-
-        case AlignWithGoal: // exit this state machine and transition to goal alignment
-            StopMoving();
-            ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
-            CurrentState = ObjectFound;
-            return ThisEvent;
             break;
 
         default: // all unhandled states fall into here

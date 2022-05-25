@@ -35,7 +35,23 @@
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *
  ******************************************************************************/
+#ifdef USE_KEYBOARD_INPUT 
 
+typedef enum {
+    ES_MOVE_BOT_DRIVE_FORWARDS, // param: distance to drive. 0 means drive forever
+    ES_MOVE_BOT_DRIVE_FORWARDS_PRECISE, // param: distance to drive (in inches)
+    ES_MOVE_BOT_DRIVE_BACKWARDS,
+    ES_MOVE_BOT_DRIVE_BACKWARDS_PRECISE, // param: distance to drive (in inches)
+    ES_MOVE_BOT_STOP,
+    ES_MOVE_BOT_TANK_TURN_LEFT, // param: degrees to turn
+    ES_MOVE_BOT_TANK_TURN_RIGHT,
+    ES_MOVE_BOT_GRADUAL_TURN_LEFT, // param: direction of drive. 1 = forward, 0 = backwards
+    ES_MOVE_BOT_GRADUAL_TURN_RIGHT,
+    ES_MOVE_BOT_PIVOT_TURN_RIGHT, // param: direction of drive. 1 = forward, 0 = backwards
+    ES_MOVE_BOT_GRADUAL_PIVOT_TURN_RIGHT,
+    ES_MOVE_BOT_SET_SPEED, // param: new default speed for motors
+} YIKES;
+#endif
 
 /*******************************************************************************
  * PUBLIC FUNCTION PROTOTYPES                                                  *

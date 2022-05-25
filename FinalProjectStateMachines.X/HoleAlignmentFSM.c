@@ -44,6 +44,7 @@ typedef enum {
     AlignWithWallBackwards,
     AlignWithTapeFowards,
     AlignWithTapeBackwards,
+    AdjustmentTurn,
 } HoleAlignmentFSMState_t;
 
 static const char *StateNames[] = {
@@ -52,6 +53,7 @@ static const char *StateNames[] = {
 	"AlignWithWallBackwards",
 	"AlignWithTapeFowards",
 	"AlignWithTapeBackwards",
+	"AdjustmentTurn",
 };
 
 
@@ -222,9 +224,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                 case ES_TAPE_DETECTED:
                     if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
                             (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
-                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                        CurrentState = AlignWithWallForwards;
-                        return ThisEvent;
+                        StopMoving();
+                        nextState = AdjustmentTurn;
+                        makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
                         StopMoving();
                         nextState = AlignWithTapeBackwards;
@@ -245,13 +247,49 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                 case ES_TAPE_DETECTED:
                     if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
                             (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
-                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                        CurrentState = AlignWithWallForwards;
-                        return ThisEvent;
+                        StopMoving();
+                        nextState = AdjustmentTurn;
+                        makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
+                        StopMoving();
+                        nextState = AlignWithTapeFowards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case AdjustmentTurn:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnRight(15);
+                    break;
+                case ES_TAPE_DETECTED:
+                case ES_NO_TAPE_DETECTED:
+                    if (!(ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
+                        StopMoving();
+                        nextState = AlignWithTapeFowards;
+                        makeTransition = TRUE;
+                    } else if (!(ThisEvent.EventParam & TAPE_SENSOR_SL_MASK)) {
                         StopMoving();
                         nextState = AlignWithTapeBackwards;
                         makeTransition = TRUE;
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                    CurrentState = AlignWithWallForwards;
+                    return ThisEvent;
+                    break;
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) || (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                        CurrentState = AlignWithWallForwards;
+                        return ThisEvent;
+                        break;
                     }
                     break;
                 case ES_NO_EVENT:

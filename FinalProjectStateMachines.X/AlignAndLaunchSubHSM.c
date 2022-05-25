@@ -139,6 +139,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                     StopMoving();
                     break;
 #endif
+                    StopMoving();
                     nextState = LaunchBall;
                     makeTransition = TRUE;
                     break;
@@ -171,6 +172,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             break;
 
         case LookForNewBeacon:
+            break;
             //ThisEvent = RunLookForSecondBeaconFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED: // ignore beacon 

@@ -152,7 +152,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
         case NavigateToBeacon: // Drive towards the beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // drive bot forwards
-                    DriveForwards(10);
+                    DriveForwards(15);
                     break;
                 case ES_NO_BEACON_DETECTED: // transition to reorienting to beacon
                     // stop robot
@@ -228,13 +228,6 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;
-                    //                case ES_TAPE_DETECTED: // if 3 tape sensors trip when aligned with wall, it's a dead bot
-                    //                    if ((ThisEvent.EventParam & SIDE_TAPE_SENSORS) == SIDE_TAPE_SENSORS) {
-                    //                        StopMoving();
-                    //                        nextState = AvoidDeadBot;
-                    //                        makeTransition = TRUE;
-                    //                    }
-                    //                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;

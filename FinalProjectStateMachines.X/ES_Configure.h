@@ -80,6 +80,7 @@ typedef enum {
     ES_MOTOR_CALIBRATION_LEFT_SLOWER, // param: # of ticks left over on slower motor
     ES_MOTOR_CALIBRATION_RIGHT_SLOWER,
     // Robot Movement Events ***************************************************
+#ifndef USE_KEYBOARD_INPUT
     ES_MOVE_BOT_DRIVE_FORWARDS, // param: distance to drive. 0 means drive forever
     ES_MOVE_BOT_DRIVE_FORWARDS_PRECISE, // param: distance to drive (in inches)
     ES_MOVE_BOT_DRIVE_BACKWARDS,
@@ -92,6 +93,7 @@ typedef enum {
     ES_MOVE_BOT_PIVOT_TURN_RIGHT, // param: direction of drive. 1 = forward, 0 = backwards
     ES_MOVE_BOT_GRADUAL_PIVOT_TURN_RIGHT,
     ES_MOVE_BOT_SET_SPEED, // param: new default speed for motors
+#endif
     NUMBEROFEVENTS,
 } ES_EventTyp_t;
 

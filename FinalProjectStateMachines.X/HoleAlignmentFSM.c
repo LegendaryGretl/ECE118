@@ -167,6 +167,14 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if (ThisEvent.EventParam != 0b11) {
+                        StopMoving();
+                        nextState = AlignWithTapeBackwards;
+                        makeTransition = TRUE;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -191,6 +199,14 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         CurrentState = AlignWithTapeForwards;
                         return ThisEvent;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
+                        StopMoving();
+                        nextState = AlignWithTapeForwards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if (ThisEvent.EventParam != 0b11) {
                         StopMoving();
                         nextState = AlignWithTapeForwards;
                         makeTransition = TRUE;

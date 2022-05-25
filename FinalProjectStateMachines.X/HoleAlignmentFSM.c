@@ -40,14 +40,18 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    WallFollowForwards,
-    WallFollowBackwards,
+    AlignWithWallForwards,
+    AlignWithWallBackwards,
+    AlignWithTapeFowards,
+    AlignWithTapeBackwards,
 } HoleAlignmentFSMState_t;
 
 static const char *StateNames[] = {
 	"InitPSubState",
-	"WallFollowForwards",
-	"WallFollowBackwards",
+	"AlignWithWallForwards",
+	"AlignWithWallBackwards",
+	"AlignWithTapeFowards",
+	"AlignWithTapeBackwards",
 };
 
 
@@ -60,7 +64,9 @@ static const char *StateNames[] = {
 static void TankTurnLeft(int degrees);
 static void TankTurnRight(int degrees);
 static void DriveForwards(int distance);
+static void DriveForwardsPrecise(int distance);
 static void DriveBackwards(int distance);
+static void DriveBackwardsPrecise(int distance);
 static void StopMoving(void);
 static void GradualTurnLeft(int direction);
 static void GradualTurnRight(int direction);
@@ -130,36 +136,99 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                 // initial state
 
                 // now put the machine into the actual initial state
-                nextState = WallFollowForwards;
+                nextState = AlignWithWallForwards;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
             }
             break;
 
-        case WallFollowForwards: // in the first state, replace this with correct names
+        case AlignWithWallForwards: // in the first state, replace this with correct names
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     GradualTurnRight(1);
+                    PollSideTapeSensors(TAPE_SENSOR_TC_MASK);
                     break;
-                case ES_BUMPER_RELEASED:
-                case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) {
+                case ES_TAPE_TOP_CENTER:
+                    if (ThisEvent.EventParam < TAPE_SENSOR_TC_CLOSE_THRESHOLD) {
                         StopMoving();
-                        nextState = WallFollowBackwards;
+                        nextState = AlignWithTapeFowards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_BUMPER_HIT: // front is aligned, now align rear
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) || (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                        StopMoving();
+                        nextState = AlignWithWallBackwards;
+                        makeTransition = TRUE;
+                        break;
+                    }
+                    break;
+                case ES_TAPE_DETECTED: // check to make sure the bot's gone past the tower
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                        DriveBackwardsPrecise(10);
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = AlignWithWallBackwards;
+                    makeTransition = TRUE;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case AlignWithWallBackwards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    PollSideTapeSensors(TAPE_SENSOR_TC_MASK);
+                    GradualTurnLeft(0);
+                    break;
+                case ES_TAPE_TOP_CENTER:
+                    if (ThisEvent.EventParam < TAPE_SENSOR_TC_CLOSE_THRESHOLD) {
+                        StopMoving();
+                        nextState = AlignWithTapeFowards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) || (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
+                        StopMoving();
+                        nextState = AlignWithTapeFowards;
                         makeTransition = TRUE;
                         break;
                     }
                     break;
                 case ES_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_SR_MASK) == TAPE_SENSOR_SL_SR_MASK) {
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                        DriveForwardsPrecise(10);
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = AlignWithWallBackwards;
+                    makeTransition = TRUE;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case AlignWithTapeFowards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwardsPrecise(15);
+                    break;
+                case ES_TAPE_DETECTED:
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
+                            (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
                         ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                        CurrentState = WallFollowForwards;
+                        CurrentState = AlignWithWallForwards;
                         return ThisEvent;
-                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
                         StopMoving();
-                        nextState = WallFollowBackwards;
+                        nextState = AlignWithTapeBackwards;
                         makeTransition = TRUE;
-                        break;
                     }
                     break;
                 case ES_NO_EVENT:
@@ -168,27 +237,20 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case WallFollowBackwards:
+        case AlignWithTapeBackwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    GradualTurnLeft(0);
-                    break;
-                case ES_BUMPER_RELEASED:
-                case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) == 0) {
-                        StopMoving();
-                        nextState = WallFollowForwards;
-                        makeTransition = TRUE;
-                        break;
-                    }
+                    DriveBackwardsPrecise(15);
                     break;
                 case ES_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_SR_MASK) == TAPE_SENSOR_SL_SR_MASK) {
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
+                            (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
                         ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                        CurrentState = WallFollowForwards;
+                        CurrentState = AlignWithWallForwards;
                         return ThisEvent;
-                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
-                        nextState = WallFollowBackwards;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
+                        StopMoving();
+                        nextState = AlignWithTapeBackwards;
                         makeTransition = TRUE;
                     }
                     break;
@@ -238,9 +300,23 @@ void DriveForwards(int distance) {
     PostRobotMovementService(event);
 }
 
+void DriveForwardsPrecise(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_FORWARDS_PRECISE;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
 void DriveBackwards(int distance) {
     ES_Event event;
     event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void DriveBackwardsPrecise(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS_PRECISE;
     event.EventParam = distance;
     PostRobotMovementService(event);
 }

@@ -52,11 +52,11 @@ typedef enum {
 } NavigateToTowerSubHSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "NavigateToBeacon",
-    "ReorientTowardBeacon",
-    "WallFollow",
-    "AvoidDeadBot",
+	"InitPSubState",
+	"NavigateToBeacon",
+	"ReorientTowardBeacon",
+	"WallFollow",
+	"AvoidDeadBot",
 };
 
 

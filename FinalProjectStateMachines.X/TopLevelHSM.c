@@ -67,11 +67,11 @@ typedef enum {
 } TopLevelHSMState_t;
 
 static const char *StateNames[] = {
-    "InitPState",
-    "DetectBeacon",
-    "NavigateToTower",
-    "AlignAndLaunch",
-    "TestCode",
+	"InitPState",
+	"DetectBeacon",
+	"NavigateToTower",
+	"AlignAndLaunch",
+	"TestCode",
 };
 
 

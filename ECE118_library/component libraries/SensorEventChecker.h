@@ -57,6 +57,7 @@
 #define TAPE_SENSOR_SR_MASK (1<<6)
 #define TAPE_SENSOR_TC_MASK (1<<7)
 #define TAPE_SENSOR_SL_SR_MASK (TAPE_SENSOR_SL_MASK | TAPE_SENSOR_SR_MASK)
+#define TAPE_SENSOR_TC_CLOSE_THRESHOLD 60
 
 /*******************************************************************************
  * PUBLIC TYPEDEFS                                                             *

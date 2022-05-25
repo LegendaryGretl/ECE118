@@ -58,6 +58,7 @@ static const char *StateNames[] = {
  ******************************************************************************/
 /* Prototypes for private functions for this machine. They should be functions
    relevant to the behavior of this state machine */
+static void StopMoving(void);
 
 /*******************************************************************************
  * PRIVATE MODULE VARIABLES                                                            *
@@ -134,6 +135,10 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             ThisEvent = RunHoleAlignmentFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_ALIGNED_WITH_CORRECT_HOLE:
+#ifdef TEST_ONLY_TAPE_ALIGNMENT
+                    StopMoving();
+                    break;
+#endif
                     nextState = LaunchBall;
                     makeTransition = TRUE;
                     break;
@@ -198,3 +203,8 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
  * PRIVATE FUNCTIONS                                                           *
  ******************************************************************************/
 
+void StopMoving(void) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_STOP;
+    PostRobotMovementService(event);
+}

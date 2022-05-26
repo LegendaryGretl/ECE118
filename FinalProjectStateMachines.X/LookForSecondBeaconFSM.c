@@ -274,7 +274,7 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
         case RightAdjustmentTurn:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnLeft(15);
+                    TankTurnRight(15);
                     break;
                 case ES_BUMPER_HIT:
                 case ES_BUMPER_RELEASED:

@@ -42,6 +42,10 @@ typedef enum {
     InitPSubState,
     AlignWithTapeForwards,
     AlignWithTapeBackwards,
+    FineAdjustmentForwards,
+    FineAdjustmentBackwards,
+    GetBackOnWallForwards,
+    GetBackOnWallBackwards,
     LeftAdjustmentTurn,
     RightAdjustmentTurn,
     CheckAlignment
@@ -51,6 +55,10 @@ static const char *StateNames[] = {
 	"InitPSubState",
 	"AlignWithTapeForwards",
 	"AlignWithTapeBackwards",
+	"FineAdjustmentForwards",
+	"FineAdjustmentBackwards",
+	"GetBackOnWallForwards",
+	"GetBackOnWallBackwards",
 	"LeftAdjustmentTurn",
 	"RightAdjustmentTurn",
 };
@@ -165,12 +173,13 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
-                        nextState = AlignWithTapeBackwards;
+                        StopMoving();
+                        nextState = GetBackOnWallBackwards;
                         makeTransition = TRUE;
                         break;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
                         StopMoving();
-                        nextState = CheckAlignment;
+                        nextState = FineAdjustmentForwards;
                         makeTransition = TRUE;
                     } else if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
                             (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
@@ -179,17 +188,55 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
                         StopMoving();
-                        nextState = AlignWithTapeBackwards;
+                        nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
                     }
                     break;
-                case ES_TRACK_WIRE_DETECTED:
-                case ES_NO_TRACK_WIRE_DETECTED:
-                    if (ThisEvent.EventParam != 0b11) {
+                default:
+                    break;
+            }
+            break;
+
+        case GetBackOnWallForwards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwardsPrecise(5);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = AlignWithTapeForwards;
+                    makeTransition = TRUE;
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case FineAdjustmentForwards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwardsPrecise(1);
+                    break;
+                case ES_TAPE_DETECTED:
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
                         StopMoving();
-                        nextState = AlignWithTapeBackwards;
+                        nextState = GetBackOnWallBackwards;
                         makeTransition = TRUE;
-                    }
+                        break;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
+                            (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
+                        StopMoving();
+                        nextState = CheckAlignment;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
+                        StopMoving();
+                        nextState = FineAdjustmentBackwards;
+                        makeTransition = TRUE;
+                    } 
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = AlignWithTapeBackwards;
+                    makeTransition = TRUE;
                     break;
                 default:
                     break;
@@ -214,12 +261,13 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
-                        nextState = AlignWithTapeForwards;
+                        StopMoving();
+                        nextState = GetBackOnWallForwards;
                         makeTransition = TRUE;
                         break;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
                         StopMoving();
-                        nextState = CheckAlignment;
+                        nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
                     } else if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
                             (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
@@ -228,17 +276,55 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
                         StopMoving();
-                        nextState = AlignWithTapeForwards;
+                        nextState = FineAdjustmentForwards;
                         makeTransition = TRUE;
                     }
                     break;
-                case ES_TRACK_WIRE_DETECTED:
-                case ES_NO_TRACK_WIRE_DETECTED:
-                    if (ThisEvent.EventParam != 0b11) {
+                default:
+                    break;
+            }
+            break;
+
+        case FineAdjustmentBackwards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveBackwardsPrecise(1);
+                    break;
+                case ES_TAPE_DETECTED:
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {\
                         StopMoving();
-                        nextState = AlignWithTapeForwards;
+                        nextState = GetBackOnWallForwards;
+                        makeTransition = TRUE;
+                        break;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
+                            (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
+                        StopMoving();
+                        nextState = CheckAlignment;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
+                        StopMoving();
+                        nextState = FineAdjustmentForwards;
                         makeTransition = TRUE;
                     }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = AlignWithTapeForwards;
+                    makeTransition = TRUE;
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case GetBackOnWallBackwards:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveBackwardsPrecise(5);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = AlignWithTapeBackwards;
+                    makeTransition = TRUE;
                     break;
                 default:
                     break;
@@ -273,7 +359,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case RightAdjustmentTurn:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnLeft(15);
+                    TankTurnRight(15);
                     break;
                 case ES_BUMPER_HIT:
                 case ES_BUMPER_RELEASED:
@@ -301,10 +387,10 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED:
                     if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) == 0) {
-                        nextState = AlignWithTapeForwards;
+                        nextState = FineAdjustmentForwards;
                         makeTransition = TRUE;
                     } else if ((ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) == 0) {
-                        nextState = AlignWithTapeBackwards;
+                        nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
                     }
                     break;

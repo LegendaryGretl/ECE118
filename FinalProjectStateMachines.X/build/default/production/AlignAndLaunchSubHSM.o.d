@@ -16,7 +16,7 @@ build/default/production/AlignAndLaunchSubHSM.o: AlignAndLaunchSubHSM.c \
  ../ECE118_library/component\ libraries/RCServoService.h \
  RobotMovementService.h ../ECE118_library/include/ES_TattleTale.h \
  ../ECE118_library/include/BOARD.h TopLevelHSM.h AlignAndLaunchSubHSM.h \
- HoleAlignmentFSM.h
+ HoleAlignmentFSM.h LookForSecondBeaconFSM.h
 
 ES_Configure.h:
 
@@ -67,3 +67,5 @@ TopLevelHSM.h:
 AlignAndLaunchSubHSM.h:
 
 HoleAlignmentFSM.h:
+
+LookForSecondBeaconFSM.h:

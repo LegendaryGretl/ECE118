@@ -33,6 +33,7 @@
 #include "TopLevelHSM.h"
 #include "AlignAndLaunchSubHSM.h"
 #include "HoleAlignmentFSM.h"
+#include "LookForSecondBeaconFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -140,6 +141,9 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                     break;
 #endif
                     StopMoving();
+                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+                    ThisEvent.EventParam = 90;
+                    PostRobotMovementService(ThisEvent);
                     nextState = LaunchBall;
                     makeTransition = TRUE;
                     break;
@@ -161,6 +165,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                 case ES_RC_SERVO_STRIKE_COMPLETE:
                     nextState = LookForNewBeacon;
                     makeTransition = TRUE;
+                    InitLookForSecondBeaconFSM();
                     break;
                 case ES_BEACON_DETECTED: // ignore beacon 
                     ThisEvent.EventType = ES_NO_EVENT;
@@ -172,8 +177,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             break;
 
         case LookForNewBeacon:
-            break;
-            //ThisEvent = RunLookForSecondBeaconFSM(ThisEvent);
+            ThisEvent = RunLookForSecondBeaconFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_BEACON_DETECTED: // ignore beacon 
                     CurrentState = AlignWithHole;
@@ -199,7 +203,6 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
     ES_Tail(); // trace call stack end
     return ThisEvent;
 }
-
 
 /*******************************************************************************
  * PRIVATE FUNCTIONS                                                           *

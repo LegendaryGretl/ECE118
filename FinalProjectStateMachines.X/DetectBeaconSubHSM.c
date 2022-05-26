@@ -147,17 +147,17 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
         case LookForBeacon: // make a 360 turn to look for beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // start a 360 degree turn
-                    printf("\r\n360 turn for beacon");
+                    //printf("\r\n360 turn for beacon");
                     TankTurnLeft(365);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation  
-                    printf("\r\nBeacon detected");
+                    //printf("\r\nBeacon detected");
                     StopMoving();
                     CurrentState = LookForBeacon;
                     return ThisEvent;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // beacon not detected during 360 turn
-                    printf("\r\nrotation complete");
+                    //printf("\r\nrotation complete");
                     StopMoving();
                     nextState = RandomWalk;
                     makeTransition = TRUE;
@@ -171,7 +171,7 @@ ES_Event RunDetectBeaconSubHSM(ES_Event ThisEvent) {
         case RandomWalk: // go forward to find a beacon
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // drive forward for some amount of time
-                    printf("\r\nDriving forwards");
+                    //printf("\r\nDriving forwards");
                     DriveForwards(3);
                     break;
                 case ES_BEACON_DETECTED: // leave sub state machine and transition to beacon navigation

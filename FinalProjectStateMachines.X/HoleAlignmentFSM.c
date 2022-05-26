@@ -43,7 +43,8 @@ typedef enum {
     AlignWithTapeForwards,
     AlignWithTapeBackwards,
     LeftAdjustmentTurn,
-    RightAdjustmentTurn
+    RightAdjustmentTurn,
+    CheckAlignment
 } HoleAlignmentFSMState_t;
 
 static const char *StateNames[] = {
@@ -51,6 +52,7 @@ static const char *StateNames[] = {
 	"AlignWithTapeForwards",
 	"AlignWithTapeBackwards",
 	"LeftAdjustmentTurn",
+	"RightAdjustmentTurn",
 };
 
 
@@ -145,6 +147,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case AlignWithTapeForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
+                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+                    ThisEvent.EventParam = 80;
+                    PostRobotMovementService(ThisEvent);
                     DriveForwards(2);
                     break;
                 case ES_BUMPER_HIT:
@@ -152,15 +157,26 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         prevState = CurrentState;
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
                     }
                     break;
                 case ES_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                        nextState = AlignWithTapeBackwards;
+                        makeTransition = TRUE;
+                        break;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
+                        StopMoving();
+                        nextState = CheckAlignment;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
                             (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
                         StopMoving();
-                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                        CurrentState = AlignWithTapeForwards;
-                        return ThisEvent;
+                        nextState = CheckAlignment;
+                        makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
                         StopMoving();
                         nextState = AlignWithTapeBackwards;
@@ -186,18 +202,30 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     DriveBackwards(2);
                     break;
                 case ES_BUMPER_HIT:
-                    if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
                         prevState = CurrentState;
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
                     }
+                    break;
                 case ES_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                        nextState = AlignWithTapeForwards;
+                        makeTransition = TRUE;
+                        break;
+                    } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
+                        StopMoving();
+                        nextState = CheckAlignment;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) &&
                             (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK)) {
                         StopMoving();
-                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                        CurrentState = AlignWithTapeForwards;
-                        return ThisEvent;
+                        nextState = CheckAlignment;
+                        makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) {
                         StopMoving();
                         nextState = AlignWithTapeForwards;
@@ -262,6 +290,42 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case CheckAlignment:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 500);
+                    break;
+                case ES_TAPE_DETECTED:
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) == 0) {
+                        nextState = AlignWithTapeForwards;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) == 0) {
+                        nextState = AlignWithTapeBackwards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TIMEOUT:
+                    StopMoving();
+                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                    CurrentState = AlignWithTapeForwards;
+                    return ThisEvent;
+                    break;
+                case ES_BUMPER_HIT:
+                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                default:
                     break;
             }
             break;

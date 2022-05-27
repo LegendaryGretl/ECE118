@@ -48,13 +48,13 @@ typedef enum {
 } LookForSecondBeaconFSMState_t;
 
 static const char *StateNames[] = {
-    "InitPSubState",
-    "ScanForNewTower",
-    "RealignWithWall",
-    "DriveAlongWall",
-    "PivotAroundCorner",
-    "LeftAdjustmentTurn",
-    "RightAdjustmentTurn",
+	"InitPSubState",
+	"ScanForNewTower",
+	"RealignWithWall",
+	"DriveAlongWall",
+	"PivotAroundCorner",
+	"LeftAdjustmentTurn",
+	"RightAdjustmentTurn",
 };
 
 

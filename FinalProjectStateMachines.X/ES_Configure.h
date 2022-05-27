@@ -75,6 +75,7 @@ typedef enum {
     ES_CORRECT_WALL_DETECTED, // the bot has detected the track wire wall
     ES_ALIGNED_WITH_CORRECT_HOLE, // the bot is ready to launch a ping pong ball   
     ES_TOWER_LOST, // the bot has lost contact with the tower it was following
+    ES_CORRECT_SIDE_LOST, // the bot has missed the correct side and needs to do another lap
     // Motor Calibration Events ************************************************
     ES_START_MOTOR_CALIBRATION, // calibrate motors so max speed of faster one matches that of slower one
     ES_MOTOR_CALIBRATION_LEFT_SLOWER, // param: # of ticks left over on slower motor
@@ -135,6 +136,7 @@ static const char *EventNames[] = {
 	"ES_CORRECT_WALL_DETECTED",
 	"ES_ALIGNED_WITH_CORRECT_HOLE",
 	"ES_TOWER_LOST",
+	"ES_CORRECT_SIDE_LOST",
 	"ES_START_MOTOR_CALIBRATION",
 	"ES_MOTOR_CALIBRATION_LEFT_SLOWER",
 	"ES_MOTOR_CALIBRATION_RIGHT_SLOWER",

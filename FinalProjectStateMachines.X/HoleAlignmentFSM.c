@@ -49,7 +49,8 @@ typedef enum {
     GetBackOnWallBackwards,
     LeftAdjustmentTurn,
     RightAdjustmentTurn,
-    CheckAlignment
+    CheckAlignment,
+    VerifyShooterAlignment,
 } HoleAlignmentFSMState_t;
 
 static const char *StateNames[] = {
@@ -63,6 +64,8 @@ static const char *StateNames[] = {
 	"GetBackOnWallBackwards",
 	"LeftAdjustmentTurn",
 	"RightAdjustmentTurn",
+	"CheckAlignment",
+	"VerifyShooterAlignment",
 };
 
 
@@ -157,7 +160,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case GetOnWall:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveForwards(2);
+                    DriveForwards(1);
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();
@@ -413,9 +416,11 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     break;
                 case ES_TIMEOUT:
                     StopMoving();
-                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                    CurrentState = AlignWithTapeForwards;
-                    return ThisEvent;
+                    nextState = VerifyShooterAlignment;
+                    makeTransition = TRUE;
+                    //                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                    //                    CurrentState = AlignWithTapeForwards;
+                    //                    return ThisEvent;
                     break;
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
@@ -429,6 +434,35 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     }
                     break;
                 default:
+                    break;
+            }
+            break;
+
+        case VerifyShooterAlignment:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    PollTapeSensors();
+                    TankTurnRight(30);
+                    break;
+                case ES_BUMPER_HIT:
+                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                        TankTurnLeft(5);
+                    }
+                    break;
+                case ES_TAPE_DETECTED:
+                case ES_NO_TAPE_DETECTED:
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
+                        StopMoving();
+                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                        CurrentState = AlignWithTapeForwards;
+                        return ThisEvent;
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                    CurrentState = AlignWithTapeForwards;
+                    return ThisEvent;
                     break;
             }
             break;

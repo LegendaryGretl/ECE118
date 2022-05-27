@@ -167,6 +167,10 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
+                case ES_CORRECT_SIDE_LOST:
+                    nextState = WallFollow;
+                    makeTransition = TRUE;
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;

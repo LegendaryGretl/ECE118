@@ -152,6 +152,14 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                 case ES_BEACON_DETECTED: // ignore beacon
                     ThisEvent.EventType = ES_NO_EVENT;
                     break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) != 0b11) {
+                        StopMoving();
+                        ThisEvent.EventType = ES_CORRECT_SIDE_LOST;
+                        return ThisEvent;
+                    }
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;

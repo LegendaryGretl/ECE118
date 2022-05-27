@@ -225,6 +225,11 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     makeTransition = TRUE;
                     nextState = NavigateToTower;
                     break;
+                case ES_CORRECT_SIDE_LOST:
+                    RunNavigateToTowerSubHSM(ThisEvent);
+                    nextState = NavigateToTower;
+                    makeTransition = TRUE;
+                    break;
                 default:
                     break;
             }

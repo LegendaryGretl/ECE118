@@ -40,7 +40,8 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    GetOnWall,
+    //GetOnWall,
+    AlignWithWall,
     AlignWithTapeForwards,
     AlignWithTapeBackwards,
     FineAdjustmentForwards,
@@ -55,7 +56,7 @@ typedef enum {
 
 static const char *StateNames[] = {
 	"InitPSubState",
-	"GetOnWall",
+	"AlignWithWall",
 	"AlignWithTapeForwards",
 	"AlignWithTapeBackwards",
 	"FineAdjustmentForwards",
@@ -157,20 +158,40 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case GetOnWall:
-            switch (ThisEvent.EventType) {
-                case ES_ENTRY:
-                    DriveForwards(1);
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE:
-                    StopMoving();
-                    nextState = AlignWithTapeForwards;
-                    makeTransition = TRUE;
-                    break;
-                default:
-                    break;
-            }
-            break;
+            //        case GetOnWall:
+            //            switch (ThisEvent.EventType) {
+            //                case ES_ENTRY:
+            //                    DriveForwards(1);
+            //                    break;
+            //                case ES_MOTOR_ROTATION_COMPLETE:
+            //                    StopMoving();
+            //                    nextState = AlignWithTapeForwards;
+            //                    //nextState = AlignWithWall;
+            //                    makeTransition = TRUE;
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+            //            break;
+
+            //        case AlignWithWall:
+            //            switch (ThisEvent.EventType) {
+            //                case ES_ENTRY:
+            //                    GradualTurnLeft(0);
+            //                    break;
+            //                case ES_BUMPER_HIT:
+            //                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+            //                            (ThisEvent.EventParam & BUMPER_FSR_MASK)) {
+            //                        StopMoving();
+            //                        prevState = AlignWithTapeForwards;
+            //                        nextState = RightAdjustmentTurn;
+            //                        makeTransition = TRUE;
+            //                    }
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+            //            break;
 
         case AlignWithTapeForwards:
             switch (ThisEvent.EventType) {
@@ -178,7 +199,8 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
                     ThisEvent.EventParam = 80;
                     PostRobotMovementService(ThisEvent);
-                    DriveForwards(2);
+                    //DriveForwards(2);
+                    GradualTurnRight(1);
                     break;
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
@@ -188,6 +210,21 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     } else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
                         prevState = CurrentState;
                         nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // keep going forward
+                        ThisEvent.EventType = ES_NO_EVENT;
+                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // reverse
+                        ThisEvent.EventType = ES_NO_EVENT;
+                        StopMoving();
+                        nextState = AlignWithTapeBackwards;
                         makeTransition = TRUE;
                     }
                     break;
@@ -254,6 +291,21 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                    //                case ES_TRACK_WIRE_DETECTED:
+                    //                case ES_NO_TRACK_WIRE_DETECTED:
+                    //                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                    //                        break;
+                    //                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
+                    //                        break;
+                    //                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // keep going forward
+                    //                        ThisEvent.EventType = ES_NO_EVENT;
+                    //                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // reverse
+                    //                        ThisEvent.EventType = ES_NO_EVENT;
+                    //                        StopMoving();
+                    //                        nextState = AlignWithTapeBackwards;
+                    //                        makeTransition = TRUE;
+                    //                    }
+                    //                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithTapeForwards;
                     makeTransition = TRUE;
@@ -266,6 +318,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case AlignWithTapeBackwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
+                    //GradualTurnLeft(0);
                     DriveBackwards(2);
                     break;
                 case ES_BUMPER_HIT:
@@ -277,6 +330,21 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         prevState = CurrentState;
                         nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // go forward
+                        ThisEvent.EventType = ES_NO_EVENT;
+                        StopMoving();
+                        nextState = AlignWithTapeForwards;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // keep going backwards
+                        ThisEvent.EventType = ES_NO_EVENT;
                     }
                     break;
                 case ES_TAPE_DETECTED:
@@ -327,6 +395,21 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                    //                case ES_TRACK_WIRE_DETECTED:
+                    //                case ES_NO_TRACK_WIRE_DETECTED:
+                    //                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                    //                        break;
+                    //                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
+                    //                        break;
+                    //                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // go forward
+                    //                        ThisEvent.EventType = ES_NO_EVENT;
+                    //                        StopMoving();
+                    //                        nextState = AlignWithTapeForwards;
+                    //                        makeTransition = TRUE;
+                    //                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // keep going backwards
+                    //                        ThisEvent.EventType = ES_NO_EVENT;
+                    //                    }
+                    //                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithTapeBackwards;
                     makeTransition = TRUE;
@@ -404,7 +487,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 500);
+                    PollTapeSensors();
                     break;
+                case ES_NO_TAPE_DETECTED:
                 case ES_TAPE_DETECTED:
                     if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) == 0) {
                         nextState = FineAdjustmentForwards;
@@ -412,15 +497,19 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     } else if ((ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) == 0) {
                         nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK)) { // left tape sensor misaligned
+                        StopMoving();
+                        nextState = VerifyShooterAlignment;
+                        makeTransition = TRUE;
                     }
                     break;
                 case ES_TIMEOUT:
-                    StopMoving();
-                    nextState = VerifyShooterAlignment;
-                    makeTransition = TRUE;
-                    //                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
-                    //                    CurrentState = AlignWithTapeForwards;
-                    //                    return ThisEvent;
+                    //                    StopMoving();
+                    //                    nextState = VerifyShooterAlignment;
+                    //                    makeTransition = TRUE;
+                    ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                    CurrentState = AlignWithTapeForwards;
+                    return ThisEvent;
                     break;
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
@@ -442,11 +531,15 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     PollTapeSensors();
-                    TankTurnRight(30);
+                    TankTurnRight(15);
                     break;
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
-                        TankTurnLeft(5);
+                        StopMoving();
+                        ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
+                        CurrentState = AlignWithTapeForwards;
+                        return ThisEvent;
+                        //TankTurnLeft(5);
                     }
                     break;
                 case ES_TAPE_DETECTED:

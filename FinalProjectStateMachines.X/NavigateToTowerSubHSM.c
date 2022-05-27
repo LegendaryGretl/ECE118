@@ -161,7 +161,6 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     makeTransition = TRUE;
                     break;
                 case ES_BUMPER_HIT:
-                    printf("\r\nBumper Hit while navigating");
                     // stop robot
                     StopMoving();
                     RunTowerEncirclementFSM(ThisEvent);
@@ -224,7 +223,6 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     return ThisEvent;
                     break;
                 case ES_TOWER_LOST: // look for the tower again
-                    printf("\r\nTower lost");
                     nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;

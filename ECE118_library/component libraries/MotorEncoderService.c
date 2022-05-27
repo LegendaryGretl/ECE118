@@ -181,11 +181,9 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
                 if (curParam & 0b10) { // left motor is faster
                     ReturnEvent.EventType = ES_MOTOR_CALIBRATION_RIGHT_SLOWER;
                     ReturnEvent.EventParam = right_motor_ticks;
-                    printf("\r\nCalibration complete. Right motor slower by %d ticks", right_motor_ticks);
                 } else { // right motor is faster
                     ReturnEvent.EventType = ES_MOTOR_CALIBRATION_LEFT_SLOWER;
                     ReturnEvent.EventParam = left_motor_ticks;
-                    printf("\r\nCalibration complete. Left motor slower by %d ticks", left_motor_ticks);
                 }
 #ifndef SIMPLESERVICE_TEST           // keep this as is for test harness
                 //PostReadSensorService(ReturnEvent);

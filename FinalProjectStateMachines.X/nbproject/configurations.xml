@@ -1208,6 +1208,10 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
+      <item path="WallFollowFSM.c" ex="true" overriding="false">
+      </item>
+      <item path="WallFollowFSM.h" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

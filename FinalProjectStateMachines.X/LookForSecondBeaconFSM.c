@@ -48,13 +48,13 @@ typedef enum {
 } LookForSecondBeaconFSMState_t;
 
 static const char *StateNames[] = {
-	"InitPSubState",
-	"ScanForNewTower",
-	"RealignWithWall",
-	"DriveAlongWall",
-	"PivotAroundCorner",
-	"LeftAdjustmentTurn",
-	"RightAdjustmentTurn",
+    "InitPSubState",
+    "ScanForNewTower",
+    "RealignWithWall",
+    "DriveAlongWall",
+    "PivotAroundCorner",
+    "LeftAdjustmentTurn",
+    "RightAdjustmentTurn",
 };
 
 
@@ -124,6 +124,7 @@ uint8_t InitLookForSecondBeaconFSM(void) {
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
 ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
+    static int marker = 0;
     uint8_t makeTransition = FALSE; // use to flag transition
     LookForSecondBeaconFSMState_t nextState; // <- change type to correct enum
 
@@ -191,13 +192,14 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
         case DriveAlongWall:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveForwardsPrecise(4);
+                    DriveForwards(1);
                     break;
                 case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
                     if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
                         StopMoving();
                         nextState = PivotAroundCorner;
                         makeTransition = TRUE;
+                        marker = 0;
                     }
                     break;
                 case ES_BUMPER_HIT: // readjust to not continuously hit the wall
@@ -206,10 +208,15 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
-                case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
-                    StopMoving();
-                    nextState = ScanForNewTower;
-                    makeTransition = TRUE;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    if (marker == 0) {
+                        StopMoving();
+                        nextState = ScanForNewTower;
+                        makeTransition = TRUE;
+                        marker++;
+                    } else {
+                        DriveForwards(1);
+                    }
                     break;
                 case ES_BEACON_DETECTED:
                     ThisEvent.EventType = ES_NO_EVENT;

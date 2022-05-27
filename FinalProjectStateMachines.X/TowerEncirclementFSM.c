@@ -41,10 +41,12 @@ typedef enum {
     InitPSubState,
     ObjectFound,
     AlignWithTower,
+    AvoidCorner,
     FinishAlign,
     DriveAlongWall,
     PivotAroundCorner,
     LeftAdjustmentTurn,
+    LeftMajorTurn,
     RightAdjustmentTurn
 } TowerEncirclementFSMState_t;
 
@@ -52,10 +54,12 @@ static const char *StateNames[] = {
 	"InitPSubState",
 	"ObjectFound",
 	"AlignWithTower",
+	"AvoidCorner",
 	"FinishAlign",
 	"DriveAlongWall",
 	"PivotAroundCorner",
 	"LeftAdjustmentTurn",
+	"LeftMajorTurn",
 };
 
 
@@ -125,6 +129,7 @@ uint8_t InitTowerEncirclementFSM(void) {
  * @author J. Edward Carryer, 2011.10.23 19:25
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
 ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
+    static int marker = 0;
     uint8_t makeTransition = FALSE; // use to flag transition
     TowerEncirclementFSMState_t nextState; // <- change type to correct enum
 
@@ -177,12 +182,32 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
-                    CurrentState = ObjectFound;
-                    ThisEvent.EventType = ES_TOWER_LOST;
-                    return ThisEvent;
+                    marker = 0;
+                    StopMoving();
+                    nextState = AvoidCorner;
+                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case AvoidCorner: // drive away from tower, look for new beacon
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnRight(90);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    if (marker == 0) {
+                        DriveForwards(1);
+                        marker++;
+                    } else {
+                        CurrentState = ObjectFound;
+                        ThisEvent.EventType = ES_TOWER_LOST;
+                        return ThisEvent;
+                    }
+                default:
                     break;
             }
             break;
@@ -255,6 +280,11 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                         StopMoving();
                         nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & BUMPER_FSL_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_FFL_MASK)) {
+                        StopMoving();
+                        nextState = LeftMajorTurn;
+                        makeTransition = TRUE;
                     }
                     break;
                 case ES_NO_EVENT:
@@ -272,6 +302,40 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                 case ES_BUMPER_RELEASED:
                     if (((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) &&
                             ((ThisEvent.EventParam & BUMPER_FFR_MASK) == 0)) {
+                        StopMoving();
+                        nextState = DriveAlongWall;
+                        makeTransition = TRUE;
+                        break;
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = DriveAlongWall;
+                    makeTransition = TRUE;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case LeftMajorTurn:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnLeft(45);
+                    break;
+                case ES_BUMPER_HIT:
+                case ES_BUMPER_RELEASED:
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                        StopMoving();
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                        StopMoving();
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (((ThisEvent.EventParam & BUMPER_FSL_MASK) == 0) &&
+                            ((ThisEvent.EventParam & BUMPER_FFL_MASK) == 0)) {
                         StopMoving();
                         nextState = DriveAlongWall;
                         makeTransition = TRUE;

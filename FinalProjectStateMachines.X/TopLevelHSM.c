@@ -276,7 +276,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED:
                     printf("\r\nTape Detected -- ");
-                    for (i = 0b01; i <= 0xFF; i <<= 1) {
+                    for (i = 0b01; i <= 0x100; i <<= 1) {
                         if (i & ThisEvent.EventParam) {
                             printf("1");
                         } else {
@@ -286,7 +286,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     break;
                 case ES_NO_TAPE_DETECTED:
                     printf("\r\nTape Not Detected -- ");
-                    for (i = 0b01; i <= 0xFF; i <<= 1) {
+                    for (i = 0b01; i <= 0x100; i <<= 1) {
                         if (i & ThisEvent.EventParam) {
                             printf("1");
                         } else {

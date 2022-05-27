@@ -82,7 +82,10 @@
 #define TAPE_SENSOR_TC_TRIS PORTY08_TRIS
 #define TAPE_SENSOR_TC_AD AD_PORTW5
 
-#define NUMBER_OF_TAPE_SENSORS 8
+#define TAPE_SENSOR_TL PORTZ08_BIT // top left
+#define TAPE_SENSOR_TL_TRIS PORTZ08_TRIS
+
+#define NUMBER_OF_TAPE_SENSORS 9
 
 
 // bumper pins *****************************************************************

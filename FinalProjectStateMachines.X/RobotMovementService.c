@@ -385,7 +385,6 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
 
         case ES_MOTOR_ROTATION_COMPLETE:
             if (ThisEvent.EventParam & 0b10) {
-                printf("\r\nleft wheel rotation complete");
                 if ((lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_LEFT) || (lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_RIGHT)) {
                     SetCalibratedLeftMotorSpeed(0);
                     SetCalibratedRightMotorSpeed(0);
@@ -395,7 +394,6 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                 }
             }
             if (ThisEvent.EventParam & 0b01) {
-                printf("\r\nright wheel rotation complete");
                 if ((lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_LEFT) || (lastEvent.EventType == ES_MOVE_BOT_GRADUAL_TURN_RIGHT)) {
                     SetCalibratedLeftMotorSpeed(0);
                     SetCalibratedRightMotorSpeed(0);

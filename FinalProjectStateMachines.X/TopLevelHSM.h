@@ -36,6 +36,8 @@
  * PUBLIC TYPEDEFS                                                             *
  ******************************************************************************/
 #ifdef USE_KEYBOARD_INPUT 
+// this enum is used to keep functions working even when keyboard inputs turn off
+// certain macros
 
 typedef enum {
     ES_MOVE_BOT_DRIVE_FORWARDS, // param: distance to drive. 0 means drive forever

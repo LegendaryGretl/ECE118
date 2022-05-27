@@ -42,6 +42,7 @@ typedef enum {
     InitPSubState,
     AlignWithHole,
     LaunchBall,
+    LaunchSecondBall,
     LookForNewBeacon,
 } AlignAndLaunchSubHSMState_t;
 
@@ -49,6 +50,7 @@ static const char *StateNames[] = {
 	"InitPSubState",
 	"AlignWithHole",
 	"LaunchBall",
+	"LaunchSecondBall",
 	"LookForNewBeacon",
 };
 
@@ -157,6 +159,28 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             break;
 
         case LaunchBall: // set off RC servo 
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;
+                    PostRCServoService(ThisEvent);
+                    break;
+                case ES_RC_SERVO_STRIKE_COMPLETE: // wait for arm to retract
+                    ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 750);
+                    break;
+                case ES_TIMEOUT:
+                    nextState = LaunchSecondBall;
+                    makeTransition = TRUE;
+                    break;
+                case ES_BEACON_DETECTED: // ignore beacon 
+                    ThisEvent.EventType = ES_NO_EVENT;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case LaunchSecondBall: // set off RC servo 
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     ThisEvent.EventType = ES_RC_SERVO_STRIKE_START;

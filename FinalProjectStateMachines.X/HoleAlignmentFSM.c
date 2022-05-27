@@ -40,6 +40,7 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
+    GetOnWall,
     AlignWithTapeForwards,
     AlignWithTapeBackwards,
     FineAdjustmentForwards,
@@ -53,6 +54,7 @@ typedef enum {
 
 static const char *StateNames[] = {
 	"InitPSubState",
+	"GetOnWall",
 	"AlignWithTapeForwards",
 	"AlignWithTapeBackwards",
 	"FineAdjustmentForwards",
@@ -152,6 +154,21 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             }
             break;
 
+        case GetOnWall:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    DriveForwards(2);
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    StopMoving();
+                    nextState = AlignWithTapeForwards;
+                    makeTransition = TRUE;
+                    break;
+                default:
+                    break;
+            }
+            break;
+
         case AlignWithTapeForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
@@ -200,7 +217,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case GetBackOnWallForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveForwardsPrecise(5);
+                    DriveForwardsPrecise(10);
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();
@@ -215,7 +232,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case FineAdjustmentForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveForwardsPrecise(1);
+                    DriveForwardsPrecise(2);
                     break;
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
@@ -232,10 +249,10 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         StopMoving();
                         nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
-                    } 
+                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
-                    nextState = AlignWithTapeBackwards;
+                    nextState = AlignWithTapeForwards;
                     makeTransition = TRUE;
                     break;
                 default:
@@ -288,10 +305,10 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case FineAdjustmentBackwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveBackwardsPrecise(1);
+                    DriveBackwardsPrecise(2);
                     break;
                 case ES_TAPE_DETECTED:
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {\
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
                         StopMoving();
                         nextState = GetBackOnWallForwards;
                         makeTransition = TRUE;
@@ -308,7 +325,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
-                    nextState = AlignWithTapeForwards;
+                    nextState = AlignWithTapeBackwards;
                     makeTransition = TRUE;
                     break;
                 default:
@@ -319,7 +336,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case GetBackOnWallBackwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveBackwardsPrecise(5);
+                    DriveBackwardsPrecise(10);
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();

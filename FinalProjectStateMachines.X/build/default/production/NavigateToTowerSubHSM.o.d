@@ -19,9 +19,8 @@ build/default/production/NavigateToTowerSubHSM.o: NavigateToTowerSubHSM.c \
  ../ECE118_library/component\ libraries/motors.h TopLevelHSM.h \
  NavigateToTowerSubHSM.h ../ECE118_library/component\ libraries/pins.h \
  ../ECE118_library/include/IO_Ports.h ../ECE118_library/include/pwm.h \
- WallFollowFSM.h \
  ../ECE118_library/component\ libraries/SensorEventChecker.h \
- ../ECE118_library/include/AD.h TowerEncirclementFSM.h
+ ../ECE118_library/include/AD.h TowerEncirclementFSM.h AvoidDeadBotFSM.h
 
 ES_Configure.h:
 
@@ -79,10 +78,10 @@ NavigateToTowerSubHSM.h:
 
 ../ECE118_library/include/pwm.h:
 
-WallFollowFSM.h:
-
 ../ECE118_library/component\ libraries/SensorEventChecker.h:
 
 ../ECE118_library/include/AD.h:
 
 TowerEncirclementFSM.h:
+
+AvoidDeadBotFSM.h:

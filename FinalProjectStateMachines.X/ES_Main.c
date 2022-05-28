@@ -10,14 +10,14 @@
 #include "pins.h"
 #include "timers.h"
 
-void main(void)
-{
+void main(void) {
     ES_Return_t ErrorType;
 
     BOARD_Init();
 
     printf("Starting ES Framework Template\r\n");
     printf("using the 2nd Generation Events & Services Framework\r\n");
+    printf("Compiled on %s %s\r\n", __DATE__, __TIME__);
 
 
     // Your hardware initialization function calls go here
@@ -41,15 +41,15 @@ void main(void)
     }
     //if we got to here, there was an error
     switch (ErrorType) {
-    case FailedPointer:
-        printf("Failed on NULL pointer");
-        break;
-    case FailedInit:
-        printf("Failed Initialization");
-        break;
-    default:
-        printf("Other Failure: %d", ErrorType);
-        break;
+        case FailedPointer:
+            printf("Failed on NULL pointer");
+            break;
+        case FailedInit:
+            printf("Failed Initialization");
+            break;
+        default:
+            printf("Other Failure: %d", ErrorType);
+            break;
     }
     for (;;)
         ;

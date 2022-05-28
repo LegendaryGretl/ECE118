@@ -158,41 +158,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             }
             break;
 
-            //        case GetOnWall:
-            //            switch (ThisEvent.EventType) {
-            //                case ES_ENTRY:
-            //                    DriveForwards(1);
-            //                    break;
-            //                case ES_MOTOR_ROTATION_COMPLETE:
-            //                    StopMoving();
-            //                    nextState = AlignWithTapeForwards;
-            //                    //nextState = AlignWithWall;
-            //                    makeTransition = TRUE;
-            //                    break;
-            //                default:
-            //                    break;
-            //            }
-            //            break;
-
-            //        case AlignWithWall:
-            //            switch (ThisEvent.EventType) {
-            //                case ES_ENTRY:
-            //                    GradualTurnLeft(0);
-            //                    break;
-            //                case ES_BUMPER_HIT:
-            //                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
-            //                            (ThisEvent.EventParam & BUMPER_FSR_MASK)) {
-            //                        StopMoving();
-            //                        prevState = AlignWithTapeForwards;
-            //                        nextState = RightAdjustmentTurn;
-            //                        makeTransition = TRUE;
-            //                    }
-            //                    break;
-            //                default:
-            //                    break;
-            //            }
-            //            break;
-
         case AlignWithTapeForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
@@ -291,21 +256,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
-                    //                case ES_TRACK_WIRE_DETECTED:
-                    //                case ES_NO_TRACK_WIRE_DETECTED:
-                    //                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
-                    //                        break;
-                    //                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
-                    //                        break;
-                    //                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // keep going forward
-                    //                        ThisEvent.EventType = ES_NO_EVENT;
-                    //                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // reverse
-                    //                        ThisEvent.EventType = ES_NO_EVENT;
-                    //                        StopMoving();
-                    //                        nextState = AlignWithTapeBackwards;
-                    //                        makeTransition = TRUE;
-                    //                    }
-                    //                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithTapeForwards;
                     makeTransition = TRUE;
@@ -395,21 +345,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
-                    //                case ES_TRACK_WIRE_DETECTED:
-                    //                case ES_NO_TRACK_WIRE_DETECTED:
-                    //                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
-                    //                        break;
-                    //                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
-                    //                        break;
-                    //                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // go forward
-                    //                        ThisEvent.EventType = ES_NO_EVENT;
-                    //                        StopMoving();
-                    //                        nextState = AlignWithTapeForwards;
-                    //                        makeTransition = TRUE;
-                    //                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // keep going backwards
-                    //                        ThisEvent.EventType = ES_NO_EVENT;
-                    //                    }
-                    //                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithTapeBackwards;
                     makeTransition = TRUE;
@@ -504,9 +439,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_TIMEOUT:
-                    //                    StopMoving();
-                    //                    nextState = VerifyShooterAlignment;
-                    //                    makeTransition = TRUE;
                     ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
                     CurrentState = AlignWithTapeForwards;
                     return ThisEvent;

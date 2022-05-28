@@ -184,8 +184,11 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
                     marker = 0;
                     StopMoving();
-                    nextState = AvoidCorner;
-                    makeTransition = TRUE;
+                    CurrentState = ObjectFound;
+                    ThisEvent.EventType = ES_DEAD_BOT_AVOIDED;
+                    return ThisEvent;
+//                    nextState = AvoidCorner;
+//                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -193,24 +196,24 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case AvoidCorner: // drive away from tower, look for new beacon
-            switch (ThisEvent.EventType) {
-                case ES_ENTRY:
-                    TankTurnRight(90);
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE:
-                    if (marker == 0) {
-                        DriveForwards(1);
-                        marker++;
-                    } else {
-                        CurrentState = ObjectFound;
-                        ThisEvent.EventType = ES_TOWER_LOST;
-                        return ThisEvent;
-                    }
-                default:
-                    break;
-            }
-            break;
+//        case AvoidCorner: // drive away from tower, look for new beacon
+//            switch (ThisEvent.EventType) {
+//                case ES_ENTRY:
+//                    TankTurnRight(90);
+//                    break;
+//                case ES_MOTOR_ROTATION_COMPLETE:
+//                    if (marker == 0) {
+//                        DriveForwards(2);
+//                        marker++;
+//                    } else {
+//                        CurrentState = ObjectFound;
+//                        ThisEvent.EventType = ES_TOWER_LOST;
+//                        return ThisEvent;
+//                    }
+//                default:
+//                    break;
+//            }
+//            break;
 
         case FinishAlign:
             switch (ThisEvent.EventType) {

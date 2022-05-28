@@ -169,14 +169,8 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
             // transition from the initial pseudo-state into the actual
             // initial state
             if (ThisEvent.EventType == ES_INIT) {
-                //                // give time for all the sensors to settle
-                //                ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 10);
-                //            } else if (ThisEvent.EventType == ES_TIMEOUT) {
-                // now put the machine into the actual initial state
+                // init the first sub hsm, the others will be inited when needed
                 InitDetectBeaconSubHSM();
-                // these sub state machines will be inited when needed
-                //InitNavigateToTowerSubHSM(); 
-                //InitAlignAndLaunchSubHSM();
                 nextState = DetectBeacon;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
@@ -186,7 +180,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case DetectBeacon: // point bot in the direct of a beacon
             ThisEvent = RunDetectBeaconSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED:
+                case ES_BEACON_DETECTED: // navigate to tower
 #ifdef TEST_ONLY_DETECT_BEACON
                     makeTransition = TRUE;
                     nextState = DetectBeacon;
@@ -204,7 +198,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case NavigateToTower: // get bot on the correct face of a tower
             ThisEvent = RunNavigateToTowerSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_CORRECT_WALL_DETECTED:
+                case ES_CORRECT_WALL_DETECTED: // prepare for launch
 #ifdef TEST_ONLY_TOWER_ENCIRCLE
                     StopMoving();
                     break;
@@ -221,12 +215,12 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
         case AlignAndLaunch: // align shooter with hole and launch ball
             ThisEvent = RunAlignAndLaunchSubHSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED:
+                case ES_BEACON_DETECTED: // start going to the next tower
                     makeTransition = TRUE;
                     nextState = NavigateToTower;
                     break;
-                case ES_CORRECT_SIDE_LOST:
-                    RunNavigateToTowerSubHSM(ThisEvent);
+                case ES_CORRECT_SIDE_LOST: // circle the tower again for better alignment
+                    RunNavigateToTowerSubHSM(ThisEvent); 
                     nextState = NavigateToTower;
                     makeTransition = TRUE;
                     break;

@@ -36,9 +36,10 @@
 #include "TopLevelHSM.h"
 #include "NavigateToTowerSubHSM.h"
 #include "pins.h"
-#include "WallFollowFSM.h"
+//#include "WallFollowFSM.h"
 #include "SensorEventChecker.h"
 #include "TowerEncirclementFSM.h"
+#include "AvoidDeadBotFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -141,6 +142,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 // initial state
                 //InitWallFollowFSM();
                 InitTowerEncirclementFSM();
+                InitAvoidDeadBotFSM();
 
                 // now put the machine into the actual initial state
                 nextState = NavigateToBeacon;
@@ -222,6 +224,10 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
         case WallFollow: // follow along wall of tower until track wire is detected
             ThisEvent = RunTowerEncirclementFSM(ThisEvent);
             switch (ThisEvent.EventType) {
+                case ES_DEAD_BOT_AVOIDED:
+                    nextState = AvoidDeadBot;
+                    makeTransition = TRUE;
+                    break;
                 case ES_CORRECT_WALL_DETECTED: // check that correct wall has been detected
                     CurrentState = NavigateToBeacon;
                     return ThisEvent;
@@ -237,10 +243,17 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
             break;
 
         case AvoidDeadBot: // go around dead bot and try to find the beacon again
-            //ThisEvent = AvoidDeadBotFSM(ThisEvent);
+            ThisEvent = RunAvoidDeadBotFSM(ThisEvent);
             switch (ThisEvent.EventType) {
+                case ES_BUMPER_HIT: // investigate bumper collision
+                    // stop robot
+                    StopMoving();
+                    RunTowerEncirclementFSM(ThisEvent);
+                    nextState = WallFollow;
+                    makeTransition = TRUE;
+                    break;
                 case ES_DEAD_BOT_AVOIDED:
-                    nextState = NavigateToBeacon;
+                    nextState = ReorientTowardBeacon;
                     makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:

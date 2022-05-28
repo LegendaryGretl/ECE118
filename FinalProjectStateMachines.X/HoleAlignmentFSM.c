@@ -161,9 +161,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case AlignWithTapeForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-//                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
-//                    ThisEvent.EventParam = 80;
-//                    PostRobotMovementService(ThisEvent);
+                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+                    ThisEvent.EventParam = 80;
+                    PostRobotMovementService(ThisEvent);
                     //DriveForwards(2);
                     GradualTurnRight(1);
                     break;

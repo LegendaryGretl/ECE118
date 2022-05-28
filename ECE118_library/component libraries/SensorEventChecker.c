@@ -416,7 +416,7 @@ uint8_t CheckBumpers(void) {
 #else
         SaveEvent(thisEvent);
 #endif   
-    } else if ((curEvent == ES_BUMPER_HIT) && (counter == -1) && ((curPollTime - prevPollTime) > 250)) {
+    } else if ((curEvent == ES_BUMPER_HIT) && (counter == -1) && ((curPollTime - prevPollTime) > 100)) {
         thisEvent.EventType = curEvent;
         thisEvent.EventParam = curParam;
         counter = -1;

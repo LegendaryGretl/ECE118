@@ -252,7 +252,7 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
         case PivotAroundCorner:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    GradualPivotTurnRight(1);
+                    PivotTurnRight(1);
                     break;
                 case ES_BUMPER_HIT:
                     if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||

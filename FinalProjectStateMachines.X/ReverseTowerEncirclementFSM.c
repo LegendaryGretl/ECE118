@@ -152,51 +152,6 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
             }
             break;
 
-            //        case ObjectFound: // in the first state, replace this with correct names
-            //            switch (ThisEvent.EventType) {
-            //                case ES_ENTRY:
-            //                    DriveBackwardsPrecise(1);
-            //                    break;
-            //                case ES_MOTOR_ROTATION_COMPLETE:
-            //                    StopMoving();
-            //                    nextState = AlignWithTower;
-            //                    makeTransition = TRUE;
-            //                    break;
-            //                case ES_NO_EVENT:
-            //                default: // all unhandled events pass the event back up to the next level
-            //                    break;
-            //            }
-            //            break;
-
-            //        case StartReverse:
-            //            switch (ThisEvent.EventType) {
-            //                case ES_ENTRY: // align side of bot with side of tower
-            //                    PivotTurnRight(0);
-            //                    break;
-            //                case ES_NO_TAPE_DETECTED: // side of the tower has been detected
-            //                case ES_TAPE_DETECTED:
-            //                    if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
-            //                        StopMoving();
-            //                        nextState = FinishAlign;
-            //                        makeTransition = TRUE;
-            //                    } else {
-            //                        ThisEvent.EventType = ES_NO_EVENT;
-            //                    }
-            //                    break;
-            //                case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
-            //                    marker = 0;
-            //                    StopMoving();
-            //                    CurrentState = ObjectFound;
-            //                    ThisEvent.EventType = ES_DEAD_BOT_AVOIDED;
-            //                    return ThisEvent;
-            //                    //                    nextState = AvoidCorner;
-            //                    //                    makeTransition = TRUE;
-            //                    break;
-            //                case ES_NO_EVENT:
-            //                default: // all unhandled events pass the event back up to the next level
-            //                    break;
-            //            }
-            //            break;
         case PivotAroundCorner:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
@@ -287,10 +242,10 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                 case ES_BUMPER_RELEASED:
                     if (((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) &&
                             ((ThisEvent.EventParam & BUMPER_FFR_MASK) == 0)) {
-                        TankTurnLeft(3);
-//                        StopMoving();
-//                        nextState = DriveAlongWall;
-//                        makeTransition = TRUE;
+                        //TankTurnLeft(3);
+                        StopMoving();
+                        nextState = DriveAlongWall;
+                        makeTransition = TRUE;
                         break;
                     }
                     break;
@@ -347,10 +302,10 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                 case ES_BUMPER_RELEASED:
                     if (((ThisEvent.EventParam & BUMPER_ASR_MASK) == 0) &&
                             ((ThisEvent.EventParam & BUMPER_AFR_MASK) == 0)) {
-                        TankTurnRight(3);
-//                        StopMoving();
-//                        nextState = DriveAlongWall;
-//                        makeTransition = TRUE;
+                        //TankTurnRight(3);
+                        StopMoving();
+                        nextState = DriveAlongWall;
+                        makeTransition = TRUE;
                         break;
                     }
                     break;

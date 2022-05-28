@@ -143,9 +143,9 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                     break;
 #endif
                     StopMoving();
-//                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
-//                    ThisEvent.EventParam = 90;
-//                    PostRobotMovementService(ThisEvent);
+                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+                    ThisEvent.EventParam = 100;
+                    PostRobotMovementService(ThisEvent);
                     nextState = LaunchBall;
                     makeTransition = TRUE;
                     break;

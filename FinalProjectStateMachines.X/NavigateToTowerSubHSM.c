@@ -144,8 +144,8 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 // transition from the initial pseudo-state into the actual
                 // initial state
                 //InitWallFollowFSM();
-                InitTowerEncirclementFSM();
-                InitReverseTowerEncirclementFSM();
+                //InitTowerEncirclementFSM();
+                //InitReverseTowerEncirclementFSM();
                 //InitAvoidDeadBotFSM();
 
                 // now put the machine into the actual initial state
@@ -169,12 +169,14 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 case ES_BUMPER_HIT:
                     // stop robot
                     StopMoving();
-                    RunTowerEncirclementFSM(ThisEvent);
+                    //RunTowerEncirclementFSM(ThisEvent);
+                    InitTowerEncirclementFSM();
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
                 case ES_CORRECT_SIDE_LOST:
                     StopMoving();
+                    InitTowerEncirclementFSM();
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
@@ -205,7 +207,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     if (wiggle_direction == 1) {
                         wiggle_amount += 5;
                         // tank turn left 2 * wiggle amount
-                        TankTurnLeft(2 * wiggle_amount);
+                        TankTurnLeft((2 * wiggle_amount) - 5);
                     } else {
                         // tank turn right 2 * wiggle amount
                         TankTurnRight(2 * wiggle_amount);
@@ -216,7 +218,8 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     StopMoving();
                     wiggle_direction = 1;
                     wiggle_amount = 0;
-                    RunTowerEncirclementFSM(ThisEvent);
+                    InitTowerEncirclementFSM();
+                    //RunTowerEncirclementFSM(ThisEvent);
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;
@@ -231,7 +234,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_TAPE_DETECTED:
                     if (ThisEvent.EventParam & TAPE_SENSOR_FRONT_BOTTOM_MASK) {
-                        InitTowerEncirclementFSM();
+                        InitReverseTowerEncirclementFSM();
                         nextState = ReverseWallFollow;
                         makeTransition = TRUE;
                     }

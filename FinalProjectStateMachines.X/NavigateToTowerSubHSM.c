@@ -133,6 +133,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
     NavigateToTowerSubHSMState_t nextState; // <- change type to correct enum
     static int wiggle_direction = 1; // can be 0 or 1
     static int wiggle_amount = 5; // turn amount in degrees
+    static int wiggle_increment = 0; // increases to make bot turn more each wiggle
 
     ES_Tattle(); // trace call stack
 
@@ -191,6 +192,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 case ES_ENTRY: // init wiggle
                     wiggle_direction = 1;
                     wiggle_amount = 5;
+                    wiggle_increment = 0;
                     // tank turn left wiggle amount
                     TankTurnLeft(wiggle_amount);
                     break;
@@ -205,9 +207,10 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 case ES_MOTOR_ROTATION_COMPLETE: // wiggle in opposite direction with increasing angle
                     wiggle_direction ^= 1;
                     if (wiggle_direction == 1) {
-                        wiggle_amount += 5;
+                        wiggle_amount += 5 + wiggle_increment;
+                        wiggle_increment++;
                         // tank turn left 2 * wiggle amount
-                        TankTurnLeft((2 * wiggle_amount) - 5);
+                        TankTurnLeft((2 * wiggle_amount) - 5 - wiggle_increment);
                     } else {
                         // tank turn right 2 * wiggle amount
                         TankTurnRight(2 * wiggle_amount);

@@ -39,22 +39,24 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    ScanForNewTower,
+    ScanLeftForNewTower,
     RealignWithWall,
     DriveAlongWall,
     PivotAroundCorner,
     LeftAdjustmentTurn,
     RightAdjustmentTurn,
+    RightMajorTurn,
 } LookForSecondBeaconFSMState_t;
 
 static const char *StateNames[] = {
 	"InitPSubState",
-	"ScanForNewTower",
+	"ScanLeftForNewTower",
 	"RealignWithWall",
 	"DriveAlongWall",
 	"PivotAroundCorner",
 	"LeftAdjustmentTurn",
 	"RightAdjustmentTurn",
+	"RightMajorTurn",
 };
 
 
@@ -68,6 +70,7 @@ static void DriveForwardsPrecise(int distance);
 static void DriveForwards(int distance);
 static void DriveBackwardsPrecise(int distance);
 static void StopMoving(void);
+static void DriveBackwards(int distance);
 static void TankTurnLeft(int degrees);
 static void TankTurnRight(int degrees);
 static void PivotTurnRight(int direction);
@@ -139,20 +142,20 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                 // initial state
 
                 // now put the machine into the actual initial state
-                nextState = ScanForNewTower;
+                nextState = DriveAlongWall;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
             }
             break;
 
-        case ScanForNewTower:
+        case ScanLeftForNewTower:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // start scan for new tower
-                    TankTurnLeft(180);
+                    TankTurnRight(300);
                     break;
                 case ES_BEACON_DETECTED:
                     StopMoving();
-                    CurrentState = ScanForNewTower;
+                    CurrentState = DriveAlongWall;
                     return ThisEvent;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
@@ -161,17 +164,10 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     makeTransition = TRUE;
                     break;
                 case ES_BUMPER_HIT: // readjust to not continuously hit the wall
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
-                        StopMoving();
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
-                        StopMoving();
-                        nextState = RightAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if ((ThisEvent.EventParam & BUMPER_FSL_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_FFL_MASK)) {
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFL_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_ASL_MASK)) {
                         StopMoving();
                         nextState = RealignWithWall;
                         makeTransition = TRUE;
@@ -185,7 +181,7 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
         case RealignWithWall:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnRight(200);
+                    TankTurnLeft(300);
                     break;
                 case ES_BUMPER_HIT:
                     if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
@@ -206,68 +202,81 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case DriveAlongWall:
+        case PivotAroundCorner:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    DriveForwards(1);
+                    PivotTurnRight(0);
                     break;
-                case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
-                        StopMoving();
-                        nextState = PivotAroundCorner;
-                        makeTransition = TRUE;
-                        marker = 0;
-                    }
-                    break;
-                case ES_BUMPER_HIT: // readjust to not continuously hit the wall
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
-                        StopMoving();
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
                         StopMoving();
                         nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
-                    }
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE:
-                    if (marker == 0) {
+                    } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
                         StopMoving();
-                        nextState = ScanForNewTower;
+                        nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
-                        marker++;
-                    } else {
-                        DriveForwards(1);
+                    } else if ((ThisEvent.EventParam & BUMPER_ASL_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFL_MASK)) {
+                        StopMoving();
+                        nextState = RightMajorTurn;
+                        makeTransition = TRUE;
                     }
                     break;
-                case ES_BEACON_DETECTED:
-                    ThisEvent.EventType = ES_NO_EVENT;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
             }
             break;
 
-        case PivotAroundCorner:
+//        case FinishAlign:
+//            switch (ThisEvent.EventType) {
+//                case ES_ENTRY: // align side of bot with side of tower
+//                    TankTurnLeft(5);
+//                    break;
+//                case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
+//                    nextState = DriveAlongWall;
+//                    makeTransition = TRUE;
+//                    break;
+//                case ES_NO_EVENT:
+//                default: // all unhandled events pass the event back up to the next level
+//                    break;
+//            }
+//            break;
+
+        case DriveAlongWall:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    GradualPivotTurnRight(1);
+                    DriveBackwards(2);
                     break;
-                case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                case ES_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
                         StopMoving();
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                        ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
+                        CurrentState = PivotAroundCorner;
+                        return ThisEvent;
+                        break;
+                    }
+                    break;
+                case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) {
                         StopMoving();
-                        nextState = RightAdjustmentTurn;
+                        nextState = PivotAroundCorner;
                         makeTransition = TRUE;
                     }
                     break;
-                case ES_BEACON_DETECTED:
-                    ThisEvent.EventType = ES_NO_EVENT;
+                case ES_BUMPER_HIT: // readjust to not continuously hit the wall
+                    if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
+                    CurrentState = PivotAroundCorner;
+                    ThisEvent.EventType = ES_TOWER_LOST;
+                    return ThisEvent;
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -283,6 +292,7 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                 case ES_BUMPER_RELEASED:
                     if (((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) &&
                             ((ThisEvent.EventParam & BUMPER_FFR_MASK) == 0)) {
+                        //TankTurnLeft(3);
                         StopMoving();
                         nextState = DriveAlongWall;
                         makeTransition = TRUE;
@@ -293,8 +303,40 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     nextState = DriveAlongWall;
                     makeTransition = TRUE;
                     break;
-                case ES_BEACON_DETECTED:
-                    ThisEvent.EventType = ES_NO_EVENT;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case RightMajorTurn:
+            switch (ThisEvent.EventType) {
+                case ES_ENTRY:
+                    TankTurnRight(45);
+                    break;
+                case ES_BUMPER_HIT:
+                case ES_BUMPER_RELEASED:
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
+                        StopMoving();
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                        StopMoving();
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (((ThisEvent.EventParam & BUMPER_ASL_MASK) == 0) &&
+                            ((ThisEvent.EventParam & BUMPER_AFL_MASK) == 0)) {
+                        StopMoving();
+                        nextState = DriveAlongWall;
+                        makeTransition = TRUE;
+                        break;
+                    }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    nextState = DriveAlongWall;
+                    makeTransition = TRUE;
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -308,7 +350,9 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     break;
                 case ES_BUMPER_HIT:
                 case ES_BUMPER_RELEASED:
-                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) == 0) {
+                    if (((ThisEvent.EventParam & BUMPER_ASR_MASK) == 0) &&
+                            ((ThisEvent.EventParam & BUMPER_AFR_MASK) == 0)) {
+                        //TankTurnRight(3);
                         StopMoving();
                         nextState = DriveAlongWall;
                         makeTransition = TRUE;
@@ -319,8 +363,6 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     nextState = DriveAlongWall;
                     makeTransition = TRUE;
                     break;
-                case ES_BEACON_DETECTED:
-                    ThisEvent.EventType = ES_NO_EVENT;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -356,6 +398,13 @@ void DriveForwardsPrecise(int distance) {
 void DriveForwards(int distance) {
     ES_Event event;
     event.EventType = ES_MOVE_BOT_DRIVE_FORWARDS;
+    event.EventParam = distance;
+    PostRobotMovementService(event);
+}
+
+void DriveBackwards(int distance) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_DRIVE_BACKWARDS;
     event.EventParam = distance;
     PostRobotMovementService(event);
 }

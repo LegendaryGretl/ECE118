@@ -194,7 +194,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) 
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_TC_MASK)
                             || (ThisEvent.EventParam & TAPE_SENSOR_TL_MASK)) {
                         StopMoving();
                         nextState = GetBackOnWallBackwards;
@@ -214,6 +214,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
                     }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    GradualTurnRight(1);
                     break;
                 default:
                     break;
@@ -241,7 +244,8 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     DriveForwardsPrecise(2);
                     break;
                 case ES_TAPE_DETECTED:
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_TC_MASK)
+                            || (ThisEvent.EventParam & TAPE_SENSOR_TL_MASK)) {
                         StopMoving();
                         nextState = GetBackOnWallBackwards;
                         makeTransition = TRUE;
@@ -254,6 +258,23 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     } else if (ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) {
                         StopMoving();
                         nextState = FineAdjustmentBackwards;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // keep going forward
+                        ThisEvent.EventType = ES_NO_EVENT;
+                        nextState = AlignWithTapeForwards;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // reverse
+                        ThisEvent.EventType = ES_NO_EVENT;
+                        StopMoving();
+                        nextState = AlignWithTapeBackwards;
                         makeTransition = TRUE;
                     }
                     break;
@@ -319,6 +340,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    DriveBackwards(2);
+                    break;
                 default:
                     break;
             }
@@ -344,6 +368,21 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         StopMoving();
                         nextState = FineAdjustmentForwards;
                         makeTransition = TRUE;
+                    }
+                    break;
+                case ES_TRACK_WIRE_DETECTED:
+                case ES_NO_TRACK_WIRE_DETECTED:
+                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b11) == 0) { // go back to tower circling
+                        break;
+                    } else if ((ThisEvent.EventParam & 0b01) == 0) { // go forward
+                        ThisEvent.EventType = ES_NO_EVENT;
+                        StopMoving();
+                        nextState = AlignWithTapeForwards;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & 0b10) == 0) { // keep going backwards
+                        ThisEvent.EventType = ES_NO_EVENT;
                     }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
@@ -483,12 +522,12 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     } else if ((ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) == 0) {
                         nextState = FineAdjustmentBackwards;
                         makeTransition = TRUE;
-                    }else if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
                         StopMoving();
                         ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
                         CurrentState = AlignWithTapeForwards;
                         return ThisEvent;
-                    } 
+                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();

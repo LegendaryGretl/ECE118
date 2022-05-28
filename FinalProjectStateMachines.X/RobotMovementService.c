@@ -294,8 +294,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_TANK_TURN_LEFT:
-                    SetCalibratedLeftMotorSpeed(-TANK_TURN_SPEED);
-                    SetCalibratedRightMotorSpeed(TANK_TURN_SPEED);
+                    SetCalibratedLeftMotorSpeed(-motor_speed);
+                    SetCalibratedRightMotorSpeed(motor_speed);
                     rotation_ticks = (WHEEL_ROTATION_FOR_360_BOT_TURN * lastEvent.EventParam) / 360;
                     ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
                     ReturnEvent.EventParam = rotation_ticks;
@@ -305,8 +305,8 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                     PostMotorEncoderService(ReturnEvent);
                     break;
                 case ES_MOVE_BOT_TANK_TURN_RIGHT:
-                    SetCalibratedLeftMotorSpeed(TANK_TURN_SPEED);
-                    SetCalibratedRightMotorSpeed(-TANK_TURN_SPEED);
+                    SetCalibratedLeftMotorSpeed(motor_speed);
+                    SetCalibratedRightMotorSpeed(-motor_speed);
                     rotation_ticks = (WHEEL_ROTATION_FOR_360_BOT_TURN * lastEvent.EventParam) / 360;
                     ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_DEGREES;
                     ReturnEvent.EventParam = rotation_ticks;

@@ -130,6 +130,7 @@ uint8_t InitTowerEncirclementFSM(void) {
  * @author Gabriel H Elkaim, 2011.10.23 19:25 */
 ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
     static int marker = 0;
+    static int num_laps = 0;
     uint8_t makeTransition = FALSE; // use to flag transition
     TowerEncirclementFSMState_t nextState; // <- change type to correct enum
 
@@ -150,9 +151,10 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case ObjectFound: // in the first state, replace this with correct names
+        case ObjectFound: // object has been collided with
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
+                    num_laps = 0;
                     DriveBackwardsPrecise(1);
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
@@ -187,8 +189,8 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                     CurrentState = ObjectFound;
                     ThisEvent.EventType = ES_DEAD_BOT_AVOIDED;
                     return ThisEvent;
-//                    nextState = AvoidCorner;
-//                    makeTransition = TRUE;
+                    //                    nextState = AvoidCorner;
+                    //                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -217,7 +219,7 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                     DriveForwards(2);
                     break;
                 case ES_TRACK_WIRE_DETECTED:
-                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
+                    if (((ThisEvent.EventParam & 0b11) == 0b11)&&(num_laps > 0)) {
                         StopMoving();
                         ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
                         CurrentState = ObjectFound;
@@ -260,15 +262,18 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                         StopMoving();
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
+                        num_laps++;
                     } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
                         StopMoving();
                         nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
+                        num_laps++;
                     } else if ((ThisEvent.EventParam & BUMPER_FSL_MASK) ||
                             (ThisEvent.EventParam & BUMPER_FFL_MASK)) {
                         StopMoving();
                         nextState = LeftMajorTurn;
                         makeTransition = TRUE;
+                        num_laps++;
                     }
                     break;
                 case ES_NO_EVENT:

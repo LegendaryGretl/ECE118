@@ -170,6 +170,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     makeTransition = TRUE;
                     break;
                 case ES_CORRECT_SIDE_LOST:
+                    StopMoving();
                     nextState = WallFollow;
                     makeTransition = TRUE;
                     break;

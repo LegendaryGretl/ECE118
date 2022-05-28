@@ -154,7 +154,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                     break;
                 case ES_TRACK_WIRE_DETECTED:
                 case ES_NO_TRACK_WIRE_DETECTED:
-                    if ((ThisEvent.EventParam & 0b11) != 0b11) {
+                    if ((ThisEvent.EventParam & 0b11) == 0) {
                         StopMoving();
                         ThisEvent.EventType = ES_CORRECT_SIDE_LOST;
                         return ThisEvent;

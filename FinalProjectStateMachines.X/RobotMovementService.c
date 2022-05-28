@@ -37,7 +37,7 @@
 #define TICKS_PER_WHEEL_ROTATION 408
 #define TANK_TURN_SPEED 90
 #define DEFAULT_TRAVEL_DIST 3
-#define GRADUAL_TURN_RATIO 80 // the ratio is calulated by dividing this number by 100
+#define GRADUAL_TURN_RATIO 90 // the ratio is calulated by dividing this number by 100
 #define BOT_MOVEMENT_SPEED 100
 #define DIST_TO_DEGREES(dist) ((360 * dist)/8)
 

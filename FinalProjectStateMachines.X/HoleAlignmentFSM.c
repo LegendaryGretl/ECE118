@@ -161,9 +161,9 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
         case AlignWithTapeForwards:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
-                    ThisEvent.EventParam = 80;
-                    PostRobotMovementService(ThisEvent);
+//                    ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+//                    ThisEvent.EventParam = 80;
+//                    PostRobotMovementService(ThisEvent);
                     //DriveForwards(2);
                     GradualTurnRight(1);
                     break;
@@ -463,7 +463,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     PollTapeSensors();
-                    TankTurnRight(15);
+                    TankTurnRight(5);
                     break;
                 case ES_BUMPER_HIT:
                     if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
@@ -476,12 +476,18 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     break;
                 case ES_TAPE_DETECTED:
                 case ES_NO_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_SL_MASK) == 0) {
+                        nextState = FineAdjustmentForwards;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & TAPE_SENSOR_SR_MASK) == 0) {
+                        nextState = FineAdjustmentBackwards;
+                        makeTransition = TRUE;
+                    }else if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
                         StopMoving();
                         ThisEvent.EventType = ES_ALIGNED_WITH_CORRECT_HOLE;
                         CurrentState = AlignWithTapeForwards;
                         return ThisEvent;
-                    }
+                    } 
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();

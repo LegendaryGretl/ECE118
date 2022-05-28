@@ -194,7 +194,8 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_TAPE_DETECTED:
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                    if ((ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) 
+                            || (ThisEvent.EventParam & TAPE_SENSOR_TL_MASK)) {
                         StopMoving();
                         nextState = GetBackOnWallBackwards;
                         makeTransition = TRUE;

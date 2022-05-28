@@ -320,7 +320,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                         SetCalibratedLeftMotorSpeed(GRADUAL_TURN_RATIO);
                         SetCalibratedRightMotorSpeed(100);
                     } else { // drive backwards
-                        SetCalibratedLeftMotorSpeed(-GRADUAL_TURN_RATIO);
+                        SetCalibratedLeftMotorSpeed(0);
                         SetCalibratedRightMotorSpeed(-100);
                     }
                     rotation_ticks = DEFAULT_TRAVEL_DIST;

@@ -39,27 +39,27 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    ObjectFound,
+    StartReverse,
     AlignWithTower,
     AvoidCorner,
     FinishAlign,
     DriveAlongWall,
     PivotAroundCorner,
     LeftAdjustmentTurn,
-    LeftMajorTurn,
+    RightMajorTurn,
     RightAdjustmentTurn
 } TowerEncirclementFSMState_t;
 
 static const char *StateNames[] = {
 	"InitPSubState",
-	"ObjectFound",
+	"StartReverse",
 	"AlignWithTower",
 	"AvoidCorner",
 	"FinishAlign",
 	"DriveAlongWall",
 	"PivotAroundCorner",
 	"LeftAdjustmentTurn",
-	"LeftMajorTurn",
+	"RightMajorTurn",
 };
 
 
@@ -77,6 +77,7 @@ static void StopMoving(void);
 static void TankTurnLeft(int degrees);
 static void TankTurnRight(int degrees);
 static void PivotTurnRight(int direction);
+static void PivotTurnLeft(int direction);
 static void GradualPivotTurnRight(int direction);
 
 /*******************************************************************************
@@ -145,7 +146,7 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                 // initial state
 
                 // now put the machine into the actual initial state
-                nextState = AlignWithTower;
+                nextState = PivotAroundCorner;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
             }
@@ -167,30 +168,56 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
             //            }
             //            break;
 
-        case AlignWithTower:
+            //        case StartReverse:
+            //            switch (ThisEvent.EventType) {
+            //                case ES_ENTRY: // align side of bot with side of tower
+            //                    PivotTurnRight(0);
+            //                    break;
+            //                case ES_NO_TAPE_DETECTED: // side of the tower has been detected
+            //                case ES_TAPE_DETECTED:
+            //                    if ((ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) == 0) {
+            //                        StopMoving();
+            //                        nextState = FinishAlign;
+            //                        makeTransition = TRUE;
+            //                    } else {
+            //                        ThisEvent.EventType = ES_NO_EVENT;
+            //                    }
+            //                    break;
+            //                case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
+            //                    marker = 0;
+            //                    StopMoving();
+            //                    CurrentState = ObjectFound;
+            //                    ThisEvent.EventType = ES_DEAD_BOT_AVOIDED;
+            //                    return ThisEvent;
+            //                    //                    nextState = AvoidCorner;
+            //                    //                    makeTransition = TRUE;
+            //                    break;
+            //                case ES_NO_EVENT:
+            //                default: // all unhandled events pass the event back up to the next level
+            //                    break;
+            //            }
+            //            break;
+        case PivotAroundCorner:
             switch (ThisEvent.EventType) {
-                case ES_ENTRY: // align side of bot with side of tower
-                    PollTapeSensors();
-                    TankTurnRight(365);
+                case ES_ENTRY:
+                    PivotTurnRight(0);
                     break;
-                case ES_NO_TAPE_DETECTED: // side of the tower has been detected
-                case ES_TAPE_DETECTED:
-                    if ((ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) == 0) {
+                case ES_BUMPER_HIT:
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
                         StopMoving();
-                        nextState = FinishAlign;
+                        nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
-                    } else {
-                        ThisEvent.EventType = ES_NO_EVENT;
+                    } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                        StopMoving();
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & BUMPER_ASL_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFL_MASK)) {
+                        StopMoving();
+                        nextState = RightMajorTurn;
+                        makeTransition = TRUE;
                     }
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
-                    marker = 0;
-                    StopMoving();
-                    CurrentState = ObjectFound;
-                    ThisEvent.EventType = ES_DEAD_BOT_AVOIDED;
-                    return ThisEvent;
-                    //                    nextState = AvoidCorner;
-                    //                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -201,7 +228,7 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
         case FinishAlign:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // align side of bot with side of tower
-                    TankTurnRight(5);
+                    TankTurnLeft(5);
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
                     nextState = DriveAlongWall;
@@ -222,13 +249,13 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     if ((ThisEvent.EventParam & 0b11) == 0b11) {
                         StopMoving();
                         ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
-                        CurrentState = ObjectFound;
+                        CurrentState = PivotAroundCorner;
                         return ThisEvent;
                         break;
                     }
                     break;
                 case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
-                    if (ThisEvent.EventParam & TAPE_SENSOR_TC_MASK) {
+                    if (ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) {
                         StopMoving();
                         nextState = PivotAroundCorner;
                         makeTransition = TRUE;
@@ -241,37 +268,9 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
-                    CurrentState = ObjectFound;
+                    CurrentState = PivotAroundCorner;
                     ThisEvent.EventType = ES_TOWER_LOST;
                     return ThisEvent;
-                    break;
-                case ES_NO_EVENT:
-                default: // all unhandled events pass the event back up to the next level
-                    break;
-            }
-            break;
-
-        case PivotAroundCorner:
-            switch (ThisEvent.EventType) {
-                case ES_ENTRY:
-                    GradualPivotTurnRight(0);
-                    break;
-                case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
-                        StopMoving();
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
-                        StopMoving();
-                        nextState = RightAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if ((ThisEvent.EventParam & BUMPER_ASL_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_AFL_MASK)) {
-                        StopMoving();
-                        nextState = LeftMajorTurn;
-                        makeTransition = TRUE;
-                    }
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -286,11 +285,12 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     break;
                 case ES_BUMPER_HIT:
                 case ES_BUMPER_RELEASED:
-                    if (((ThisEvent.EventParam & BUMPER_ASR_MASK) == 0) &&
-                            ((ThisEvent.EventParam & BUMPER_AFR_MASK) == 0)) {
-                        StopMoving();
-                        nextState = DriveAlongWall;
-                        makeTransition = TRUE;
+                    if (((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) &&
+                            ((ThisEvent.EventParam & BUMPER_FFR_MASK) == 0)) {
+                        TankTurnLeft(3);
+//                        StopMoving();
+//                        nextState = DriveAlongWall;
+//                        makeTransition = TRUE;
                         break;
                     }
                     break;
@@ -304,24 +304,24 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
             }
             break;
 
-        case LeftMajorTurn:
+        case RightMajorTurn:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
-                    TankTurnLeft(45);
+                    TankTurnRight(45);
                     break;
                 case ES_BUMPER_HIT:
                 case ES_BUMPER_RELEASED:
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
-                        StopMoving();
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
                         StopMoving();
                         nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
-                    } else if (((ThisEvent.EventParam & BUMPER_FSL_MASK) == 0) &&
-                            ((ThisEvent.EventParam & BUMPER_FFL_MASK) == 0)) {
+                    } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                        StopMoving();
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (((ThisEvent.EventParam & BUMPER_ASL_MASK) == 0) &&
+                            ((ThisEvent.EventParam & BUMPER_AFL_MASK) == 0)) {
                         StopMoving();
                         nextState = DriveAlongWall;
                         makeTransition = TRUE;
@@ -345,10 +345,12 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     break;
                 case ES_BUMPER_HIT:
                 case ES_BUMPER_RELEASED:
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) == 0) {
-                        StopMoving();
-                        nextState = DriveAlongWall;
-                        makeTransition = TRUE;
+                    if (((ThisEvent.EventParam & BUMPER_ASR_MASK) == 0) &&
+                            ((ThisEvent.EventParam & BUMPER_AFR_MASK) == 0)) {
+                        TankTurnRight(3);
+//                        StopMoving();
+//                        nextState = DriveAlongWall;
+//                        makeTransition = TRUE;
                         break;
                     }
                     break;
@@ -432,6 +434,13 @@ void TankTurnRight(int degrees) {
 void PivotTurnRight(int direction) {
     ES_Event event;
     event.EventType = ES_MOVE_BOT_PIVOT_TURN_RIGHT;
+    event.EventParam = direction;
+    PostRobotMovementService(event);
+}
+
+void PivotTurnLeft(int direction) {
+    ES_Event event;
+    event.EventType = ES_MOVE_BOT_GRADUAL_TURN_LEFT;
     event.EventParam = direction;
     PostRobotMovementService(event);
 }

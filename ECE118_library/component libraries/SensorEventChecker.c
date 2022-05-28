@@ -112,11 +112,11 @@ uint8_t CheckTrackWire(void) {
         curEvent = ES_TRACK_WIRE_DETECTED;
         curParam |= 0b01;
     }
-    
-    if (curParam != lastParam){
+
+    if (curParam != lastParam) {
         counter = 0;
         lastParam = curParam;
-    } else if (counter > -1){
+    } else if (counter > -1) {
         counter++;
     }
 
@@ -375,6 +375,7 @@ uint8_t CheckBumpers(void) {
     static ES_EventTyp_t lastEvent = ES_BUMPER_RELEASED;
     static uint16_t lastParam = 0x00;
     static int counter = -1;
+    static unsigned int prevPollTime = 0;
     ES_EventTyp_t curEvent = ES_BUMPER_RELEASED;
     uint16_t curParam = 0;
     ES_Event thisEvent;
@@ -384,6 +385,7 @@ uint8_t CheckBumpers(void) {
 
     int bumpers[NUMBER_OF_BUMPERS] = {BUMPER_FSL, BUMPER_FFL, BUMPER_FFR,
         BUMPER_FSR, BUMPER_ASR, BUMPER_AFR, BUMPER_AFL, BUMPER_ASL};
+    unsigned int curPollTime = TIMERS_GetTime();
     marker = 0b01;
 
     // read each tape sensor, indicate if they have been tripped or not
@@ -408,11 +410,23 @@ uint8_t CheckBumpers(void) {
         thisEvent.EventParam = curParam;
         counter = -1;
         returnVal = TRUE;
+        prevPollTime = curPollTime;
 #ifndef EVENTCHECKER_TEST           // keep this as is for test harness
         PostTopLevelHSM(thisEvent);
 #else
         SaveEvent(thisEvent);
 #endif   
+    } else if ((curEvent == ES_BUMPER_HIT) && (counter == -1) && ((curPollTime - prevPollTime) > 250)) {
+        thisEvent.EventType = curEvent;
+        thisEvent.EventParam = curParam;
+        counter = -1;
+        returnVal = TRUE;
+        prevPollTime = curPollTime;
+#ifndef EVENTCHECKER_TEST           // keep this as is for test harness
+        PostTopLevelHSM(thisEvent);
+#else
+        SaveEvent(thisEvent);
+#endif 
     }
     return (returnVal);
 }

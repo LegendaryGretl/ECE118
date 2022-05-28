@@ -146,7 +146,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 //InitWallFollowFSM();
                 InitTowerEncirclementFSM();
                 InitReverseTowerEncirclementFSM();
-                InitAvoidDeadBotFSM();
+                //InitAvoidDeadBotFSM();
 
                 // now put the machine into the actual initial state
                 nextState = NavigateToBeacon;
@@ -237,6 +237,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_DEAD_BOT_AVOIDED:
+                    InitAvoidDeadBotFSM();
                     nextState = AvoidDeadBot;
                     makeTransition = TRUE;
                     break;

@@ -40,6 +40,7 @@
 #include "SensorEventChecker.h"
 #include "TowerEncirclementFSM.h"
 #include "AvoidDeadBotFSM.h"
+#include "ReverseTowerEncirclementFSM.h"
 
 /*******************************************************************************
  * MODULE #DEFINES                                                             *
@@ -49,6 +50,7 @@ typedef enum {
     NavigateToBeacon,
     ReorientTowardBeacon,
     WallFollow,
+    ReverseWallFollow,
     AvoidDeadBot,
 } NavigateToTowerSubHSMState_t;
 
@@ -57,6 +59,7 @@ static const char *StateNames[] = {
 	"NavigateToBeacon",
 	"ReorientTowardBeacon",
 	"WallFollow",
+	"ReverseWallFollow",
 	"AvoidDeadBot",
 };
 
@@ -142,6 +145,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                 // initial state
                 //InitWallFollowFSM();
                 InitTowerEncirclementFSM();
+                InitReverseTowerEncirclementFSM();
                 InitAvoidDeadBotFSM();
 
                 // now put the machine into the actual initial state
@@ -224,6 +228,34 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
 
         case WallFollow: // follow along wall of tower until track wire is detected
             ThisEvent = RunTowerEncirclementFSM(ThisEvent);
+            switch (ThisEvent.EventType) {
+                case ES_TAPE_DETECTED:
+                    if (ThisEvent.EventParam & TAPE_SENSOR_FRONT_BOTTOM_MASK) {
+                        InitTowerEncirclementFSM();
+                        nextState = ReverseWallFollow;
+                        makeTransition = TRUE;
+                    }
+                    break;
+                case ES_DEAD_BOT_AVOIDED:
+                    nextState = AvoidDeadBot;
+                    makeTransition = TRUE;
+                    break;
+                case ES_CORRECT_WALL_DETECTED: // check that correct wall has been detected
+                    CurrentState = NavigateToBeacon;
+                    return ThisEvent;
+                    break;
+                case ES_TOWER_LOST: // look for the tower again
+                    nextState = ReorientTowardBeacon;
+                    makeTransition = TRUE;
+                    break;
+                case ES_NO_EVENT:
+                default: // all unhandled events pass the event back up to the next level
+                    break;
+            }
+            break;
+
+        case ReverseWallFollow:
+            ThisEvent = RunReverseTowerEncirclementFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_DEAD_BOT_AVOIDED:
                     nextState = AvoidDeadBot;

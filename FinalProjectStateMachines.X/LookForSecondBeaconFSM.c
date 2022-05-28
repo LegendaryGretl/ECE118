@@ -160,6 +160,23 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     nextState = RealignWithWall;
                     makeTransition = TRUE;
                     break;
+                case ES_BUMPER_HIT: // readjust to not continuously hit the wall
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                        StopMoving();
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                        StopMoving();
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if ((ThisEvent.EventParam & BUMPER_FSL_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_FFL_MASK)) {
+                        StopMoving();
+                        nextState = RealignWithWall;
+                        makeTransition = TRUE;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -203,8 +220,14 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_BUMPER_HIT: // readjust to not continuously hit the wall
-                    if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                        StopMoving();
                         nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                        StopMoving();
+                        nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
                     }
                     break;

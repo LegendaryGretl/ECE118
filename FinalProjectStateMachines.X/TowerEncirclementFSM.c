@@ -196,25 +196,6 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
             }
             break;
 
-//        case AvoidCorner: // drive away from tower, look for new beacon
-//            switch (ThisEvent.EventType) {
-//                case ES_ENTRY:
-//                    TankTurnRight(90);
-//                    break;
-//                case ES_MOTOR_ROTATION_COMPLETE:
-//                    if (marker == 0) {
-//                        DriveForwards(2);
-//                        marker++;
-//                    } else {
-//                        CurrentState = ObjectFound;
-//                        ThisEvent.EventType = ES_TOWER_LOST;
-//                        return ThisEvent;
-//                    }
-//                default:
-//                    break;
-//            }
-//            break;
-
         case FinishAlign:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY: // align side of bot with side of tower

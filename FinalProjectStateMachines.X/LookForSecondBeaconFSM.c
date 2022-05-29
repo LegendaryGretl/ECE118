@@ -155,7 +155,7 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                     break;
                 case ES_BEACON_DETECTED:
                     StopMoving();
-                    CurrentState = DriveAlongWall;
+                    CurrentState = ScanLeftForNewTower;
                     return ThisEvent;
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
@@ -195,6 +195,8 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    break;
                 case ES_BEACON_DETECTED:
                     ThisEvent.EventType = ES_NO_EVENT;
                 default:
@@ -230,34 +232,10 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
             }
             break;
 
-//        case FinishAlign:
-//            switch (ThisEvent.EventType) {
-//                case ES_ENTRY: // align side of bot with side of tower
-//                    TankTurnLeft(5);
-//                    break;
-//                case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
-//                    nextState = DriveAlongWall;
-//                    makeTransition = TRUE;
-//                    break;
-//                case ES_NO_EVENT:
-//                default: // all unhandled events pass the event back up to the next level
-//                    break;
-//            }
-//            break;
-
         case DriveAlongWall:
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     DriveBackwards(2);
-                    break;
-                case ES_TRACK_WIRE_DETECTED:
-                    if ((ThisEvent.EventParam & 0b11) == 0b11) {
-                        StopMoving();
-                        ThisEvent.EventType = ES_CORRECT_WALL_DETECTED;
-                        CurrentState = PivotAroundCorner;
-                        return ThisEvent;
-                        break;
-                    }
                     break;
                 case ES_TAPE_DETECTED: // has the bot gone past the side of the tower
                     if (ThisEvent.EventParam & TAPE_SENSOR_TL_MASK) {

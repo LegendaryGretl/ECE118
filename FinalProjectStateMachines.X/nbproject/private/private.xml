@@ -3,7 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/DetectBeaconSubHSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/ReverseTowerEncirclementFSM.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/ECE118_library/component%20libraries/SensorEventChecker.c</file>
+            <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/AvoidDeadBotFSM.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/AlignAndLaunchSubHSM.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/LookForSecondBeaconFSM.c</file>
             <file>file:/C:/Users/maansilv/Downloads/ECE118/FinalProjectStateMachines.X/TowerEncirclementFSM.c</file>

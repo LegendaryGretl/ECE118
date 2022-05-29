@@ -211,7 +211,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
         case LookForNewBeacon:
             ThisEvent = RunLookForSecondBeaconFSM(ThisEvent);
             switch (ThisEvent.EventType) {
-                case ES_BEACON_DETECTED: // ignore beacon 
+                case ES_BEACON_DETECTED: // feed event to top level hsm 
                     CurrentState = AlignWithHole;
                     return ThisEvent;
                     break;

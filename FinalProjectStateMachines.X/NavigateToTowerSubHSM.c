@@ -236,7 +236,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
             ThisEvent = RunTowerEncirclementFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_TAPE_DETECTED:
-                    if (ThisEvent.EventParam & TAPE_SENSOR_FRONT_BOTTOM_MASK) {
+                    if (ThisEvent.EventParam & TAPE_SENSOR_FC_MASK) {
                         InitReverseTowerEncirclementFSM();
                         nextState = ReverseWallFollow;
                         makeTransition = TRUE;

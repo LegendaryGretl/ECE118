@@ -172,11 +172,12 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         prevState = CurrentState;
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
-                        prevState = CurrentState;
-                        nextState = RightAdjustmentTurn;
-                        makeTransition = TRUE;
                     }
+                    //                        else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                    //                        prevState = CurrentState;
+                    //                        nextState = RightAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    }
                     break;
                 case ES_TRACK_WIRE_DETECTED:
                 case ES_NO_TRACK_WIRE_DETECTED:
@@ -228,6 +229,18 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                 case ES_ENTRY:
                     DriveForwardsPrecise(10);
                     break;
+                case ES_BUMPER_HIT:
+                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    //                    else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                    //                        prevState = CurrentState;
+                    //                        nextState = RightAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    }
+                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();
                     nextState = AlignWithTapeForwards;
@@ -278,6 +291,18 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                case ES_BUMPER_HIT:
+                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = LeftAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    //                    else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                    //                        prevState = CurrentState;
+                    //                        nextState = RightAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    }
+                    break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithTapeForwards;
                     makeTransition = TRUE;
@@ -294,11 +319,13 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     DriveBackwards(2);
                     break;
                 case ES_BUMPER_HIT:
-                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
-                        prevState = CurrentState;
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                    //                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                    //                        prevState = CurrentState;
+                    //                        nextState = LeftAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    } 
+                    //                    else 
+                    if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
                         prevState = CurrentState;
                         nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
@@ -370,6 +397,18 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                case ES_BUMPER_HIT:
+                    //                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                    //                        prevState = CurrentState;
+                    //                        nextState = LeftAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    } else 
+                    if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
+                    break;
                 case ES_TRACK_WIRE_DETECTED:
                 case ES_NO_TRACK_WIRE_DETECTED:
                     if ((ThisEvent.EventParam & 0b11) == 0b11) {
@@ -398,6 +437,18 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
             switch (ThisEvent.EventType) {
                 case ES_ENTRY:
                     DriveBackwardsPrecise(10);
+                    break;
+                case ES_BUMPER_HIT:
+                    //                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
+                    //                        prevState = CurrentState;
+                    //                        nextState = LeftAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    } else 
+                    if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
+                        prevState = CurrentState;
+                        nextState = RightAdjustmentTurn;
+                        makeTransition = TRUE;
+                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();

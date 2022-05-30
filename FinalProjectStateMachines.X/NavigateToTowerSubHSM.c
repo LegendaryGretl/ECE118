@@ -169,11 +169,13 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
                     break;
                 case ES_BUMPER_HIT:
                     // stop robot
-                    StopMoving();
-                    //RunTowerEncirclementFSM(ThisEvent);
-                    InitTowerEncirclementFSM();
-                    nextState = WallFollow;
-                    makeTransition = TRUE;
+                    if (ThisEvent.EventParam & FRONT_BUMPER_MASK) {
+                        StopMoving();
+                        //RunTowerEncirclementFSM(ThisEvent);
+                        InitTowerEncirclementFSM();
+                        nextState = WallFollow;
+                        makeTransition = TRUE;
+                    }
                     break;
                 case ES_CORRECT_SIDE_LOST:
                     StopMoving();

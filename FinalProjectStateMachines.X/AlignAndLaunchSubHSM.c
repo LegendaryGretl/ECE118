@@ -116,6 +116,7 @@ uint8_t InitAlignAndLaunchSubHSM(void) {
 ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
     uint8_t makeTransition = FALSE; // use to flag transition
     AlignAndLaunchSubHSMState_t nextState; // <- change type to correct enum
+    static uint8_t launch_complete = FALSE;
 
     ES_Tattle(); // trace call stack
 
@@ -128,6 +129,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                 // initial state
                 InitHoleAlignmentFSM();
                 // now put the machine into the actual initial state
+                launch_complete = FALSE;
                 nextState = AlignWithHole;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
@@ -135,6 +137,7 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
             break;
 
         case AlignWithHole: // align shooter with correct hole
+            launch_complete = FALSE;
             ThisEvent = RunHoleAlignmentFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_ALIGNED_WITH_CORRECT_HOLE:
@@ -160,6 +163,19 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                         return ThisEvent;
                     }
                     break;
+                case ES_TIMEOUT:
+                    if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        if (launch_complete == TRUE) {
+                            InitLookForSecondBeaconFSM();
+                            nextState = LookForNewBeacon;
+                            makeTransition = TRUE;
+                        } else {
+                            InitHoleAlignmentFSM();
+                            nextState = AlignWithHole;
+                            makeTransition = TRUE;
+                        }
+                    }
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -176,8 +192,20 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                     ES_Timer_InitTimer(TOP_LEVEL_HSM_TIMER, 750);
                     break;
                 case ES_TIMEOUT:
-                    nextState = LaunchSecondBall;
-                    makeTransition = TRUE;
+                    if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        if (launch_complete == TRUE) {
+                            InitLookForSecondBeaconFSM();
+                            nextState = LookForNewBeacon;
+                            makeTransition = TRUE;
+                        } else {
+                            InitHoleAlignmentFSM();
+                            nextState = AlignWithHole;
+                            makeTransition = TRUE;
+                        }
+                    } else {
+                        nextState = LaunchSecondBall;
+                        makeTransition = TRUE;
+                    }
                     break;
                 case ES_BEACON_DETECTED: // ignore beacon 
                     ThisEvent.EventType = ES_NO_EVENT;
@@ -195,12 +223,26 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                     PostRCServoService(ThisEvent);
                     break;
                 case ES_RC_SERVO_STRIKE_COMPLETE:
+                    launch_complete = TRUE;
                     nextState = LookForNewBeacon;
                     makeTransition = TRUE;
                     InitLookForSecondBeaconFSM();
                     break;
                 case ES_BEACON_DETECTED: // ignore beacon 
                     ThisEvent.EventType = ES_NO_EVENT;
+                    break;
+                case ES_TIMEOUT:
+                    if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        if (launch_complete == TRUE) {
+                            InitLookForSecondBeaconFSM();
+                            nextState = LookForNewBeacon;
+                            makeTransition = TRUE;
+                        } else {
+                            InitHoleAlignmentFSM();
+                            nextState = AlignWithHole;
+                            makeTransition = TRUE;
+                        }
+                    }
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -214,6 +256,19 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                 case ES_BEACON_DETECTED: // feed event to top level hsm 
                     CurrentState = AlignWithHole;
                     return ThisEvent;
+                    break;
+                case ES_TIMEOUT:
+                    if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        if (launch_complete == TRUE) {
+                            InitLookForSecondBeaconFSM();
+                            nextState = LookForNewBeacon;
+                            makeTransition = TRUE;
+                        } else {
+                            InitHoleAlignmentFSM();
+                            nextState = AlignWithHole;
+                            makeTransition = TRUE;
+                        }
+                    }
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level

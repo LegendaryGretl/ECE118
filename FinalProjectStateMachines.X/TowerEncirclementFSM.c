@@ -235,10 +235,17 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_BUMPER_HIT: // readjust to not continuously hit the wall
-                    if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
+                        StopMoving();
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     }
+                    //                    else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                    //                        StopMoving();
+                    //                        nextState = RightAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
                     CurrentState = ObjectFound;
@@ -275,6 +282,11 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                         num_laps++;
                     }
+                    break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    CurrentState = ObjectFound;
+                    ThisEvent.EventType = ES_TOWER_LOST;
+                    return ThisEvent;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level

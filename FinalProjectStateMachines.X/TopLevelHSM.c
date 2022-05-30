@@ -190,6 +190,14 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     nextState = NavigateToTower;
                     InitNavigateToTowerSubHSM();
                     break;
+                case ES_TIMEOUT:
+                    if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        InitDetectBeaconSubHSM();
+                        nextState = DetectBeacon;
+                        makeTransition = TRUE;
+                        ThisEvent.EventType = ES_NO_EVENT;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -207,6 +215,14 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     nextState = AlignAndLaunch;
                     InitAlignAndLaunchSubHSM();
                     break;
+                case ES_TIMEOUT:
+                    if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        InitDetectBeaconSubHSM();
+                        nextState = DetectBeacon;
+                        makeTransition = TRUE;
+                        ThisEvent.EventType = ES_NO_EVENT;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -220,7 +236,7 @@ ES_Event RunTopLevelHSM(ES_Event ThisEvent) {
                     nextState = NavigateToTower;
                     break;
                 case ES_CORRECT_SIDE_LOST: // circle the tower again for better alignment
-                    RunNavigateToTowerSubHSM(ThisEvent); 
+                    RunNavigateToTowerSubHSM(ThisEvent);
                     nextState = NavigateToTower;
                     makeTransition = TRUE;
                     break;

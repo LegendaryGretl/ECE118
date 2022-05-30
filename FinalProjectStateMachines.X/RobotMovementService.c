@@ -356,7 +356,7 @@ ES_Event RunRobotMovementService(ES_Event ThisEvent) {
                         SetCalibratedLeftMotorSpeed(-BOT_MOVEMENT_SPEED);
                     }
                     SetCalibratedRightMotorSpeed(0);
-                    rotation_ticks = 10;
+                    rotation_ticks = 20;
                     ReturnEvent.EventType = ES_TURN_LEFT_MOTOR_N_ROTATIONS;
                     ReturnEvent.EventParam = rotation_ticks * 360;
                     PostMotorEncoderService(ReturnEvent);

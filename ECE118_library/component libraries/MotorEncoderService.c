@@ -154,9 +154,11 @@ ES_Event RunMotorEncoderService(ES_Event ThisEvent) {
         case ES_ENCODER_PULSE_DETECTED:
             if (ThisEvent.EventParam & 0b10) {
                 left_motor_ticks--;
+                ES_Timer_InitTimer(GET_UNSTUCK_TIMER, 5000);
             }
             if (ThisEvent.EventParam & 0b01) {
                 right_motor_ticks--;
+                ES_Timer_InitTimer(GET_UNSTUCK_TIMER, 5000);
             }
             uint8_t curParam = 0;
             if (left_motor_ticks == 0) {

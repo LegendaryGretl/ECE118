@@ -174,6 +174,11 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     }
                     break;
+                case ES_MOTOR_ROTATION_COMPLETE:
+                    CurrentState = PivotAroundCorner;
+                    ThisEvent.EventType = ES_TOWER_LOST;
+                    return ThisEvent;
+                    break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
                     break;
@@ -217,10 +222,17 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_BUMPER_HIT: // readjust to not continuously hit the wall
-                    if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
+                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
+                            (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
+                        StopMoving();
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     }
+                    //                    else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
+                    //                        StopMoving();
+                    //                        nextState = RightAdjustmentTurn;
+                    //                        makeTransition = TRUE;
+                    //                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
                     CurrentState = PivotAroundCorner;

@@ -44,6 +44,8 @@
 #define BUMPER_AFR_MASK (1<<5) // aft front right
 #define BUMPER_AFL_MASK (1<<6) // aft front left
 #define BUMPER_ASL_MASK (1<<7) // aft side left
+#define FRONT_BUMPER_MASK (BUMPER_FFL_MASK | BUMPER_FFR_MASK | BUMPER_FSL_MASK | BUMPER_FSR_MASK)
+#define BACK_BUMPER_MASK (BUMPER_AFL_MASK | BUMPER_AFR_MASK | BUMPER_ASL_MASK | BUMPER_ASR_MASK)
 
 // Tape Sensor Masks
 #define BOTTOM_TAPE_SENSORS 0b00011111

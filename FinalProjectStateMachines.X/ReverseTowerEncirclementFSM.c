@@ -42,7 +42,6 @@ typedef enum {
     StartReverse,
     AlignWithTower,
     AvoidCorner,
-    FinishAlign,
     DriveAlongWall,
     PivotAroundCorner,
     LeftAdjustmentTurn,
@@ -55,7 +54,6 @@ static const char *StateNames[] = {
 	"StartReverse",
 	"AlignWithTower",
 	"AvoidCorner",
-	"FinishAlign",
 	"DriveAlongWall",
 	"PivotAroundCorner",
 	"LeftAdjustmentTurn",
@@ -165,7 +163,7 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                         makeTransition = TRUE;
                     } else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
                         StopMoving();
-                        nextState = RightAdjustmentTurn;
+                        nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     } else if ((ThisEvent.EventParam & BUMPER_ASL_MASK) ||
                             (ThisEvent.EventParam & BUMPER_AFL_MASK)) {
@@ -178,21 +176,6 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     CurrentState = PivotAroundCorner;
                     ThisEvent.EventType = ES_TOWER_LOST;
                     return ThisEvent;
-                    break;
-                case ES_NO_EVENT:
-                default: // all unhandled events pass the event back up to the next level
-                    break;
-            }
-            break;
-
-        case FinishAlign:
-            switch (ThisEvent.EventType) {
-                case ES_ENTRY: // align side of bot with side of tower
-                    TankTurnLeft(5);
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE: // the bot didn't realign properly with the tower
-                    nextState = DriveAlongWall;
-                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -225,14 +208,9 @@ ES_Event RunReverseTowerEncirclementFSM(ES_Event ThisEvent) {
                     if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
                             (ThisEvent.EventParam & BUMPER_AFR_MASK)) {
                         StopMoving();
-                        nextState = LeftAdjustmentTurn;
+                        nextState = RightAdjustmentTurn;
                         makeTransition = TRUE;
                     }
-                    //                    else if (ThisEvent.EventParam & BUMPER_FSR_MASK) {
-                    //                        StopMoving();
-                    //                        nextState = RightAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
                     CurrentState = PivotAroundCorner;

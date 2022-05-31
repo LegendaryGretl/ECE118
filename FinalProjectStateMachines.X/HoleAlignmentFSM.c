@@ -173,11 +173,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     }
-                    //                        else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
-                    //                        prevState = CurrentState;
-                    //                        nextState = RightAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    }
                     break;
                 case ES_TRACK_WIRE_DETECTED:
                 case ES_NO_TRACK_WIRE_DETECTED:
@@ -235,11 +230,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     }
-                    //                    else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
-                    //                        prevState = CurrentState;
-                    //                        nextState = RightAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     StopMoving();
@@ -297,11 +287,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     }
-                    //                    else if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
-                    //                        prevState = CurrentState;
-                    //                        nextState = RightAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE:
                     nextState = AlignWithTapeForwards;
@@ -318,13 +303,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     //GradualTurnLeft(0);
                     DriveBackwards(2);
                     break;
-                case ES_BUMPER_HIT:
-                    //                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
-                    //                        prevState = CurrentState;
-                    //                        nextState = LeftAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    } 
-                    //                    else 
+                case ES_BUMPER_HIT: 
                     if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
                         prevState = CurrentState;
                         nextState = RightAdjustmentTurn;
@@ -398,11 +377,6 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                     }
                     break;
                 case ES_BUMPER_HIT:
-                    //                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
-                    //                        prevState = CurrentState;
-                    //                        nextState = LeftAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    } else 
                     if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
                         prevState = CurrentState;
                         nextState = RightAdjustmentTurn;
@@ -438,12 +412,7 @@ ES_Event RunHoleAlignmentFSM(ES_Event ThisEvent) {
                 case ES_ENTRY:
                     DriveBackwardsPrecise(10);
                     break;
-                case ES_BUMPER_HIT:
-                    //                    if (ThisEvent.EventParam & (BUMPER_FFR_MASK | BUMPER_FSR_MASK)) {
-                    //                        prevState = CurrentState;
-                    //                        nextState = LeftAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    } else 
+                case ES_BUMPER_HIT: 
                     if (ThisEvent.EventParam & (BUMPER_AFR_MASK | BUMPER_ASR_MASK)) {
                         prevState = CurrentState;
                         nextState = RightAdjustmentTurn;

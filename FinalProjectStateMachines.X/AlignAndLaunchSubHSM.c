@@ -159,12 +159,19 @@ ES_Event RunAlignAndLaunchSubHSM(ES_Event ThisEvent) {
                 case ES_NO_TRACK_WIRE_DETECTED:
                     if ((ThisEvent.EventParam & 0b11) == 0) {
                         StopMoving();
+                        ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+                        ThisEvent.EventParam = 100;
+                        PostRobotMovementService(ThisEvent);
                         ThisEvent.EventType = ES_CORRECT_SIDE_LOST;
                         return ThisEvent;
                     }
                     break;
                 case ES_TIMEOUT:
                     if (ThisEvent.EventParam == GET_UNSTUCK_TIMER) {
+                        StopMoving();
+                        ThisEvent.EventType = ES_MOVE_BOT_SET_SPEED;
+                        ThisEvent.EventParam = 100;
+                        PostRobotMovementService(ThisEvent);
                         if (launch_complete == TRUE) {
                             InitLookForSecondBeaconFSM();
                             nextState = LookForNewBeacon;

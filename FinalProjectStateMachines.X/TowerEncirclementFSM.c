@@ -189,8 +189,6 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                     CurrentState = ObjectFound;
                     ThisEvent.EventType = ES_DEAD_BOT_AVOIDED;
                     return ThisEvent;
-                    //                    nextState = AvoidCorner;
-                    //                    makeTransition = TRUE;
                     break;
                 case ES_NO_EVENT:
                 default: // all unhandled events pass the event back up to the next level
@@ -241,11 +239,6 @@ ES_Event RunTowerEncirclementFSM(ES_Event ThisEvent) {
                         nextState = LeftAdjustmentTurn;
                         makeTransition = TRUE;
                     }
-                    //                    else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
-                    //                        StopMoving();
-                    //                        nextState = RightAdjustmentTurn;
-                    //                        makeTransition = TRUE;
-                    //                    }
                     break;
                 case ES_MOTOR_ROTATION_COMPLETE: // the bot has gone past the side of the tower
                     CurrentState = ObjectFound;

@@ -37,7 +37,6 @@
       <itemPath>AlignAndLaunchSubHSM.h</itemPath>
       <itemPath>RobotMovementService.h</itemPath>
       <itemPath>GetBackOnCourseFSM.h</itemPath>
-      <itemPath>WallFollowFSM.h</itemPath>
       <itemPath>HoleAlignmentFSM.h</itemPath>
       <itemPath>TowerEncirclementFSM.h</itemPath>
       <itemPath>LookForSecondBeaconFSM.h</itemPath>
@@ -78,7 +77,6 @@
       <itemPath>AlignAndLaunchSubHSM.c</itemPath>
       <itemPath>RobotMovementService.c</itemPath>
       <itemPath>GetBackOnCourseFSM.c</itemPath>
-      <itemPath>WallFollowFSM.c</itemPath>
       <itemPath>HoleAlignmentFSM.c</itemPath>
       <itemPath>TowerEncirclementFSM.c</itemPath>
       <itemPath>LookForSecondBeaconFSM.c</itemPath>
@@ -1212,38 +1210,6 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
-      <item path="WallFollowFSM.c" ex="true" overriding="false">
-        <C32>
-        </C32>
-        <C32-AR>
-        </C32-AR>
-        <C32-AS>
-        </C32-AS>
-        <C32-CO>
-        </C32-CO>
-        <C32-LD>
-        </C32-LD>
-        <C32CPP>
-        </C32CPP>
-        <C32Global>
-        </C32Global>
-      </item>
-      <item path="WallFollowFSM.h" ex="true" overriding="false">
-        <C32>
-        </C32>
-        <C32-AR>
-        </C32-AR>
-        <C32-AS>
-        </C32-AS>
-        <C32-CO>
-        </C32-CO>
-        <C32-LD>
-        </C32-LD>
-        <C32CPP>
-        </C32CPP>
-        <C32Global>
-        </C32Global>
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

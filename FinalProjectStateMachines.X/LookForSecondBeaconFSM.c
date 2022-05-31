@@ -39,8 +39,6 @@
  ******************************************************************************/
 typedef enum {
     InitPSubState,
-    ScanLeftForNewTower,
-    RealignWithWall,
     DriveAlongWall,
     PivotAroundCorner,
     LeftAdjustmentTurn,
@@ -50,8 +48,6 @@ typedef enum {
 
 static const char *StateNames[] = {
 	"InitPSubState",
-	"ScanLeftForNewTower",
-	"RealignWithWall",
 	"DriveAlongWall",
 	"PivotAroundCorner",
 	"LeftAdjustmentTurn",
@@ -145,62 +141,6 @@ ES_Event RunLookForSecondBeaconFSM(ES_Event ThisEvent) {
                 nextState = DriveAlongWall;
                 makeTransition = TRUE;
                 ThisEvent.EventType = ES_NO_EVENT;
-            }
-            break;
-
-        case ScanLeftForNewTower:
-            switch (ThisEvent.EventType) {
-                case ES_ENTRY: // start scan for new tower
-                    TankTurnRight(300);
-                    break;
-                case ES_BEACON_DETECTED:
-                    StopMoving();
-                    CurrentState = ScanLeftForNewTower;
-                    return ThisEvent;
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE:
-                    StopMoving();
-                    nextState = RealignWithWall;
-                    makeTransition = TRUE;
-                    break;
-                case ES_BUMPER_HIT: // readjust to not continuously hit the wall
-                    if ((ThisEvent.EventParam & BUMPER_ASR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_AFR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_AFL_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_ASL_MASK)) {
-                        StopMoving();
-                        nextState = RealignWithWall;
-                        makeTransition = TRUE;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            break;
-
-        case RealignWithWall:
-            switch (ThisEvent.EventType) {
-                case ES_ENTRY:
-                    TankTurnLeft(300);
-                    break;
-                case ES_BUMPER_HIT:
-                    if ((ThisEvent.EventParam & BUMPER_FSR_MASK) ||
-                            (ThisEvent.EventParam & BUMPER_FFR_MASK)) {
-                        StopMoving();
-                        nextState = LeftAdjustmentTurn;
-                        makeTransition = TRUE;
-                    } else if (ThisEvent.EventParam & BUMPER_ASR_MASK) {
-                        StopMoving();
-                        nextState = RightAdjustmentTurn;
-                        makeTransition = TRUE;
-                    }
-                    break;
-                case ES_MOTOR_ROTATION_COMPLETE:
-                    break;
-                case ES_BEACON_DETECTED:
-                    ThisEvent.EventType = ES_NO_EVENT;
-                default:
-                    break;
             }
             break;
 

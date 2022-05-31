@@ -36,7 +36,6 @@
 #include "TopLevelHSM.h"
 #include "NavigateToTowerSubHSM.h"
 #include "pins.h"
-//#include "WallFollowFSM.h"
 #include "SensorEventChecker.h"
 #include "TowerEncirclementFSM.h"
 #include "AvoidDeadBotFSM.h"
@@ -267,6 +266,7 @@ ES_Event RunNavigateToTowerSubHSM(ES_Event ThisEvent) {
             ThisEvent = RunReverseTowerEncirclementFSM(ThisEvent);
             switch (ThisEvent.EventType) {
                 case ES_DEAD_BOT_AVOIDED:
+                    InitAvoidDeadBotFSM();
                     nextState = AvoidDeadBot;
                     makeTransition = TRUE;
                     break;
